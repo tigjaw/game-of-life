@@ -2,12 +2,12 @@ package com.iridiumflair.sim;
 
 // a very basic Conway's Game of Life Simulation
 
-public class Simulation {
+public class ConsoleSimulation {
 	private int width, height;
 	private int[][] board;
 	
 	public static void main(String[] args) {
-		Simulation sim = new Simulation(8,5);
+		ConsoleSimulation sim = new ConsoleSimulation(8,5);
 		sim.birthCell(2, 2);
 		sim.birthCell(3, 2);
 		sim.birthCell(4, 2);
@@ -23,7 +23,7 @@ public class Simulation {
 		}
 	}
 	
-	public Simulation(int width, int height) {
+	public ConsoleSimulation(int width, int height) {
 		super();
 		this.width = width;
 		this.height = height;
