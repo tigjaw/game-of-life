@@ -21,6 +21,7 @@ public class MainView {
 	private JLabel widthLabel, heightLabel;
 	private JTextArea widthField, heightField;
 	private JTextArea intervalField;
+	private JButton applyButton;
 	private CanvasPanel canvas;
 
 	public MainView(JFrame jFrame, SimController controller) {
@@ -65,6 +66,7 @@ public class MainView {
 		widthField = new NumberField("100");
 		heightLabel = new JLabel("height: ");
 		heightField = new NumberField("100");
+		applyButton = new JButton("Apply");
 	}
 
 	private void addComponents() {
@@ -73,6 +75,7 @@ public class MainView {
 		controlPanel.add(widthField);
 		controlPanel.add(heightLabel);
 		controlPanel.add(heightField);
+		controlPanel.add(applyButton);
 
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		mainPanel.add(canvas, BorderLayout.CENTER);
