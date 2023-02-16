@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
-	private Image image;
-	Graphics2D g2d;
+	private Image canvas;
+	Graphics2D graphics;
 
 	public CanvasPanel(int width, int height) {
 		setPreferredSize(new Dimension(width, height));
@@ -35,7 +35,7 @@ public class CanvasPanel extends JPanel {
 				draw(x, y);
 			}
 		});
-
+		
 		addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
@@ -45,18 +45,15 @@ public class CanvasPanel extends JPanel {
 
 				draw(x, y);
 			}
-
-
-
 		});
 	}
 
 	private void draw(int x, int y) {
 		if (isValidPosition(x, y)) {
-			System.out.println("Dragged: " + x + " , " + y);
+			System.out.println("drawing at: " + x + " , " + y);
 
-			if (g2d != null) {
-				g2d.drawRect(x, y, 1, 1);
+			if (graphics != null) {
+				graphics.drawRect(x, y, 1, 1);
 				repaint();
 			}
 		}
@@ -73,20 +70,21 @@ public class CanvasPanel extends JPanel {
 		return parses;
 	}
 
+	@Override
 	protected void paintComponent(Graphics g) {
-		if (image == null) {
-			image = createImage(getSize().width, getSize().height);
-			g2d = (Graphics2D) image.getGraphics();
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		if (canvas == null) {
+			canvas = createImage(getSize().width, getSize().height);
+			graphics = (Graphics2D) canvas.getGraphics();
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			clear();
 		}
-		g.drawImage(image, 0, 0, null);
+		g.drawImage(canvas, 0, 0, null);
 	}
 
 	public void clear() {
-		g2d.setPaint(Color.white);
-		g2d.fillRect(0, 0, getSize().width, getSize().height);
-		g2d.setPaint(Color.black);
+		graphics.setPaint(Color.white);
+		graphics.fillRect(0, 0, getSize().width, getSize().height);
+		graphics.setPaint(Color.black);
 		repaint();
 	}
 

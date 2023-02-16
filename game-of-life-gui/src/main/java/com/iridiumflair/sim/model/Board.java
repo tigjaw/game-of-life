@@ -4,10 +4,9 @@ public class Board {
 	private int[][] board;
 
 	/**
-	 * Constructor for the Board class
-	 * An empty board initialised to 0
+	 * Constructor for the Board class An empty board initialised to 0
 	 * 
-	 * @param rows the number of rows in the 2d grid
+	 * @param rows    the number of rows in the 2d grid
 	 * @param columns the number of columns in the 2d grid
 	 */
 	public Board(int rows, int columns) {
@@ -15,11 +14,11 @@ public class Board {
 	}
 
 	/**
-	 * The set method is used to set the value for the location at the specified
-	 * x,y location.
+	 * The set method is used to set the value for the location at the specified x,y
+	 * location.
 	 * 
-	 * @param x the row of the grid
-	 * @param y the column of the grid
+	 * @param x     the row of the grid
+	 * @param y     the column of the grid
 	 * @param value the value to stored at x,y
 	 */
 	public void set(int x, int y, int value) {
@@ -27,14 +26,32 @@ public class Board {
 	}
 
 	/**
-	 * The get method is used to get the value for the location at the specified
-	 * x,y location.
+	 * The get method is used to get the value for the location at the specified x,y
+	 * location.
 	 * 
 	 * @param x the row of the grid
 	 * @param y the column of the grid
 	 */
 	public int get(int x, int y) {
 		return board[x][y];
+	}
+
+	/**
+	 * The getBoard method returns the board array
+	 * 
+	 * @return the board array
+	 */
+	public int[][] getBoard() {
+		return board;
+	}
+
+	/**
+	 * The setBoard method sets the board array
+	 * 
+	 * @param board the board array to set
+	 */
+	public void setBoard(int[][] board) {
+		this.board = board;
 	}
 
 	/**
@@ -58,9 +75,9 @@ public class Board {
 	@Override
 	public String toString() {
 		String result = "";
-		for (int r = 0; r < getRows(); r++) {
-			for (int c = 0; c < getColumns(); c++) {
-				result += board[r][c];
+		for (int x = 0; x < getRows(); x++) {
+			for (int y = 0; y < getColumns(); y++) {
+				result += board[x][y];
 			}
 			result += "\n";
 		}

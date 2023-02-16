@@ -15,7 +15,7 @@ public class RunSim implements Runnable {
 
 	@Override
 	public void run() {
-		Board model = new Board(10, 10);
+		Board model = new Board(500, 500);
 		SimController ctrl = new SimController(model);
 		new MainView(new JFrame("Conway's Game of Life"), ctrl);
 	}

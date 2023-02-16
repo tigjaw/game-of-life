@@ -8,9 +8,13 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class NumberField extends JTextArea {
 
-	public NumberField(String title) {
-		super(title);
+	public NumberField(String number) {
+		super(number);
 		validateInput();
+	}
+	
+	public NumberField(int number) {
+		this(Integer.toString(number));
 	}
 
 	private void validateInput() {
