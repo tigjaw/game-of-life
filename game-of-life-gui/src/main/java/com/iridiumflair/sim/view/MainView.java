@@ -8,7 +8,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -19,19 +20,28 @@ public class MainView {
 	private SimController controller;
 	private JFrame frame;
 	private JPanel mainPanel, controlPanel;
-	private JLabel widthLabel, heightLabel;
-	private JTextArea widthField, heightField;
 	private JButton playBtn, slowDownBtn, speedUpBtn, newBtn;
 	private JLabel speedLabel;
 	private int canvasRows, canvasColumns;
 	private CanvasPanel canvas;
+	private Timer refreshTimer;
 
 	public MainView(JFrame jFrame, SimController controller) {
 		frame = new JFrame(SimStrings.TITLE);
 		this.controller = controller;
 		this.canvasRows = controller.getRows();
 		this.canvasColumns = controller.getColumns();
+		this.refreshTimer = new Timer(controller.getFramerate(), new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//initiateBoard();
+				refresh();
+			}
+		});
 		createAndShowGUI();
+        SwingUtilities.invokeLater(() -> {
+        	//initiateBoard();
+        });
 	}
 
 	private void createAndShowGUI() {
@@ -63,12 +73,8 @@ public class MainView {
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
-		canvas = new CanvasPanel(canvasRows, canvasColumns);
+		canvas = new CanvasPanel(this, canvasRows, canvasColumns);
 		// setup buttons and labels
-		widthLabel = new JLabel("width: ");
-		widthField = new NumberField("100");
-		heightLabel = new JLabel("height: ");
-		heightField = new NumberField("100");
 		newBtn = new JButton("new");
 		newBtn.setToolTipText("new board");
 		playBtn = new JButton("play");
@@ -82,10 +88,6 @@ public class MainView {
 
 	private void addComponents() {
 		controlPanel.add(newBtn);
-		controlPanel.add(widthLabel);
-		controlPanel.add(widthField);
-		controlPanel.add(heightLabel);
-		controlPanel.add(heightField);
 		controlPanel.add(playBtn);
 		controlPanel.add(slowDownBtn);
 		controlPanel.add(speedUpBtn);
@@ -130,6 +132,16 @@ public class MainView {
 		});
 	}
 
+	private void initiateBoard() {
+		controller.birthCell(252, 252);
+		canvas.draw(252, 252);
+		controller.birthCell(253, 252);
+		canvas.draw(253, 252);
+		controller.birthCell(254, 252);
+		canvas.draw(254, 252);
+		repack();
+	}
+
 	private void update(SimState state) {
 		switch (state) {
 		case PLAYPAUSE:
@@ -137,25 +149,31 @@ public class MainView {
 			break;
 		case NEW:
 			controller.restartSimulation();
-			canvas.clear();
-			widthField.setEnabled(true);
-			heightField.setEnabled(true);
+			canvas.clear(); // move to update method
 			break;
 		case SPEEDUP:
 			controller.speedUpSimulation();
 			break;
 		case SLOWDOWN:
-			controller.slowDownSimulation();			
+			controller.slowDownSimulation();
 			break;
 		}
 		if (controller.isRunning()) {
 			playBtn.setText("pause");
-			widthField.setEnabled(false);
-			heightField.setEnabled(false);
+			refreshTimer.start();
 		} else {
 			playBtn.setText("play");
+			refreshTimer.stop();
 		}
+		refreshTimer.setDelay(controller.getFramerate());
 		speedLabel.setText("speed: " + controller.getSpeedMultiplier());
+	}
+
+	private void refresh() {
+		canvas.clear();
+		controller.step();
+		canvas.drawBoard();
+		//canvas.clear();
 	}
 
 	private void showFrame() {
@@ -172,6 +190,8 @@ public class MainView {
 		frame.repaint();
 		frame.pack();
 	}
+
+	// GETTERS AND SETTERS
 	
 	public SimController getController() {
 		return controller;

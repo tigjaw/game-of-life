@@ -14,7 +14,7 @@ public class ConsoleSimulation {
 		for (int i = 0; i <10; i++) {
 			sim.printBoard();
 			sim.step();
-			sim.printBoard();
+			//sim.printBoard();
 		    try {
 		        Thread.sleep(300);
 		    } catch (InterruptedException e) {
@@ -38,42 +38,23 @@ public class ConsoleSimulation {
 		this.board[x][y] = 0;
 	}
 	
-	public int countAliveNeighbours(int x, int y) {
-		int count = 0;
-		count += cellState(x-1,y-1);
-		count += cellState(x, y-1);
-		count += cellState(x+1, y-1);
-		
-		count += cellState(x-1,y);
-		// count += cellState(x, y); this is the current cell
-		count += cellState(x+1, y);
-		
-		count += cellState(x-1,y+1);
-		count += cellState(x, y+1);
-		count += cellState(x+1, y+1);
-		return count;
-	}
-	
-	public int cellState(int x, int y) {
-		if (x < 0 || x >= width) {
-			return 0;
+	public void printBoard() {
+		System.out.println("----------");
+		for(int y = 0; y < height; y++) {
+			String line = "|";
+			for (int x = 0; x < width; x++) {
+				if (this.board[x][y] == 0) {
+					line += ".";
+				} else {
+					line += "*";
+				}
+			}
+			line += "|";
+			System.out.println(line);
 		}
-		
-		if (y < 0 || y >= height) {
-			return 0;
-		}
-		
-		return this.board[x][y];
+		System.out.println("----------\n");
 	}
-	
-	public boolean isAlive(int x, int y) {
-		if (cellState(x, y) == 1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
+
 	public void step() {
 		int[][] newBoard = new int[width][height];
 		for(int y = 0; y < height; y++) {
@@ -96,22 +77,41 @@ public class ConsoleSimulation {
 		}
 		this.board = newBoard;
 	}
+
+	public int countAliveNeighbours(int x, int y) {
+		int count = 0;
+		count += cellState(x-1,y-1);
+		count += cellState(x, y-1);
+		count += cellState(x+1, y-1);
+		
+		count += cellState(x-1,y);
+		// count += cellState(x, y); this is the current cell
+		count += cellState(x+1, y);
+		
+		count += cellState(x-1,y+1);
+		count += cellState(x, y+1);
+		count += cellState(x+1, y+1);
+		return count;
+	}
 	
-	public void printBoard() {
-		System.out.println("----------");
-		for(int y = 0; y < height; y++) {
-			String line = "|";
-			for (int x = 0; x < width; x++) {
-				if (this.board[x][y] == 0) {
-					line += ".";
-				} else {
-					line += "*";
-				}
-			}
-			line += "|";
-			System.out.println(line);
+	public boolean isAlive(int x, int y) {
+		if (cellState(x, y) == 1) {
+			return true;
+		} else {
+			return false;
 		}
-		System.out.println("----------\n");
+	}
+	
+	public int cellState(int x, int y) {
+		if (x < 0 || x >= width) {
+			return 0;
+		}
+		
+		if (y < 0 || y >= height) {
+			return 0;
+		}
+		
+		return this.board[x][y];
 	}
 	
 	// GETTERS AND SETTERS

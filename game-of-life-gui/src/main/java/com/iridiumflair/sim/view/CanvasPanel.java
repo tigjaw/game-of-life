@@ -12,12 +12,18 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
+import com.iridiumflair.sim.control.SimController;
+
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
+	private MainView mainView;
+	private SimController controller;
 	private Image canvas;
 	Graphics2D graphics;
 
-	public CanvasPanel(int width, int height) {
+	public CanvasPanel(MainView mainView, int width, int height) {
+		this.mainView = mainView;
+		this.controller = mainView.getController();
 		setPreferredSize(new Dimension(width, height));
 		setDoubleBuffered(false);
 		addActions();
@@ -28,32 +34,37 @@ public class CanvasPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// save the location of the mouse press
-				int x = e.getX();
-				int y = e.getY();
-
-				draw(x, y);
+				draw(e.getX(), e.getY());
 			}
 		});
-		
+
 		addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				int x = e.getX();
-				int y = e.getY();
-
-				draw(x, y);
+				draw(e.getX(), e.getY());
 			}
 		});
 	}
 
-	private void draw(int x, int y) {
-		if (isValidPosition(x, y)) {
-			System.out.println("drawing at: " + x + " , " + y);
+	public void drawBoard() {
+		for (int y = 0; y < getHeight(); y++) {
+			String line = "|";
+			for (int x = 0; x < getWidth(); x++) {
+				if (controller.cellIsAlive(x, y)) {
+					draw(x, y);
+				} else {
+				}
+			}
+		}
+	}
 
+	protected void draw(int x, int y) {
+		if (isValidPosition(x, y)) {
 			if (graphics != null) {
+				System.out.println("drawing at: " + x + ", " + y);
 				graphics.drawRect(x, y, 1, 1);
+				controller.birthCell(x, y);
 				repaint();
 			}
 		}
@@ -86,10 +97,6 @@ public class CanvasPanel extends JPanel {
 		graphics.fillRect(0, 0, getSize().width, getSize().height);
 		graphics.setPaint(Color.black);
 		repaint();
-	}
-
-	private void redraw() {
-		// graphics
 	}
 
 }

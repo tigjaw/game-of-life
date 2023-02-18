@@ -23,8 +23,12 @@ public class SimController {
 		return running = !running;
 	}
 	
+	public void step() {
+		board.step();
+	}
+
 	public boolean restartSimulation() {
-		clearBoard();
+		board.clear();
 		return running = false;
 	}
 
@@ -39,6 +43,10 @@ public class SimController {
 		}
 		return speedMultiplier;
 	}
+	
+	public boolean cellIsAlive(int x, int y) {
+		return board.isAlive(x, y);
+	}
 
 	public void birthCell(int x, int y) {
 		board.set(x, y, 1);
@@ -46,14 +54,6 @@ public class SimController {
 
 	public void killCell(int x, int y) {
 		board.set(x, y, 0);
-	}
-
-	public void clearBoard() {
-		for (int x = 0; x < board.getRows(); x++) {
-			for (int y = 0; y < board.getColumns(); y++) {
-				board.set(x, y, 0);
-			}
-		}
 	}
 
 	public int getRows() {
@@ -94,6 +94,10 @@ public class SimController {
 
 	public void setSpeedMultiplier(int speedMultiplier) {
 		this.speedMultiplier = speedMultiplier;
+	}
+	
+	public int getFramerate() {
+		return simInterval / speedMultiplier;
 	}
 
 }
