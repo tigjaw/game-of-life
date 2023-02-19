@@ -115,6 +115,23 @@ public class Board {
 		generation = 0;
 	}
 
+	public void printBoard() {
+		System.out.println("----------");
+		for(int y = 0; y < getRows(); y++) {
+			String line = "|";
+			for (int x = 0; x < getColumns(); x++) {
+				if (this.board[x][y] == 0) {
+					line += ".";
+				} else {
+					line += "*";
+				}
+			}
+			line += "|";
+			System.out.println(line);
+		}
+		System.out.println("----------\n");
+	}
+
 	/**
 	 * The getBoard method returns the board array
 	 * 
@@ -151,21 +168,12 @@ public class Board {
 		return board[0].length;
 	}
 	
-	public void printBoard() {
-		System.out.println("----------");
-		for(int y = 0; y < getRows(); y++) {
-			String line = "|";
-			for (int x = 0; x < getColumns(); x++) {
-				if (this.board[x][y] == 0) {
-					line += ".";
-				} else {
-					line += "*";
-				}
-			}
-			line += "|";
-			System.out.println(line);
-		}
-		System.out.println("----------\n");
+	public int getGeneration() {
+		return generation;
+	}
+
+	public void setGeneration(int generation) {
+		this.generation = generation;
 	}
 
 	@Override

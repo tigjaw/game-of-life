@@ -8,7 +8,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -39,9 +38,6 @@ public class MainView {
 			}
 		});
 		createAndShowGUI();
-        SwingUtilities.invokeLater(() -> {
-        	//initiateBoard();
-        });
 	}
 
 	private void createAndShowGUI() {
@@ -73,7 +69,7 @@ public class MainView {
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
-		canvas = new CanvasPanel(this, canvasRows, canvasColumns);
+		canvas = new CanvasPanel(controller, canvasRows, canvasColumns);
 		// setup buttons and labels
 		newBtn = new JButton("new");
 		newBtn.setToolTipText("new board");
@@ -130,16 +126,6 @@ public class MainView {
 				update(SimState.SPEEDUP);
 			}
 		});
-	}
-
-	private void initiateBoard() {
-		controller.birthCell(252, 252);
-		canvas.draw(252, 252);
-		controller.birthCell(253, 252);
-		canvas.draw(253, 252);
-		controller.birthCell(254, 252);
-		canvas.draw(254, 252);
-		repack();
 	}
 
 	private void update(SimState state) {

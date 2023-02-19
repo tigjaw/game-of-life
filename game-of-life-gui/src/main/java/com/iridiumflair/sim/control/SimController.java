@@ -55,6 +55,8 @@ public class SimController {
 	public void killCell(int x, int y) {
 		board.set(x, y, 0);
 	}
+	
+	// GETTERS AND SETTERS
 
 	public int getRows() {
 		return board.getRows();

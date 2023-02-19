@@ -16,14 +16,12 @@ import com.iridiumflair.sim.control.SimController;
 
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
-	private MainView mainView;
 	private SimController controller;
 	private Image canvas;
 	Graphics2D graphics;
 
-	public CanvasPanel(MainView mainView, int width, int height) {
-		this.mainView = mainView;
-		this.controller = mainView.getController();
+	public CanvasPanel(SimController controller, int width, int height) {
+		this.controller = controller;
 		setPreferredSize(new Dimension(width, height));
 		setDoubleBuffered(false);
 		addActions();
@@ -49,7 +47,6 @@ public class CanvasPanel extends JPanel {
 
 	public void drawBoard() {
 		for (int y = 0; y < getHeight(); y++) {
-			String line = "|";
 			for (int x = 0; x < getWidth(); x++) {
 				if (controller.cellIsAlive(x, y)) {
 					draw(x, y);
@@ -72,10 +69,10 @@ public class CanvasPanel extends JPanel {
 
 	private boolean isValidPosition(int x, int y) {
 		boolean parses = true;
-		if (x < 0 || x > getSize().width) {
+		if (x < 0 || x >= getSize().width) {
 			parses = false;
 		}
-		if (y < 0 || y > getSize().height) {
+		if (y < 0 || y >= getSize().height) {
 			parses = false;
 		}
 		return parses;
