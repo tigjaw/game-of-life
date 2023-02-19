@@ -2,6 +2,9 @@ package com.iridiumflair.sim.control;
 
 import com.iridiumflair.sim.model.Board;
 
+/**
+ * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
+ */
 public class SimController {
 	private Board board;
 	private boolean running;

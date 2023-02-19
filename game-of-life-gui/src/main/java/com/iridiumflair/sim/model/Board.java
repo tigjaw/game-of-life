@@ -1,5 +1,8 @@
 package com.iridiumflair.sim.model;
 
+/**
+ * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
+ */
 public class Board {
 	private int[][] board;
 	private int generation;

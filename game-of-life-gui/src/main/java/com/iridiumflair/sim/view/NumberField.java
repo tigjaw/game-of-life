@@ -5,6 +5,10 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JTextArea;
 
+/**
+ * currently unused. Will be utilised to provide additional options to the user.
+ * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
+ */
 @SuppressWarnings("serial")
 public class NumberField extends JTextArea {
 

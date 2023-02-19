@@ -14,6 +14,9 @@ import javax.swing.JPanel;
 
 import com.iridiumflair.sim.control.SimController;
 
+/**
+ * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
+ */
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
 	private SimController controller;
