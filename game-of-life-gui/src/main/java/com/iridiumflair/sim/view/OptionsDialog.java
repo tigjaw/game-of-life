@@ -46,7 +46,7 @@ public class OptionsDialog extends JDialog {
 		widthField.setToolTipText("width of board");
 		heightLabel = new JLabel("height: ");
 		heightField = new NumberField(controller.getRows());
-		heightField.setToolTipText("height of field");
+		heightField.setToolTipText("height of board");
 		// interval field
 		intervalLabel = new JLabel("interval: ");
 		intervalField = new NumberField(controller.getSimInterval());
