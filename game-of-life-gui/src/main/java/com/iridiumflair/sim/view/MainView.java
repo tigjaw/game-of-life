@@ -32,33 +32,34 @@ import com.iridiumflair.sim.control.SimController;
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class MainView {
-	private SimController controller;
+	private SimController simCtrl;
 	private JFrame frame;
 	private JPanel mainPanel, controlPanel;
 	private JButton playBtn, slowDownBtn, speedUpBtn, newBtn;
 	private JLabel speedLabel;
-	private int canvasRows, canvasColumns;
 	private CanvasPanel canvas;
 	private Timer refreshTimer;
 
 	/**
-	 * Parameterized constructor for {@code MainView}<br>
+	 * The constructor for {@code MainView}<br>
 	 * Initialises the {@code frame}, {@code controller}, {@code canvasRows}, and
 	 * {@code canvasColumns}.<br>
-	 * Initialises the {@code refreshTimer} using the
-	 * {@link SimController#getFramerate()} method as the timer delay between each
-	 * {@link #refresh()}.<br>
-	 * Finally, the constructor calls the {@link #createAndShowGUI()} method.
+	 * Initialises the {@code refreshTimer} using the {@code
+	 * SimController.getFramerate()} method as the timer delay between each
+	 * {@code refresh()}.<br>
+	 * Finally, the constructor calls the {code createAndShowGUI()} method.
+	 * 
+	 * @see SimController#getFramerate()
+	 * @see #refresh()
+	 * @see #createAndShowGUI()
 	 * 
 	 * @param frame      the {@link JFrame} to set
 	 * @param controller the {@link SimController} to set
 	 */
-	public MainView(JFrame frame, SimController controller) {
+	public MainView(JFrame frame, SimController simCtrl) {
 		this.frame = new JFrame("Conway's Game of Life");
-		this.controller = controller;
-		this.canvasRows = controller.getRows();
-		this.canvasColumns = controller.getColumns();
-		this.refreshTimer = new Timer(controller.getFramerate(), new ActionListener() {
+		this.simCtrl = simCtrl;
+		this.refreshTimer = new Timer(simCtrl.getFramerate(), new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// initiateBoard();
@@ -69,8 +70,15 @@ public class MainView {
 	}
 
 	/**
-	 * {@code createAndShowGUI()} simply contains method calls to incrementally
-	 * build the GUI.
+	 * The {@code createAndShowGUI()} method simply contains method calls to
+	 * incrementally build the GUI.
+	 * 
+	 * @see MainView#manageUI()
+	 * @see MainView#createComponents()
+	 * @see MainView#addComponents()
+	 * @see MainView#addActions()
+	 * @see MainView#showFrame()
+	 * 
 	 */
 	private void createAndShowGUI() {
 		manageUI();
@@ -81,7 +89,10 @@ public class MainView {
 	}
 
 	/**
-	 * {@code manageUi()} sets the look and feel for the GUI.
+	 * The {@code manageUi()} method sets the look and feel for the GUI.
+	 * 
+	 * @see LFStrings
+	 * @see UIManager#setLookAndFeel(String)
 	 */
 	private void manageUI() {
 		// set look and feel
@@ -101,13 +112,14 @@ public class MainView {
 	}
 
 	/**
-	 * {@code createComponents()} initialises each of the {@code JComponent}s
+	 * The {@code createComponents()} method initialises each of the
+	 * {@code JComponent}s
 	 */
 	private void createComponents() {
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
-		canvas = new CanvasPanel(controller, canvasRows, canvasColumns);
+		canvas = new CanvasPanel(simCtrl.getBoardCtrl());
 		// setup buttons and labels
 		newBtn = new JButton("new");
 		newBtn.setToolTipText("new board");
@@ -117,11 +129,12 @@ public class MainView {
 		slowDownBtn.setToolTipText("slow down simulation speed");
 		speedUpBtn = new JButton(">>");
 		speedUpBtn.setToolTipText("speed up simulation speed");
-		speedLabel = new JLabel("speed: " + controller.getSpeedMultiplier());
+		speedLabel = new JLabel("speed: " + simCtrl.getSpeedMultiplier());
 	}
 
 	/**
-	 * {@code addComponents()} adds each JComponent to its parent {@code JPanel}.
+	 * The {@code addComponents()} method adds each JComponent to its parent
+	 * {@code JPanel}.
 	 */
 	private void addComponents() {
 		controlPanel.add(newBtn);
@@ -135,12 +148,13 @@ public class MainView {
 	}
 
 	/**
-	 * {@code addActions()} adds an {@code ActionListener} to each of the GUI
-	 * buttons. Each button updates the {@code SimState} with an enum value
+	 * The {@code addActions()} method adds an {@code ActionListener} to each of the
+	 * GUI buttons. Each button updates the {@code SimState} with an enum value
 	 * according to the respective action.
 	 * 
 	 * @see #update(SimState)
 	 * @see SimState
+	 * @see JButton#addActionListener(ActionListener)
 	 * @see ActionListener
 	 */
 	private void addActions() {
@@ -179,8 +193,8 @@ public class MainView {
 	}
 
 	/**
-	 * {@code update(SimState)} is called by the {@code JButton}s in this class and
-	 * updates the view accordingly. {@code MainView} does not modify the
+	 * The {@code update(SimState)} method is called by the {@code JButton}s in this
+	 * class and updates the view accordingly. {@code MainView} does not modify the
 	 * {@code Board} or {@code CanvasPanel} directly.<br>
 	 * This method is responsible for:<br>
 	 * - pausing/playing the simulation<br>
@@ -205,49 +219,55 @@ public class MainView {
 	private void update(SimState state) {
 		switch (state) {
 		case PLAYPAUSE:
-			controller.playPauseSimulation();
+			simCtrl.playPauseSimulation();
 			break;
 		case NEW:
-			controller.restartSimulation();
+			simCtrl.restartSimulation();
 			canvas.clear(); // move to update method
 			break;
 		case SPEEDUP:
-			controller.speedUpSimulation();
+			simCtrl.speedUpSimulation();
 			break;
 		case SLOWDOWN:
-			controller.slowDownSimulation();
+			simCtrl.slowDownSimulation();
 			break;
 		}
-		if (controller.isRunning()) {
+		if (simCtrl.isRunning()) {
 			playBtn.setText("pause");
 			refreshTimer.start();
 		} else {
 			playBtn.setText("play");
 			refreshTimer.stop();
 		}
-		refreshTimer.setDelay(controller.getFramerate());
-		speedLabel.setText("speed: " + controller.getSpeedMultiplier());
+		refreshTimer.setDelay(simCtrl.getFramerate());
+		speedLabel.setText("speed: " + simCtrl.getSpeedMultiplier());
 	}
 
 	/**
-	 * {@code refresh()} is called by {@code refreshTimer}'s {@code ActionListener}
-	 * while the simulation is running. Each refresh tells the {@code CanvasPanel}
-	 * to clear itself, calls the next simulation step, and tells
-	 * {@code CanvasPanel} to redraw the updated board.
+	 * The {@code refresh()} method is called by {@code refreshTimer}'s
+	 * {@code ActionListener} while the simulation is running. Each refresh tells
+	 * the {@code CanvasPanel} to clear itself, calls the next simulation step, and
+	 * tells {@code CanvasPanel} to redraw the updated board.
 	 * 
 	 * @see CanvasPanel#clear()
-	 * @see SimController#step()
+	 * @see SimController#advanceSimulation()
 	 * @see CanvasPanel#drawBoard()
 	 */
 	private void refresh() {
 		canvas.clear();
-		controller.step();
+		simCtrl.advanceSimulation();
 		canvas.drawBoard();
 		// canvas.clear();
 	}
 
 	/**
-	 * {@code showFrame()} adds the mainPanel to the frame and displays the GUI
+	 * The {@code showFrame()} method adds the mainPanel to the frame and displays
+	 * the GUI
+	 * 
+	 * @see JFrame#setLocationRelativeTo(java.awt.Component)
+	 * @see JFrame#revalidate()
+	 * @see JFrame#repaint()
+	 * @see JFrame#pack()
 	 */
 	private void showFrame() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -262,16 +282,36 @@ public class MainView {
 
 	// GETTERS AND SETTERS
 
-	public SimController getController() {
-		return controller;
+	public SimController getSimCtrl() {
+		return simCtrl;
 	}
 
-	public void setController(SimController controller) {
-		this.controller = controller;
+	public void setSimCtrl(SimController simCtrl) {
+		this.simCtrl = simCtrl;
 	}
 
 	public JFrame getFrame() {
 		return frame;
+	}
+
+	public void setFrame(JFrame frame) {
+		this.frame = frame;
+	}
+
+	public CanvasPanel getCanvas() {
+		return canvas;
+	}
+
+	public void setCanvas(CanvasPanel canvas) {
+		this.canvas = canvas;
+	}
+
+	public Timer getRefreshTimer() {
+		return refreshTimer;
+	}
+
+	public void setRefreshTimer(Timer refreshTimer) {
+		this.refreshTimer = refreshTimer;
 	}
 
 }

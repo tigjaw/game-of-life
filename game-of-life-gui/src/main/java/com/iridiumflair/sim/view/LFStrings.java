@@ -1,8 +1,8 @@
 package com.iridiumflair.sim.view;
 
 /**
- * {@code LFStrings} provides easy access to Swing's various Look and Feel
- * settings
+ * The {@code LFStrings} clas provides easy access to Swing's various Look and
+ * Feel settings
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
