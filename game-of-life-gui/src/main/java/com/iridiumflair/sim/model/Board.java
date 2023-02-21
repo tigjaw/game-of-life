@@ -1,11 +1,13 @@
 package com.iridiumflair.sim.model;
 
 /**
+ * The {@code Board} class contains the board array and the logic behind the
+ * game of life simulation.
+ * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class Board {
 	private int[][] board;
-	private int generation;
 
 	/**
 	 * Constructor for the Board class An empty board initialised to 0
@@ -15,49 +17,30 @@ public class Board {
 	 */
 	public Board(int rows, int columns) {
 		board = new int[rows][columns];
-		this.generation = 0;
-	}
-	
-	public void birthCell(int x, int y) {
-		this.board[x][y] = 1;
-	}
-	
-	public void killCell(int x, int y) {
-		this.board[x][y] = 0;
 	}
 
 	/**
-	 * The get method is used to get the value for the location at the specified x,y
-	 * location.
+	 * The {@code advanceBoard()} method creates a new board, recalculates board
+	 * values by evaluating the current board, and finally overwrites the old board
+	 * with the new board.
 	 * 
-	 * @param x the row of the grid
-	 * @param y the column of the grid
+	 * @see #getRows()
+	 * @see #getColumns()
+	 * @see #countAliveNeighbours(int, int)
+	 * @see #cellIsAlive(int, int)
 	 */
-	public int get(int x, int y) {
-		return board[x][y];
-	}
-
-	/**
-	 * The set method is used to set the value for the location at the specified x,y
-	 * location.
-	 * 
-	 * @param x     the row of the grid
-	 * @param y     the column of the grid
-	 * @param value the value to stored at x,y
-	 */
-	public void set(int x, int y, int value) {
-		board[x][y] = value;
-	}
-	
-	public void step() {
+	public void advanceBoard() {
 		int[][] newBoard = new int[getColumns()][getRows()];
-		for(int y = 0; y < getRows(); y++) {
+
+		for (int y = 0; y < getRows(); y++) {
 			for (int x = 0; x < getColumns(); x++) {
+
 				int aliveNeighbours = countAliveNeighbours(x, y);
-				if (isAlive(x, y)) {
+
+				if (cellIsAlive(x, y)) {
 					if (aliveNeighbours < 2) {
 						newBoard[x][y] = 0;
-					} else if (aliveNeighbours == 2 || aliveNeighbours == 3){
+					} else if (aliveNeighbours == 2 || aliveNeighbours == 3) {
 						newBoard[x][y] = 1;
 					} else {
 						newBoard[x][y] = 0;
@@ -67,60 +50,125 @@ public class Board {
 						newBoard[x][y] = 1;
 					}
 				}
+
 			}
 		}
-		generation++;
 		board = newBoard;
 	}
 
+	/**
+	 * The {@code countAliveNeighbours(int, int)} method takes the x and y
+	 * coordinates of a cell and counts its living neighbours in all directions.<br>
+	 * Only cells within one cell distances are considered neighbours.<br>
+	 * The cell state at x,y is not evaluated as it is the cell being compared.
+	 * 
+	 * @see #cellState(int, int)
+	 * 
+	 * @param x - the x coordinate of the cell to be evaluated
+	 * @param y - the y coordinate of the cell to be evaluated
+	 * @return the number of live cells
+	 */
 	public int countAliveNeighbours(int x, int y) {
 		int count = 0;
-		count += cellState(x-1,y-1);
-		count += cellState(x, y-1);
-		count += cellState(x+1, y-1);
-		
-		count += cellState(x-1,y);
+		count += cellState(x - 1, y - 1);
+		count += cellState(x, y - 1);
+		count += cellState(x + 1, y - 1);
+
+		count += cellState(x - 1, y);
 		// count += cellState(x, y); this is the current cell
-		count += cellState(x+1, y);
-		
-		count += cellState(x-1,y+1);
-		count += cellState(x, y+1);
-		count += cellState(x+1, y+1);
+		count += cellState(x + 1, y);
+
+		count += cellState(x - 1, y + 1);
+		count += cellState(x, y + 1);
+		count += cellState(x + 1, y + 1);
 		return count;
 	}
 
-	public boolean isAlive(int x, int y) {
+	/**
+	 * The {@code cellIsAlive(int, int)} method checks if the cell at the specified
+	 * x and y coordinates is alive or dead. If the cell state at x and y is 1, then
+	 * it is alive, else it is dead.
+	 * 
+	 * @see #cellState(int, int)
+	 * 
+	 * @param x - the x coordinate of the cell to be evaluated
+	 * @param y - the y coordinate of the cell to be evaluated
+	 * @return the state of the cell (alive == true)
+	 */
+	public boolean cellIsAlive(int x, int y) {
 		if (cellState(x, y) == 1) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
+	/**
+	 * The {@code cellState(int, int)} method returns the value held in the cell at
+	 * the specified x and y coordinates.<br>
+	 * The method first checks if the coordinates are out of the array bounds, and
+	 * if so, returns a 0.
+	 * 
+	 * @see #getColumns()
+	 * @see #getRows()
+	 * 
+	 * @param x - the x coordinate of the cell to be evaluated
+	 * @param y - the y coordinate of the cell to be evaluated
+	 * @return the value held in the cell at x and y
+	 */
 	public int cellState(int x, int y) {
 		if (x < 0 || x >= getColumns()) {
 			return 0;
 		}
-		
+
 		if (y < 0 || y >= getRows()) {
 			return 0;
 		}
-		
-		return get(x, y);
+
+		return board[x][y];
 	}
-	
+
+	/**
+	 * The {@code birthCell(int, int)} method sets the cell at the specified
+	 * coordinates to 1 (alive).
+	 * 
+	 * @param x - the x coordinate of the cell
+	 * @param y - the y coordinate of the cell
+	 */
+	public void birthCell(int x, int y) {
+		this.board[x][y] = 1;
+	}
+
+	/**
+	 * The {@code killCell(int, int)} method sets the cell at the specified
+	 * coordinates to 0 (dead).
+	 * 
+	 * @param x - the x coordinate of the cell
+	 * @param y - the y coordinate of the cell
+	 */
+	public void killCell(int x, int y) {
+		this.board[x][y] = 0;
+	}
+
+	/**
+	 * The {@code clear()} method clears the board by looping through it and setting
+	 * each cell to 0.<br>
+	 * Also resets the {@code generation} to 0.
+	 */
 	public void clear() {
 		for (int x = 0; x < getRows(); x++) {
 			for (int y = 0; y < getColumns(); y++) {
-				set(x, y, 0);
+				board[x][y] = 0;
 			}
 		}
-		generation = 0;
 	}
 
+	/**
+	 * {@code printBoard()} prints the board to the console.
+	 */
 	public void printBoard() {
 		System.out.println("----------");
-		for(int y = 0; y < getRows(); y++) {
+		for (int y = 0; y < getRows(); y++) {
 			String line = "|";
 			for (int x = 0; x < getColumns(); x++) {
 				if (this.board[x][y] == 0) {
@@ -135,8 +183,10 @@ public class Board {
 		System.out.println("----------\n");
 	}
 
+	// GETTERS AND SETTERS
+
 	/**
-	 * The getBoard method returns the board array
+	 * The {@code getBoard()} method returns the board array
 	 * 
 	 * @return the board array
 	 */
@@ -145,7 +195,7 @@ public class Board {
 	}
 
 	/**
-	 * The setBoard method sets the board array
+	 * The {@code setBoard(int[][])} method sets the board array
 	 * 
 	 * @param board the board array to set
 	 */
@@ -154,29 +204,21 @@ public class Board {
 	}
 
 	/**
-	 * The getRows method returns the number of rows in the grid
+	 * The {@code getRows()} method returns the number of rows in the array
 	 * 
-	 * @return the rows (height) of the grid
+	 * @return the rows (height) of the array
 	 */
 	public int getRows() {
 		return board.length;
 	}
 
 	/**
-	 * The getColumns method returns the number of columns in the grid
+	 * The {@code getColumns()} method returns the number of columns in the array
 	 * 
-	 * @return the columns (width) of the grid
+	 * @return the columns (width) of the array
 	 */
 	public int getColumns() {
 		return board[0].length;
-	}
-	
-	public int getGeneration() {
-		return generation;
-	}
-
-	public void setGeneration(int generation) {
-		this.generation = generation;
 	}
 
 	@Override

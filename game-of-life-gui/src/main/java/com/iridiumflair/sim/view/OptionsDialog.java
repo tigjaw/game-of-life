@@ -19,7 +19,7 @@ import com.iridiumflair.sim.control.SimController;
 @SuppressWarnings("serial")
 public class OptionsDialog extends JDialog {
 	private MainView mainView;
-	private SimController controller;
+	private SimController simCtrl;
 	// options
 	private JLabel widthLabel, heightLabel;
 	private JTextArea widthField, heightField;
@@ -32,7 +32,7 @@ public class OptionsDialog extends JDialog {
 	public OptionsDialog(MainView mainView, String title) {
 		super(mainView.getFrame(), title);
 		this.mainView = mainView;
-		this.controller = mainView.getController();
+		this.simCtrl = mainView.getSimCtrl();
 		createComponents();
 		addComponents();
 		addActions();
@@ -42,14 +42,14 @@ public class OptionsDialog extends JDialog {
 	private void createComponents() {
 		// width and height fields
 		widthLabel = new JLabel("width: ");
-		widthField = new NumberField(controller.getColumns());
+		widthField = new NumberField(simCtrl.getColumns());
 		widthField.setToolTipText("width of board");
 		heightLabel = new JLabel("height: ");
-		heightField = new NumberField(controller.getRows());
+		heightField = new NumberField(simCtrl.getRows());
 		heightField.setToolTipText("height of board");
 		// interval field
 		intervalLabel = new JLabel("interval: ");
-		intervalField = new NumberField(controller.getSimInterval());
+		intervalField = new NumberField(simCtrl.getSimInterval());
 		intervalField.setToolTipText("lower is faster");
 		// rules fields
 		// buttons
@@ -116,11 +116,11 @@ public class OptionsDialog extends JDialog {
 	}
 
 	public SimController getController() {
-		return controller;
+		return simCtrl;
 	}
 
 	public void setController(SimController controller) {
-		this.controller = controller;
+		this.simCtrl = controller;
 	}
 
 	public JLabel getWidthLabel() {
