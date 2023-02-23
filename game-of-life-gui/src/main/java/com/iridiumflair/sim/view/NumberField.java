@@ -7,18 +7,21 @@ import javax.swing.JTextArea;
 
 /**
  * currently unused. Will be utilised to provide additional options to the user.
+ * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 @SuppressWarnings("serial")
 public class NumberField extends JTextArea {
+	private int maxDigits = 0;
 
 	public NumberField(String number) {
 		super(number);
 		validateInput();
 	}
-	
-	public NumberField(int number) {
+
+	public NumberField(int number, int maxDigits) {
 		this(Integer.toString(number));
+		this.maxDigits = maxDigits;
 	}
 
 	private void validateInput() {

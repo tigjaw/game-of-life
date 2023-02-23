@@ -222,6 +222,7 @@ public class MainView {
 			simCtrl.playPauseSimulation();
 			break;
 		case NEW:
+			new OptionsDialog(this, "new simulation options");
 			simCtrl.restartSimulation();
 			canvas.clear(); // move to update method
 			break;

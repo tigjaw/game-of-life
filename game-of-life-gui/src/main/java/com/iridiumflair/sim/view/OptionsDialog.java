@@ -2,6 +2,8 @@ package com.iridiumflair.sim.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -46,20 +48,19 @@ public class OptionsDialog extends JDialog {
 	private void createComponents() {
 		// containers
 		mainPanel = new JPanel(new BorderLayout());
-		settingsPanel = new JPanel();
+		settingsPanel = new JPanel(new GridBagLayout());
 		rulesPanel = new JPanel();
 		btnPanel = new JPanel(new BorderLayout());
-		// width and height fields
+		// basic settings labels and fields
 		settingsLabel = new JLabel("basic settings:");
 		widthLabel = new JLabel("width: ");
-		widthField = new NumberField(simCtrl.getColumns());
+		widthField = new NumberField(simCtrl.getColumns(), 4);
 		widthField.setToolTipText("width of board");
 		heightLabel = new JLabel("height: ");
-		heightField = new NumberField(simCtrl.getRows());
+		heightField = new NumberField(simCtrl.getRows(), 4);
 		heightField.setToolTipText("height of board");
-		// interval field
 		intervalLabel = new JLabel("interval: ");
-		intervalField = new NumberField(simCtrl.getSimInterval());
+		intervalField = new NumberField(simCtrl.getSimInterval(), 4);
 		intervalField.setToolTipText("lower is faster");
 		// rules fields
 		rulesLabel = new JLabel("simulation rules:");
@@ -76,18 +77,25 @@ public class OptionsDialog extends JDialog {
 		mainPanel.add(rulesPanel, BorderLayout.CENTER);
 		mainPanel.add(btnPanel, BorderLayout.SOUTH);
 		// add settings labels and fields
-		settingsPanel.add(settingsLabel);
-		settingsPanel.add(widthLabel);
-		settingsPanel.add(widthField);
-		settingsPanel.add(heightLabel);
-		settingsPanel.add(heightField);
-		settingsPanel.add(intervalLabel);
-		settingsPanel.add(intervalField);
+		settingsPanel.add(settingsLabel, buildGBC(0, 0));
+		settingsPanel.add(widthLabel, buildGBC(0, 1));
+		settingsPanel.add(widthField, buildGBC(1, 1));
+		settingsPanel.add(heightLabel, buildGBC(0, 2));
+		settingsPanel.add(heightField, buildGBC(1, 2));
+		settingsPanel.add(intervalLabel, buildGBC(0, 3));
+		settingsPanel.add(intervalField, buildGBC(1, 3));
 		// add rules fields
 		rulesPanel.add(rulesLabel);
 		// add buttons
 		btnPanel.add(cancelBtn, BorderLayout.WEST);
 		btnPanel.add(acceptBtn, BorderLayout.EAST);
+	}
+	
+	private GridBagConstraints buildGBC(int x, int y) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = x;
+		gbc.gridy = y;
+		return gbc;
 	}
 
 	private void addActions() {
@@ -95,7 +103,7 @@ public class OptionsDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				closeWindow(true);
+				acceptSettings(true);
 			}
 		});
 
@@ -103,12 +111,12 @@ public class OptionsDialog extends JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				closeWindow(false);
+				acceptSettings(false);
 			}
 		});
 	}
 
-	private void closeWindow(boolean accept) {
+	private void acceptSettings(boolean accept) {
 		if (accept) {
 
 		}
