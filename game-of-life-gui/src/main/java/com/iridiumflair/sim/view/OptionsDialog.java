@@ -1,5 +1,6 @@
 package com.iridiumflair.sim.view;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import com.iridiumflair.sim.control.SimController;
@@ -21,6 +23,8 @@ public class OptionsDialog extends JDialog {
 	private MainView mainView;
 	private SimController simCtrl;
 	// options
+	private JPanel mainPanel, settingsPanel, rulesPanel, btnPanel;
+	private JLabel settingsLabel, rulesLabel;
 	private JLabel widthLabel, heightLabel;
 	private JTextArea widthField, heightField;
 	private JLabel intervalLabel;
@@ -40,7 +44,13 @@ public class OptionsDialog extends JDialog {
 	}
 
 	private void createComponents() {
+		// containers
+		mainPanel = new JPanel(new BorderLayout());
+		settingsPanel = new JPanel();
+		rulesPanel = new JPanel();
+		btnPanel = new JPanel(new BorderLayout());
 		// width and height fields
+		settingsLabel = new JLabel("basic settings:");
 		widthLabel = new JLabel("width: ");
 		widthField = new NumberField(simCtrl.getColumns());
 		widthField.setToolTipText("width of board");
@@ -52,16 +62,32 @@ public class OptionsDialog extends JDialog {
 		intervalField = new NumberField(simCtrl.getSimInterval());
 		intervalField.setToolTipText("lower is faster");
 		// rules fields
+		rulesLabel = new JLabel("simulation rules:");
 		// buttons
-		acceptBtn = new JButton("accept");
-		acceptBtn.setToolTipText("create simulation with these options");
 		cancelBtn = new JButton("cancel");
 		cancelBtn.setToolTipText("cancel simulation creation");
+		acceptBtn = new JButton("accept");
+		acceptBtn.setToolTipText("create simulation with these options");
 	}
 
 	private void addComponents() {
-		// TODO Auto-generated method stub
-
+		// add panels
+		mainPanel.add(settingsPanel, BorderLayout.NORTH);
+		mainPanel.add(rulesPanel, BorderLayout.CENTER);
+		mainPanel.add(btnPanel, BorderLayout.SOUTH);
+		// add settings labels and fields
+		settingsPanel.add(settingsLabel);
+		settingsPanel.add(widthLabel);
+		settingsPanel.add(widthField);
+		settingsPanel.add(heightLabel);
+		settingsPanel.add(heightField);
+		settingsPanel.add(intervalLabel);
+		settingsPanel.add(intervalField);
+		// add rules fields
+		rulesPanel.add(rulesLabel);
+		// add buttons
+		btnPanel.add(cancelBtn, BorderLayout.WEST);
+		btnPanel.add(acceptBtn, BorderLayout.EAST);
 	}
 
 	private void addActions() {
@@ -90,6 +116,7 @@ public class OptionsDialog extends JDialog {
 	}
 
 	private void display() {
+		add(mainPanel);
 		setLocationRelativeTo(null);
 		pack();
 		setVisible(true);
