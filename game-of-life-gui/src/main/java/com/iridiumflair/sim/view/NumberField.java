@@ -22,6 +22,7 @@ public class NumberField extends JTextArea {
 	public NumberField(int number, int maxDigits) {
 		this(Integer.toString(number));
 		this.maxDigits = maxDigits;
+		setColumns(maxDigits);
 	}
 
 	private void validateInput() {
@@ -40,7 +41,9 @@ public class NumberField extends JTextArea {
 	private boolean isValid(int key) {
 		boolean isValid = false;
 		if (key >= '0' && key <= '9') {
-			isValid = true;
+			if (getText().length() < maxDigits) {
+				isValid = true;
+			}
 		}
 		if (key == KeyEvent.VK_BACK_SPACE) {
 			isValid = true;

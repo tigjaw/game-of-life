@@ -21,7 +21,7 @@ import com.iridiumflair.sim.control.SimController;
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 @SuppressWarnings("serial")
-public class OptionsDialog extends JDialog {
+public class SettingsPanel extends JDialog {
 	private MainView mainView;
 	private SimController simCtrl;
 	// options
@@ -35,7 +35,7 @@ public class OptionsDialog extends JDialog {
 	// buttons
 	private JButton acceptBtn, cancelBtn;
 
-	public OptionsDialog(MainView mainView, String title) {
+	public SettingsPanel(MainView mainView, String title) {
 		super(mainView.getFrame(), title);
 		this.mainView = mainView;
 		this.simCtrl = mainView.getSimCtrl();
@@ -53,22 +53,25 @@ public class OptionsDialog extends JDialog {
 		btnPanel = new JPanel(new BorderLayout());
 		// basic settings labels and fields
 		settingsLabel = new JLabel("basic settings:");
+		// basic settings - width label and field
 		widthLabel = new JLabel("width: ");
 		widthField = new NumberField(simCtrl.getColumns(), 4);
 		widthField.setToolTipText("width of board");
+		// basic settings - height label and field
 		heightLabel = new JLabel("height: ");
 		heightField = new NumberField(simCtrl.getRows(), 4);
 		heightField.setToolTipText("height of board");
+		// basic settings - interval label and field
 		intervalLabel = new JLabel("interval: ");
 		intervalField = new NumberField(simCtrl.getSimInterval(), 4);
 		intervalField.setToolTipText("lower is faster");
 		// rules fields
 		rulesLabel = new JLabel("simulation rules:");
 		// buttons
-		cancelBtn = new JButton("cancel");
-		cancelBtn.setToolTipText("cancel simulation creation");
 		acceptBtn = new JButton("accept");
 		acceptBtn.setToolTipText("create simulation with these options");
+		cancelBtn = new JButton("cancel");
+		cancelBtn.setToolTipText("cancel simulation creation");
 	}
 
 	private void addComponents() {
@@ -77,24 +80,25 @@ public class OptionsDialog extends JDialog {
 		mainPanel.add(rulesPanel, BorderLayout.CENTER);
 		mainPanel.add(btnPanel, BorderLayout.SOUTH);
 		// add settings labels and fields
-		settingsPanel.add(settingsLabel, buildGBC(0, 0));
-		settingsPanel.add(widthLabel, buildGBC(0, 1));
-		settingsPanel.add(widthField, buildGBC(1, 1));
-		settingsPanel.add(heightLabel, buildGBC(0, 2));
-		settingsPanel.add(heightField, buildGBC(1, 2));
-		settingsPanel.add(intervalLabel, buildGBC(0, 3));
-		settingsPanel.add(intervalField, buildGBC(1, 3));
+		settingsPanel.add(settingsLabel, createGBC(0, 0));
+		settingsPanel.add(widthLabel, createGBC(0, 1));
+		settingsPanel.add(widthField, createGBC(1, 1));
+		settingsPanel.add(heightLabel, createGBC(0, 2));
+		settingsPanel.add(heightField, createGBC(1, 2));
+		settingsPanel.add(intervalLabel, createGBC(0, 3));
+		settingsPanel.add(intervalField, createGBC(1, 3));
 		// add rules fields
 		rulesPanel.add(rulesLabel);
 		// add buttons
-		btnPanel.add(cancelBtn, BorderLayout.WEST);
 		btnPanel.add(acceptBtn, BorderLayout.EAST);
+		btnPanel.add(cancelBtn, BorderLayout.WEST);
 	}
-	
-	private GridBagConstraints buildGBC(int x, int y) {
+
+	private GridBagConstraints createGBC(int x, int y) {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = x;
 		gbc.gridy = y;
+		gbc.anchor = (x == 0) ? GridBagConstraints.WEST : GridBagConstraints.EAST;
 		return gbc;
 	}
 
@@ -107,7 +111,7 @@ public class OptionsDialog extends JDialog {
 			}
 		});
 
-		acceptBtn.addActionListener(new ActionListener() {
+		cancelBtn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -118,7 +122,10 @@ public class OptionsDialog extends JDialog {
 
 	private void acceptSettings(boolean accept) {
 		if (accept) {
-
+			// update sim with:
+			// new board dimensions
+			// new canvas size
+			// new sim interval and rules
 		}
 		setVisible(false);
 	}
@@ -127,6 +134,7 @@ public class OptionsDialog extends JDialog {
 		add(mainPanel);
 		setLocationRelativeTo(null);
 		pack();
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
 	}
 
