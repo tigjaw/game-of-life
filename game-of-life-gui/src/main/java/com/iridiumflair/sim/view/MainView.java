@@ -222,8 +222,7 @@ public class MainView {
 			simCtrl.playPauseSimulation();
 			break;
 		case NEW:
-			simCtrl.restartSimulation();
-			canvas.clear(); // move to update method
+			new SettingsPanel(this, "new simulation options");
 			break;
 		case SPEEDUP:
 			simCtrl.speedUpSimulation();
@@ -257,7 +256,6 @@ public class MainView {
 		canvas.clear();
 		simCtrl.advanceSimulation();
 		canvas.drawBoard();
-		// canvas.clear();
 	}
 
 	/**

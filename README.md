@@ -23,6 +23,9 @@
     <h2>Features</h2>
     <ul>
       <li>
+        [b] start new simulation with custom sim size and rules
+      </li>
+      <li>
         [b] draw live cells to the canvas directly using the mouse
       </li>
       <li>
@@ -38,7 +41,7 @@
     <h2>Planned Features</h2>
     <ul dir="rtl">
       <li>
-        [b] allow user to modify the rules and simulation size
+        [b] add "info" panel to display current sim sim and rules
       </li>
     </ul>
   </div>

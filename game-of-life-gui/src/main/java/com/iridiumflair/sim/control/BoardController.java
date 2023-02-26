@@ -18,12 +18,24 @@ public class BoardController {
 
 	/**
 	 * Parameterised constructor for {@code BoardController}.<br>
-	 * Takes only one parameter; the {@code Board} to use.
 	 * 
 	 * @param board to set
 	 */
 	public BoardController(Board board) {
 		this.board = board;
+	}
+	
+	/**
+	 * Parameterised constructor for {@code BoardController}.<br>
+	 * Creates a new {@code Board} with the specified rows and columns.
+	 * 
+	 * @see #BoardController(Board)
+	 * 
+	 * @param rows - the number of rows in the Board
+	 * @param columns - the number of columns in the Board
+	 */
+	public BoardController(int rows, int columns) {
+		this(new Board(rows, columns));
 	}
 
 	/**
