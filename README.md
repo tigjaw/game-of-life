@@ -9,7 +9,7 @@
         [a] Conway's Game of Life Basic - a single-class immplementation which prints the simulation to console.
       </li>
       <li>
-        [b] Conway's Game of Life GUI - enhanced and refactored the simulation logic, and implemented with a Java Swing GUI.
+        [b] Conway's Game of Life GUI -  interactable 2D implementation using Swing API.
       </li>
       <li>
         100% java!
