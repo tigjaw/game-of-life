@@ -67,19 +67,15 @@
     2 image per row = 45%
     3 image per row = 30%
     4 image per row = 23%
+   -->
   
   <div id="gui" align="center">
     <h2>GUI</h2>
-    <img src="https://github.com/tigjaw/rastercast/blob/main/screenshots/1-rastercast-main.png" width="23%"></img>
-    <img src="https://github.com/tigjaw/rastercast/blob/main/screenshots/2-rastercast-open.png" width="23%"></img>
-    <img src="https://github.com/tigjaw/rastercast/blob/main/screenshots/3-rastercast-opened.png" width="23%"></img>
-    <img src="https://github.com/tigjaw/rastercast/blob/main/screenshots/4-rastercast-saved.png" width="23%"></img>
+    <img src="game-of-life-gui/designs/gol-gui-main.png" width="23%"></img>
+    <img src="game-of-life-gui/designs/gol-gui-main-running.png" width="23%"></img>
+    <img src="game-of-life-gui/designs/gol-gui-new.png" width="23%"></img>
+    <img src="game-of-life-gui/designs/gol-rules-construction.png" width="23%"></img>
   </div>
-  
-  <div id="credits">
-    <h2>Credits</h2>
-    - ico file handling by <a href="https://github.com/imcdonagh/image4j">imag4j</a>
-  </div>
-  -->
+
 </body>
 </html>
