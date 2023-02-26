@@ -161,7 +161,9 @@ public class SettingsPanel extends JDialog {
 			board.setDieCondition2(birthRule.getNumber());
 			boardCtrl.setBoard(board);
 			simCtrl.setSimInterval(intervalField.getNumber());
+			simCtrl.restartSimulation();
 			CanvasPanel canvas = mainView.getCanvas();
+			canvas.clear();
 			canvas.setSize(new Dimension(width, height));
 			// update sim with:
 			// new board dimensions
