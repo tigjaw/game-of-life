@@ -67,7 +67,7 @@
     2 image per row = 45%
     3 image per row = 30%
     4 image per row = 23%
-   -->
+   
   
   <div id="gui" align="center">
     <h2>GUI</h2>
@@ -76,6 +76,6 @@
     <img src="game-of-life-gui/designs/gol-gui-new.png" width="23%"></img>
     <img src="game-of-life-gui/designs/gol-rules-construction.png" width="23%"></img>
   </div>
-
+-->
 </body>
 </html>
