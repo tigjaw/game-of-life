@@ -9,7 +9,7 @@
         [a] Conway's Game of Life Basic - a single-class immplementation which prints the simulation to console.
       </li>
       <li>
-        [b] Conway's Game of Life GUI - enhanced and refactored the simulation logic, and implemented with a Java Swing GUI.
+        [b] Conway's Game of Life GUI -  interactable 2D implementation using Swing API.
       </li>
       <li>
         100% java!
@@ -22,6 +22,9 @@
   <div id="features">
     <h2>Features</h2>
     <ul>
+      <li>
+        [b] start new simulation with custom sim size and rules
+      </li>
       <li>
         [b] draw live cells to the canvas directly using the mouse
       </li>
@@ -38,7 +41,7 @@
     <h2>Planned Features</h2>
     <ul dir="rtl">
       <li>
-        [b] allow user to modify the rules and simulation size
+        [b] add "info" panel to display current sim sim and rules
       </li>
     </ul>
   </div>
