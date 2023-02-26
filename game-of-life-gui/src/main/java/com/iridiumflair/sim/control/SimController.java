@@ -71,7 +71,7 @@ public class SimController {
 	public void advanceSimulation() {
 		boardCtrl.advanceBoard();
 		generation++;
-		// System.out.println(generation);
+		System.out.println(generation);
 	}
 
 	/**

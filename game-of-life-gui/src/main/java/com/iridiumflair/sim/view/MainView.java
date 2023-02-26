@@ -258,7 +258,6 @@ public class MainView {
 		canvas.clear();
 		simCtrl.advanceSimulation();
 		canvas.drawBoard();
-		// canvas.clear();
 	}
 
 	/**

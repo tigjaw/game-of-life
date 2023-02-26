@@ -8,6 +8,14 @@ package com.iridiumflair.sim.model;
  */
 public class Board {
 	private int[][] board;
+	private int dieCondition1 = 2;
+	private int surviveCondition1 = 2;
+	private int surviveCondition2 = 3;
+	private int dieCondition2 = 3;
+	private int birthCondition = 3;
+	private int neighbourRange = 1;
+	private int dead = 0;
+	private int live = 1;
 
 	/**
 	 * Constructor for the Board class An empty board initialised to 0
@@ -38,16 +46,16 @@ public class Board {
 				int aliveNeighbours = countAliveNeighbours(x, y);
 
 				if (cellIsAlive(x, y)) {
-					if (aliveNeighbours < 2) {
-						newBoard[x][y] = 0;
-					} else if (aliveNeighbours == 2 || aliveNeighbours == 3) {
-						newBoard[x][y] = 1;
-					} else {
-						newBoard[x][y] = 0;
+					if (aliveNeighbours < dieCondition1) {
+						newBoard[x][y] = dead;
+					} else if (aliveNeighbours == surviveCondition1 || aliveNeighbours == surviveCondition2) {
+						newBoard[x][y] = live;
+					} else if (aliveNeighbours > dieCondition2){
+						newBoard[x][y] = dead;
 					}
 				} else {
-					if (aliveNeighbours == 3) {
-						newBoard[x][y] = 1;
+					if (aliveNeighbours == birthCondition) {
+						newBoard[x][y] = live;
 					}
 				}
 
@@ -70,17 +78,17 @@ public class Board {
 	 */
 	public int countAliveNeighbours(int x, int y) {
 		int count = 0;
-		count += cellState(x - 1, y - 1);
-		count += cellState(x, y - 1);
-		count += cellState(x + 1, y - 1);
+		count += cellState(x - neighbourRange, y - neighbourRange);
+		count += cellState(x, y - neighbourRange);
+		count += cellState(x + neighbourRange, y - neighbourRange);
 
-		count += cellState(x - 1, y);
+		count += cellState(x - neighbourRange, y);
 		// count += cellState(x, y); this is the current cell
-		count += cellState(x + 1, y);
+		count += cellState(x + neighbourRange, y);
 
-		count += cellState(x - 1, y + 1);
-		count += cellState(x, y + 1);
-		count += cellState(x + 1, y + 1);
+		count += cellState(x - neighbourRange, y + neighbourRange);
+		count += cellState(x, y + neighbourRange);
+		count += cellState(x + neighbourRange, y + neighbourRange);
 		return count;
 	}
 
@@ -96,7 +104,7 @@ public class Board {
 	 * @return the state of the cell (alive == true)
 	 */
 	public boolean cellIsAlive(int x, int y) {
-		if (cellState(x, y) == 1) {
+		if (cellState(x, y) == live) {
 			return true;
 		} else {
 			return false;
@@ -118,11 +126,11 @@ public class Board {
 	 */
 	public int cellState(int x, int y) {
 		if (x < 0 || x >= getColumns()) {
-			return 0;
+			return dead;
 		}
 
 		if (y < 0 || y >= getRows()) {
-			return 0;
+			return dead;
 		}
 
 		return board[x][y];
@@ -136,7 +144,7 @@ public class Board {
 	 * @param y - the y coordinate of the cell
 	 */
 	public void birthCell(int x, int y) {
-		this.board[x][y] = 1;
+		this.board[x][y] = live;
 	}
 
 	/**
@@ -147,7 +155,7 @@ public class Board {
 	 * @param y - the y coordinate of the cell
 	 */
 	public void killCell(int x, int y) {
-		this.board[x][y] = 0;
+		this.board[x][y] = dead;
 	}
 
 	/**
@@ -158,7 +166,7 @@ public class Board {
 	public void clear() {
 		for (int x = 0; x < getRows(); x++) {
 			for (int y = 0; y < getColumns(); y++) {
-				board[x][y] = 0;
+				board[x][y] = dead;
 			}
 		}
 	}
@@ -171,7 +179,7 @@ public class Board {
 		for (int y = 0; y < getRows(); y++) {
 			String line = "|";
 			for (int x = 0; x < getColumns(); x++) {
-				if (this.board[x][y] == 0) {
+				if (this.board[x][y] == dead) {
 					line += ".";
 				} else {
 					line += "*";
@@ -181,6 +189,18 @@ public class Board {
 			System.out.println(line);
 		}
 		System.out.println("----------\n");
+	}
+	
+	@Override
+	public String toString() {
+		String result = "";
+		for (int x = 0; x < getRows(); x++) {
+			for (int y = 0; y < getColumns(); y++) {
+				result += board[x][y];
+			}
+			result += "\n";
+		}
+		return result;
 	}
 
 	// GETTERS AND SETTERS
@@ -221,16 +241,68 @@ public class Board {
 		return board[0].length;
 	}
 
-	@Override
-	public String toString() {
-		String result = "";
-		for (int x = 0; x < getRows(); x++) {
-			for (int y = 0; y < getColumns(); y++) {
-				result += board[x][y];
-			}
-			result += "\n";
-		}
-		return result;
+	public int getDieCondition1() {
+		return dieCondition1;
+	}
+
+	public void setDieCondition1(int dieCondition) {
+		this.dieCondition1 = dieCondition;
+	}
+
+	public int getSurviveCondition1() {
+		return surviveCondition1;
+	}
+
+	public void setSurviveCondition1(int surviveCondition1) {
+		this.surviveCondition1 = surviveCondition1;
+	}
+
+	public int getSurviveCondition2() {
+		return surviveCondition2;
+	}
+
+	public void setSurviveCondition2(int surviveCondition2) {
+		this.surviveCondition2 = surviveCondition2;
+	}
+
+	public int getDieCondition2() {
+		return dieCondition2;
+	}
+
+	public void setDieCondition2(int dieCondition2) {
+		this.dieCondition2 = dieCondition2;
+	}
+
+	public int getBirthCondition() {
+		return birthCondition;
+	}
+
+	public void setBirthCondition(int birthCondition) {
+		this.birthCondition = birthCondition;
+	}
+
+	public int getNeighbourRange() {
+		return neighbourRange;
+	}
+
+	public void setNeighbourRange(int neighbourRange) {
+		this.neighbourRange = neighbourRange;
+	}
+
+	public int getDead() {
+		return dead;
+	}
+
+	public void setDead(int dead) {
+		this.dead = dead;
+	}
+
+	public int getLive() {
+		return live;
+	}
+
+	public void setLive(int live) {
+		this.live = live;
 	}
 
 }

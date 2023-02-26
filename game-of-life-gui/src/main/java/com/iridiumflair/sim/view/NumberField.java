@@ -50,5 +50,11 @@ public class NumberField extends JTextArea {
 		}
 		return isValid;
 	}
+	
+	public int getNumber() {
+		String text = getText();
+		int num = Integer.parseInt(text);
+		return num;
+	}
 
 }
