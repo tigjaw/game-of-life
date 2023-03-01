@@ -18,7 +18,8 @@ import com.iridiumflair.sim.control.SimController;
 import com.iridiumflair.sim.model.Board;
 
 /**
- * currently unused. will be utilised to provide additional options to the user.
+ * The {@code SettingsPanel} class is displayed when the user creates a new
+ * simulation.
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
