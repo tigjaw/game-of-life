@@ -38,6 +38,8 @@ public class Rules {
 		dr.add(rule4);
 		return dr;
 	}
+	
+	// GETTERS AND SETTERS
 
 	public ArrayList<Rule> getRules() {
 		return rules;

@@ -24,8 +24,8 @@ public class SimController {
 	/**
 	 * Parameterised constructor for {@code SimController} with only one
 	 * parameter.<br>
-	 * Calls the {@code SimController#SimController(Board, int, int)} constructor
-	 * using default values for the sim interval and speed multiplier.
+	 * Calls the {@linkplain #SimController(Board, int, int)} constructor using
+	 * default values for the sim interval and speed multiplier.
 	 * 
 	 * @see Board
 	 * 
@@ -52,8 +52,8 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code playPauseSimulation()} reverses the value of {@code running},
-	 * which is used by the {@code MainView}
+	 * The {@linkplain #playPauseSimulation()} reverses the value of
+	 * {@code running}, which is used by the {@code MainView}
 	 * 
 	 * @return
 	 */
@@ -62,12 +62,10 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code advanceSimulation()} method advances the simulation:<br>
+	 * The {@linkplain #advanceSimulation()} method advances the simulation:<br>
 	 * - advances the {@code Board} to the next generation, by calling
-	 * {@code Board#advanceBoard(Rules)}.<br>
+	 * {@linkplain Board#advanceBoard(Rules)}.<br>
 	 * - increments the generation.
-	 * 
-	 * @see Board#advanceBoard()
 	 */
 	public void advanceSimulation() {
 		board.advanceBoard(rules);
@@ -76,8 +74,8 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code restartSimulation()} method resets the simulation:<br>
-	 * - clears the board, by calling {@code Board.clear()}.<br>
+	 * The {@linkplain #restartSimulation()} method resets the simulation:<br>
+	 * - clears the board, by calling {@linkplain Board#clear()}.<br>
 	 * - sets the generation to 0.<br>
 	 * - sets running to false.<br>
 	 */
@@ -88,8 +86,8 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code speedUpSimulation} method speeds up the simulation by multiplying
-	 * the {@code speedMultiplier} by 2.<br>
+	 * The {@linkplain #speedUpSimulation} method speeds up the simulation by
+	 * multiplying the {@code speedMultiplier} by 2.<br>
 	 * During the simulation process, the speed (framerate) is derived by diving the
 	 * timer delay by the speedMultiplier.
 	 */
@@ -98,8 +96,8 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code slowDownSimulation} method speeds up the simulation by dividing
-	 * the {@code speedMultiplier} by 2.<br>
+	 * The {@linkplain #slowDownSimulation} method speeds up the simulation by
+	 * dividing the {@code speedMultiplier} by 2.<br>
 	 * During the simulation process, the speed (framerate) is derived by diving the
 	 * timer delay by the speedMultiplier.
 	 */
@@ -118,7 +116,7 @@ public class SimController {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
+
 	public int getRows() {
 		return board.getRows();
 	}

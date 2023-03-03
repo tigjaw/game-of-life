@@ -14,6 +14,7 @@ import java.awt.event.MouseMotionAdapter;
 import javax.swing.JPanel;
 
 import com.iridiumflair.sim.control.CanvasController;
+import com.iridiumflair.sim.control.SimController;
 
 /**
  * The {@code CanvasPanel} class extends {@code JPanel}, providing an area for
@@ -42,9 +43,9 @@ public class CanvasPanel extends JPanel {
 	 * - takes {@code CanvasController} as a parameter, and applies it to the
 	 * {@code canvasCtrl}.<br>
 	 * - sets the dimensions of the {@code CanvasPanel}, using the values returned
-	 * by {@code CanvasController#getColumns()} and
-	 * {@code CanvasController#getRows()}.<br>
-	 * - calls {@code addActions()}.
+	 * by {@linkplain CanvasController#getColumns()} and
+	 * {@linkplain CanvasController#getRows()}.<br>
+	 * - calls {@linkplain #addActions()}.
 	 * 
 	 * @param canvasCtrl
 	 */
@@ -55,18 +56,24 @@ public class CanvasPanel extends JPanel {
 		addActions();
 	}
 
+	public CanvasPanel(SimController simCtrl) {
+		this(new CanvasController(simCtrl));
+	}
+
 	/**
-	 * The {@code addActions()} method adds {@code MouseListener}s to the panel:<br>
+	 * The {@linkplain #addActions()} method adds {@code MouseListener}s to the
+	 * panel:<br>
 	 * - adds a {@code MouseListener} to the panel to listen for mouse clicks by
-	 * calling {@code addMouseListener(MouseListener)} and defining a new
+	 * calling {@linkplain #addMouseListener(MouseListener)} and defining a new
 	 * {@code MouseAdapter}, which itself overrides the
-	 * {@code MouseAdapter.mouseClicked(MouseEvent)} method.<br>
+	 * {@linkplain #MouseAdapter.mouseClicked(MouseEvent)} method.<br>
 	 * - adds a {@code MouseMotionListener} to the panel to listen for mouse clicks
-	 * by calling {@code addMouseMotionListener(MouseMotionAdapter)} and defining a
-	 * new {@code MouseMotionAdapter}, which itself overrides the
-	 * {@code MouseMotionAdapter.mouseDragged(MouseEvent)} method.<br>
-	 * - both listeners call {@code CanvasPanel.draw(int, int)}, using
-	 * {@code MouseEvent.getX()} and {@code MouseEvent.getX()} as parameters.
+	 * by calling {@linkplain #addMouseMotionListener(MouseMotionAdapter)} and
+	 * defining a new {@code MouseMotionAdapter}, which itself overrides the
+	 * {@linkplain #MouseMotionAdapter.mouseDragged(MouseEvent)} method.<br>
+	 * - both listeners call {@linkplain #draw(int, int)}, using
+	 * {@linkplain MouseEvent#getX()} and {@linkplain MouseEvent#getX()} as
+	 * parameters.
 	 * 
 	 * @see #addMouseListener(MouseListener)
 	 * @see MouseAdapter
@@ -96,11 +103,11 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code drawBoard()} method iterates through each cell of the panel,
+	 * The {@linkplain #drawBoard()} method iterates through each cell of the panel,
 	 * checks if the cell at the x and y coordinates is alive, and draws on the
 	 * panel accordingly.
 	 * 
-	 * @see CanvasPanel#draw(int, int)
+	 * @see #draw(int, int)
 	 */
 	public void drawBoard() {
 		for (int y = 0; y < getHeight(); y++) {
@@ -114,18 +121,18 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code draw(int, int)} method draws to the panel at the specified x and y
-	 * coordinates:<br>
+	 * The {@linkplain #draw(int, int)} method draws to the panel at the specified x
+	 * and y coordinates:<br>
 	 * - checks if the parameters are valid x and y coordinates<br>
-	 * - then ensures {@code graphics} is not null before drawing the graphics.<br>
+	 * - then ensures graphics is not null before drawing the graphics.<br>
 	 * - and if both checks are true, a rectangle is drawn at the coordinates, the
 	 * {@code CanvasController} is told to update the {@code Board} at the specified
 	 * coordinates, and the panel repaints itself.
 	 * 
-	 * @see CanvasPanel#isValidPosition(int, int)
+	 * @see #isValidPosition(int, int)
 	 * @see Graphics2D#drawRect(int, int, int, int)
 	 * @see CanvasController#birthCell(int, int)
-	 * @see CanvasPanel#repaint()
+	 * @see #repaint()
 	 * 
 	 * @param x - the x coordinate to draw at
 	 * @param y - the y coordinate to draw at
@@ -142,8 +149,8 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code isValidPosition(int, int)} method checks if the parameters are
-	 * valid x and y coordinates.<br>
+	 * The {@linkplain #isValidPosition(int, int)} method checks if the parameters
+	 * are valid x and y coordinates.<br>
 	 * The coordinates are invalid if:<br>
 	 * - x is less than zero or greater than the width of the canvas/board.<br>
 	 * - y is less than zero or greater than the height of the canvas/board.<br>
@@ -166,8 +173,8 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code paintComponent(Graphics)} method overrides the JPanel
-	 * {@code paintComponent(Graphics)}.<br>
+	 * The {@linkplain #paintComponent(Graphics)} method overrides the JPanel
+	 * {@linkplain #paintComponent(Graphics)} method.<br>
 	 * This method draws the canvas {@code Image} to the {@code Graphics}. if the
 	 * canvas {@code Image} is null:<br>
 	 * - creates a new {@code Image} using the dimensions of the
@@ -197,14 +204,14 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code clear()} method resets (clears) the board by redrawing over it
-	 * with a white rectangle equal to the size of the canvas.<br>
+	 * The {@linkplain #clear()} method resets (clears) the board by redrawing over
+	 * it with a white rectangle equal to the size of the canvas.<br>
 	 * The method then resets the paint colour to black, ready for drawing more live
 	 * cells in future generations/simulations.<br>
 	 * 
 	 * @see Graphics2D#setPaint(Paint)
 	 * @see Graphics2D#fillRect(int, int, int, int)
-	 * @see CanvasPanel#repaint()
+	 * @see #repaint()
 	 */
 	public void clear() {
 		graphics.setPaint(Color.white);

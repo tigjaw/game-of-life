@@ -3,13 +3,14 @@ package com.iridiumflair.sim.control;
 import com.iridiumflair.sim.model.Board;
 
 /**
- * The {@code CanvasController} is used by the views and {@code SimController} to
- * control the Board indirectly.<br>
- * The {@code CanvasController} has no knowledge of the {@code SimController} or
- * of the various view components. Its sole purpose is to control the
- * {@code Board}.
+ * The {@code CanvasController} is used by {@code CanvasPanel} to control the
+ * Board indirectly.<br>
+ * The {@code CanvasController} has no knowledge of the various view components.
+ * Its sole purpose is to control the {@code Board}.
  * 
  * @see Board
+ * @see SimController
+ * @see CanvasPanel
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
@@ -24,30 +25,22 @@ public class CanvasController {
 	public CanvasController(Board board) {
 		this.board = board;
 	}
-	
+
 	/**
 	 * Parameterised constructor for {@code CanvasController}.<br>
-	 * Creates a new {@code Board} with the specified rows and columns.
+	 * Takes {@code SimController} as parameter, gets the board from it, and passes
+	 * it to {@linkplain #CanvasController(Board)}
 	 * 
-	 * @see #CanvasController(Board)
-	 * 
-	 * @param rows - the number of rows in the Board
-	 * @param columns - the number of columns in the Board
+	 * @param simCtrl to get board from
 	 */
-	public CanvasController(int rows, int columns) {
-		this(new Board(rows, columns));
-	}
-
 	public CanvasController(SimController simCtrl) {
 		this(simCtrl.getBoard());
 	}
 
 	/**
-	 * The {@code cellIsAlive(int, int)} method checks if the cell at the specified
-	 * x and y coordinates is alive by calling the
-	 * {@code Board.cellIsAlive(int, int)} method using the x and y parameters.
-	 * 
-	 * @see Board#cellIsAlive(int, int)
+	 * The {@linkplain #cellIsAlive(int, int)} method checks if the cell at the
+	 * specified x and y coordinates is alive by calling the
+	 * {@linkplain Board#cellIsAlive(int, int)} method using the x and y parameters.
 	 * 
 	 * @param x - the x coordinate of the cell to evaluate
 	 * @param y - the y coordinate of the cell to evaluate
@@ -58,11 +51,9 @@ public class CanvasController {
 	}
 
 	/**
-	 * The {@code birthCell(int, int)} method creates a live cell at the specified x
-	 * and y coordinates by calling the {@code Board.birthCell(int, int)} method
-	 * using the x and y parameters.
-	 * 
-	 * @see Board#birthCell(int, int)
+	 * The {@linkplain #birthCell(int, int)} method creates a live cell at the
+	 * specified x and y coordinates by calling the
+	 * {@linkplain Board#birthCell(int, int)} method using the x and y parameters.
 	 * 
 	 * @param x - the x coordinate of the cell to birth
 	 * @param y - the y coordinate of the cell to birth
@@ -72,11 +63,9 @@ public class CanvasController {
 	}
 
 	/**
-	 * The {@code killCell(int, int)} method creates a dead cell at the specified x
-	 * and y coordinates by calling the {@code Board.killCell(int, int)} method
-	 * using the x and y parameters.
-	 * 
-	 * @see Board#killCell(int, int)
+	 * The {@linkplain #killCell(int, int)} method creates a dead cell at the
+	 * specified x and y coordinates by calling the
+	 * {@linkplain Board#killCell(int, int)} method using the x and y parameters.
 	 * 
 	 * @param x - the x coordinate of the cell to kill
 	 * @param y - the y coordinate of the cell to kill
@@ -86,10 +75,8 @@ public class CanvasController {
 	}
 
 	/**
-	 * The {@code clear()} method creates an empty board by calling the
-	 * {@code Board.clear()} method.
-	 * 
-	 * @see Board#clear()
+	 * The {@linkplain #clear()} method creates an empty board by calling the
+	 * {@linkplain Board#clear()} method.
 	 */
 	public void clear() {
 		board.clear();
