@@ -18,7 +18,10 @@ import com.iridiumflair.sim.control.ConfigController;
 import com.iridiumflair.sim.control.SimController;
 
 /**
- * currently unused. will be utilised to provide additional options to the user.
+ * The {@code ConfigDialog} class extends {@code JDialog} and handles the
+ * creation of new simulations. When the "new" button is pressed on the
+ * {@code MainView}, a new {@code ConfigDialog} is created in order to display
+ * the relevant options and handle the creation of the new game.
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
@@ -166,12 +169,20 @@ public class ConfigDialog extends JDialog {
 		this.mainView = mainView;
 	}
 
-	public SimController getController() {
+	public SimController getSimCtrl() {
 		return simCtrl;
 	}
 
-	public void setController(SimController controller) {
-		this.simCtrl = controller;
+	public void setSimCtrl(SimController simCtrl) {
+		this.simCtrl = simCtrl;
+	}
+
+	public ConfigController getConfigCtrl() {
+		return configCtrl;
+	}
+
+	public void setConfigCtrl(ConfigController configCtrl) {
+		this.configCtrl = configCtrl;
 	}
 
 	public JTextArea getWidthField() {

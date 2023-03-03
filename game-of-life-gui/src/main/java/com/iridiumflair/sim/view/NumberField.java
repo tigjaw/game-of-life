@@ -6,16 +6,19 @@ import java.awt.event.KeyEvent;
 import javax.swing.JTextArea;
 
 /**
- * currently unused. Will be utilised to provide additional options to the user.
+ * The {@code NumberField} class extends {@code JTextArea} and only allows
+ * numerical input with a maximum number of digits specified by the
+ * constructors.
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 @SuppressWarnings("serial")
 public class NumberField extends JTextArea {
-	private int maxDigits = 0;
+	private int maxDigits;
 
 	public NumberField(String number) {
 		super(number);
+		this.maxDigits = 4;
 		validateInput();
 	}
 
@@ -50,7 +53,7 @@ public class NumberField extends JTextArea {
 		}
 		return isValid;
 	}
-	
+
 	public int getNumber() {
 		String text = getText();
 		int num = Integer.parseInt(text);

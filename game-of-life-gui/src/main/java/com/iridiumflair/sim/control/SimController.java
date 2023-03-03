@@ -10,6 +10,7 @@ import com.iridiumflair.sim.model.Rules;
  * sole purpose is to control and advance the simulation.
  * 
  * @see Board
+ * @see Rules
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */

@@ -13,16 +13,20 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.iridiumflair.sim.control.CanvasController;
 import com.iridiumflair.sim.control.SimController;
 
 /**
  * {@code MainView} is the main GUI interface containing the basic controls and
  * the canvas {@code CanvasPanel}. This class creates the main components and
- * their actions, sending inputs to the {@code CanvasPanal} and
- * {@code SimController}
+ * their actions, manipulating the simulation state indirectly via the
+ * {@code SimController}. Drawing on the board is handled by
+ * {@code CanvasPanel}, which itself indirectly manipulates the {@code Board}
+ * via a {@code CanvasController}.
  * 
  * @see SimController
  * @see CanvasPanel
+ * @see CanvasController
  * @see JFrame
  * @see JPanel
  * @see JButton
@@ -32,29 +36,23 @@ import com.iridiumflair.sim.control.SimController;
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class MainView {
-	private SimController simCtrl;
 	private JFrame frame;
+	private SimController simCtrl;
+	private CanvasPanel canvas;
 	private JPanel mainPanel, controlPanel;
 	private JButton playBtn, slowDownBtn, speedUpBtn, newBtn;
 	private JLabel speedLabel;
-	private CanvasPanel canvas;
 	private Timer refreshTimer;
 
 	/**
-	 * The constructor for {@code MainView}<br>
-	 * Initialises the {@code frame}, {@code controller}, {@code canvasRows}, and
-	 * {@code canvasColumns}.<br>
-	 * Initialises the {@code refreshTimer} using the {@code
-	 * SimController.getFramerate()} method as the timer delay between each
-	 * {@code refresh()}.<br>
-	 * Finally, the constructor calls the {code createAndShowGUI()} method.
+	 * The constructor for {@code MainView}.<br>
+	 * Initialises the {@code frame}, {@code simCtrl} and {@code refreshTimer} using
+	 * the {@linkplain SimController#getFramerate()} method as the timer delay
+	 * between each {@linkplain #refresh()}.<br>
+	 * Finally, the constructor calls the {@linkplain #createAndShowGUI()} method.
 	 * 
-	 * @see SimController#getFramerate()
-	 * @see #refresh()
-	 * @see #createAndShowGUI()
-	 * 
-	 * @param frame      the {@link JFrame} to set
-	 * @param controller the {@link SimController} to set
+	 * @param frame      the {@code JFrame} to set
+	 * @param controller the {@code SimController} to set
 	 */
 	public MainView(JFrame frame, SimController simCtrl) {
 		this.frame = new JFrame("Conway's Game of Life");
@@ -70,14 +68,14 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code createAndShowGUI()} method simply contains method calls to
+	 * The {@linkplain #createAndShowGUI()} method simply contains method calls to
 	 * incrementally build the GUI.
 	 * 
-	 * @see MainView#manageUI()
-	 * @see MainView#createComponents()
-	 * @see MainView#addComponents()
-	 * @see MainView#addActions()
-	 * @see MainView#showFrame()
+	 * @see #manageUI()
+	 * @see #createComponents()
+	 * @see #addComponents()
+	 * @see #addActions()
+	 * @see #showFrame()
 	 * 
 	 */
 	private void createAndShowGUI() {
@@ -89,7 +87,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code manageUi()} method sets the look and feel for the GUI.
+	 * The {@linkplain #manageUi()} method sets the look and feel for the GUI.
 	 * 
 	 * @see LFStrings
 	 * @see UIManager#setLookAndFeel(String)
@@ -112,7 +110,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code createComponents()} method initialises each of the
+	 * The {@linkplain #createComponents()} method initialises each of the
 	 * {@code JComponent}s
 	 */
 	private void createComponents() {
@@ -133,7 +131,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code addComponents()} method adds each JComponent to its parent
+	 * The {@linkplain #addComponents()} method adds each JComponent to its parent
 	 * {@code JPanel}.
 	 */
 	private void addComponents() {
@@ -148,9 +146,9 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code addActions()} method adds an {@code ActionListener} to each of the
-	 * GUI buttons. Each button updates the {@code SimState} with an enum value
-	 * according to the respective action.
+	 * The {@linkplain #addActions()} method adds an {@code ActionListener} to each
+	 * of the GUI buttons. Each button updates the {@code SimState} with an enum
+	 * value according to the respective action.
 	 * 
 	 * @see #update(SimState)
 	 * @see SimState
@@ -193,9 +191,9 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code update(SimState)} method is called by the {@code JButton}s in this
-	 * class and updates the view accordingly. {@code MainView} does not modify the
-	 * {@code Board} or {@code CanvasPanel} directly.<br>
+	 * The {@linkplain #update(SimState)} method is called by the {@code JButton}s
+	 * in this class and updates the view accordingly. {@code MainView} does not
+	 * modify the {@code Board} or {@code CanvasPanel} directly.<br>
 	 * This method is responsible for:<br>
 	 * - pausing/playing the simulation<br>
 	 * - restarting the simulation.<br>
@@ -204,11 +202,11 @@ public class MainView {
 	 * above actions.<br>
 	 * 
 	 * @see SimState
+	 * @see ConfigDialog
 	 * @see SimController#playPauseSimulation()
-	 * @see SimController#restartSimulation()
-	 * @see CanvasPanel#clear()
 	 * @see SimController#speedUpSimulation()
 	 * @see SimController#slowDownSimulation()
+	 * @see SimController#isRunning()
 	 * @see JComponent#setText(String)
 	 * @see Timer#start()
 	 * @see Timer#stop()
@@ -243,7 +241,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code refresh()} method is called by {@code refreshTimer}'s
+	 * The {@linkplain #refresh()} method is called by {@code refreshTimer}'s
 	 * {@code ActionListener} while the simulation is running. Each refresh tells
 	 * the {@code CanvasPanel} to clear itself, calls the next simulation step, and
 	 * tells {@code CanvasPanel} to redraw the updated board.
@@ -259,13 +257,16 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code showFrame()} method adds the mainPanel to the frame and displays
-	 * the GUI
+	 * The {@linkplain #showFrame()} method adds the {@code mainPanel} to the frame
+	 * and displays the GUI
 	 * 
 	 * @see JFrame#setLocationRelativeTo(java.awt.Component)
+	 * @see JFrame#add(java.awt.Component)
+	 * @see JFrame#setDefaultCloseOperation(int)
 	 * @see JFrame#revalidate()
 	 * @see JFrame#repaint()
 	 * @see JFrame#pack()
+	 * @see JFrame#setVisible(boolean)
 	 */
 	private void showFrame() {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

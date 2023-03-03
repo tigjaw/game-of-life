@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Rules {
 	private ArrayList<Rule> rules;
-	
+
 	public Rules() {
 		this.rules = getDefaultRules();
 	}
@@ -17,7 +17,7 @@ public class Rules {
 	 * The {@linkplain #getDefaultRules()} method applies the default game of life
 	 * rules to the board.<br>
 	 * 
-	 * @return
+	 * @return the rules to get
 	 */
 	public ArrayList<Rule> getDefaultRules() {
 		ArrayList<Rule> dr = new ArrayList<>();
@@ -38,7 +38,7 @@ public class Rules {
 		dr.add(rule4);
 		return dr;
 	}
-	
+
 	// GETTERS AND SETTERS
 
 	public ArrayList<Rule> getRules() {
