@@ -1,20 +1,19 @@
 package com.iridiumflair.sim.control;
 
+import com.iridiumflair.sim.model.Board;
+
 /**
  * The {@code SimController} class contains the simulation logic and is utilised
  * by the view components to manipulate the simulation indirectly.<br>
- * To manipulate the {@code Board}, the {@code SimController} contains the
- * {@code BoardController} and does so via its public access methods. The
- * {@code SimController} does not access the {@code Board} directly. The
- * {@code SimController} has no knowledge of the {@code Board} or of any of the
- * view components. Its sole purpose is to control and advance the simulation.
+ * The {@code SimController} has no knowledge of any of the view components. Its
+ * sole purpose is to control and advance the simulation.
  * 
- * @see BoardController
+ * @see Board
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class SimController {
-	private BoardController boardCtrl;
+	private Board board;
 	private boolean running;
 	private int simInterval;
 	private int speedMultiplier;
@@ -23,27 +22,27 @@ public class SimController {
 	/**
 	 * Parameterised constructor for {@code SimController} with only one
 	 * parameter.<br>
-	 * Calls the {@code SimController#SimController(BoardController, int, int)}
+	 * Calls the {@code SimController#SimController(Board, int, int)}
 	 * constructor using default values for the sim interval and speed multiplier.
 	 * 
-	 * @see BoardController
+	 * @see Board
 	 * 
-	 * @param boardCtrl to set
+	 * @param board to set
 	 */
-	public SimController(BoardController boardCtrl) {
-		this(boardCtrl, 1000, 1);
+	public SimController(Board board) {
+		this(board, 1000, 1);
 	}
 
 	/**
 	 * Parameterised constructor for {@code SimController} with three parameters.
 	 * Sets {@code running} to false by default.
 	 * 
-	 * @param boardCtrl       the {@code BoardController} to set
+	 * @param board           the {@code Board} to set
 	 * @param simInterval     the {@code simInterval} to set
 	 * @param speedMultiplier the {@code speedMultiplier} to set
 	 */
-	public SimController(BoardController boardCtrl, int simInterval, int speedMultiplier) {
-		this.boardCtrl = boardCtrl;
+	public SimController(Board board, int simInterval, int speedMultiplier) {
+		this.board = board;
 		this.running = false;
 		this.simInterval = simInterval;
 		this.speedMultiplier = speedMultiplier;
@@ -61,28 +60,26 @@ public class SimController {
 
 	/**
 	 * The {@code advanceSimulation()} method advances the simulation:<br>
-	 * - tells the {@code BoardController} to advance the {@code Board} to the next
-	 * generation, by calling {@code BoardController.advanceBoard()}.<br>
+	 * - advances the {@code Board} to the next generation, by calling
+	 * {@code Board.advanceBoard()}.<br>
 	 * - increments the generation.
 	 * 
-	 * @see BoardController#advanceBoard()
-	 * 
+	 * @see Board#advanceBoard()
 	 */
 	public void advanceSimulation() {
-		boardCtrl.advanceBoard();
+		board.advanceBoard();
 		generation++;
-		System.out.println(generation);
+		// System.out.println(generation);
 	}
 
 	/**
 	 * The {@code restartSimulation()} method resets the simulation:<br>
-	 * - tells the {@code BoardController} to clear the board, by calling
-	 * {@code BoardController.clear()}.<br>
+	 * - clears the board, by calling {@code Board.clear()}.<br>
 	 * - sets the generation to 0.<br>
 	 * - sets running to false.<br>
 	 */
 	public void restartSimulation() {
-		boardCtrl.clear();
+		board.clear();
 		generation = 0;
 		running = false;
 	}
@@ -112,19 +109,19 @@ public class SimController {
 	// GETTERS AND SETTERS
 
 	public int getRows() {
-		return boardCtrl.getRows();
+		return board.getRows();
 	}
 
 	public int getColumns() {
-		return boardCtrl.getColumns();
+		return board.getColumns();
 	}
 
-	public BoardController getBoardCtrl() {
-		return boardCtrl;
+	public Board getBoard() {
+		return board;
 	}
 
-	public void setBoardCtrl(BoardController boardCtrl) {
-		this.boardCtrl = boardCtrl;
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 	public boolean isRunning() {

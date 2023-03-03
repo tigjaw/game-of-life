@@ -6,6 +6,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -13,9 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import com.iridiumflair.sim.control.BoardController;
+import com.iridiumflair.sim.control.ConfigController;
 import com.iridiumflair.sim.control.SimController;
-import com.iridiumflair.sim.model.Board;
 
 /**
  * currently unused. will be utilised to provide additional options to the user.
@@ -23,24 +23,23 @@ import com.iridiumflair.sim.model.Board;
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 @SuppressWarnings("serial")
-public class SettingsPanel extends JDialog {
+public class ConfigDialog extends JDialog {
 	private MainView mainView;
 	private SimController simCtrl;
-	private BoardController boardCtrl;
+	private ConfigController configCtrl;
 	// options
 	private JPanel mainPanel, settingsPanel, rulesPanel, btnPanel;
 	private NumberField widthField, heightField;
 	private NumberField intervalField;
 	// rules
-	private NumberField dieRule1, surviveRule1, surviveRule2, birthRule, dieRule2;
+	private ArrayList<RulePanel> rulePanels;
 	// buttons
 	private JButton acceptBtn, cancelBtn;
 
-	public SettingsPanel(MainView mainView, String title) {
+	public ConfigDialog(MainView mainView, String title) {
 		super(mainView.getFrame(), title);
 		this.mainView = mainView;
 		this.simCtrl = mainView.getSimCtrl();
-		this.boardCtrl = simCtrl.getBoardCtrl();
 		createComponents();
 		addComponents();
 		addActions();
@@ -63,12 +62,7 @@ public class SettingsPanel extends JDialog {
 		intervalField = new NumberField(simCtrl.getSimInterval(), 4);
 		intervalField.setToolTipText("lower is faster");
 		// rules fields
-		Board board = boardCtrl.getBoard();
-		dieRule1 = new NumberField(board.getDieCondition1(), 1);
-		surviveRule1 = new NumberField(board.getSurviveCondition1(), 1);
-		surviveRule2 = new NumberField(board.getSurviveCondition2(), 1);
-		dieRule2 = new NumberField(board.getDieCondition2(), 1);
-		birthRule = new NumberField(board.getBirthCondition(), 1);
+		// for each rule add a rule panel
 		// buttons
 		acceptBtn = new JButton("accept");
 		acceptBtn.setToolTipText("create simulation with these options");
@@ -91,28 +85,6 @@ public class SettingsPanel extends JDialog {
 		settingsPanel.add(intervalField, createGBC(1, 3));
 		// add rules fields
 		rulesPanel.add(label("SIMULATION RULES"), createGBC(0, 0));
-		// die rule 1
-		JPanel rule1 = new JPanel();
-		rule1.add(label("a live cell dies if its number of live neighbours is less than"));
-		rule1.add(dieRule1);
-		rulesPanel.add(rule1, createGBC(0, 1));
-		// surival rule 1 and 2
-		JPanel rule2 = new JPanel();
-		rule2.add(label("a live cell survives if its number of live neighbours equals"));
-		rule2.add(surviveRule1);
-		rule2.add(label("or"));
-		rule2.add(surviveRule2);
-		rulesPanel.add(rule2, createGBC(0, 2));
-		// die rule 2
-		JPanel rule3 = new JPanel();
-		rule3.add(label("a live cell dies if its number of live neighbours is greater than"));
-		rule3.add(dieRule2);
-		rulesPanel.add(rule3, createGBC(0, 3));
-		// birth rule
-		JPanel rule4 = new JPanel();
-		rule4.add(label("a dead cell revives if its number of live neighbours is equal to"));
-		rule4.add(birthRule);
-		rulesPanel.add(rule4, createGBC(0, 4));
 		// add buttons
 		btnPanel.add(acceptBtn, BorderLayout.EAST);
 		btnPanel.add(cancelBtn, BorderLayout.WEST);
@@ -152,14 +124,7 @@ public class SettingsPanel extends JDialog {
 		if (accept) {
 			int height = heightField.getNumber();
 			int width = widthField.getNumber();
-			Board board = new Board(height, width);
-			board.setDieCondition1(dieRule1.getNumber());
-			board.setSurviveCondition1(surviveRule1.getNumber());
-			board.setSurviveCondition2(surviveRule2.getNumber());
-			board.setDieCondition2(dieRule2.getNumber());
-			board.setBirthCondition(birthRule.getNumber());
-			board.setDieCondition2(birthRule.getNumber());
-			boardCtrl.setBoard(board);
+			// use config controller to create new board
 			simCtrl.setSimInterval(intervalField.getNumber());
 			simCtrl.restartSimulation();
 			CanvasPanel canvas = mainView.getCanvas();

@@ -3,9 +3,9 @@ package com.iridiumflair.sim.control;
 import com.iridiumflair.sim.model.Board;
 
 /**
- * The {@code BoardController} is used by the views and {@code SimController} to
+ * The {@code CanvasController} is used by the views and {@code SimController} to
  * control the Board indirectly.<br>
- * The {@code BoardController} has no knowledge of the {@code SimController} or
+ * The {@code CanvasController} has no knowledge of the {@code SimController} or
  * of the various view components. Its sole purpose is to control the
  * {@code Board}.
  * 
@@ -13,29 +13,33 @@ import com.iridiumflair.sim.model.Board;
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
-public class BoardController {
+public class CanvasController {
 	private Board board;
 
 	/**
-	 * Parameterised constructor for {@code BoardController}.<br>
+	 * Parameterised constructor for {@code CanvasController}.<br>
 	 * 
 	 * @param board to set
 	 */
-	public BoardController(Board board) {
+	public CanvasController(Board board) {
 		this.board = board;
 	}
 	
 	/**
-	 * Parameterised constructor for {@code BoardController}.<br>
+	 * Parameterised constructor for {@code CanvasController}.<br>
 	 * Creates a new {@code Board} with the specified rows and columns.
 	 * 
-	 * @see #BoardController(Board)
+	 * @see #CanvasController(Board)
 	 * 
 	 * @param rows - the number of rows in the Board
 	 * @param columns - the number of columns in the Board
 	 */
-	public BoardController(int rows, int columns) {
+	public CanvasController(int rows, int columns) {
 		this(new Board(rows, columns));
+	}
+
+	public CanvasController(SimController simCtrl) {
+		this(simCtrl.getBoard());
 	}
 
 	/**

@@ -13,19 +13,19 @@ import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
 
-import com.iridiumflair.sim.control.BoardController;
+import com.iridiumflair.sim.control.CanvasController;
 
 /**
  * The {@code CanvasPanel} class extends {@code JPanel}, providing an area for
  * the user to draw on, and contains all of the functionality for doing so,
  * using {@code Image} and {@code Graphics2D}, and {@code MouseAdapter}s to
  * process mouse input.<br>
- * {@code CanvasPanel} contains the {@code BoardController} through which it
+ * {@code CanvasPanel} contains the {@code CanvasController} through which it
  * updates the {@code Board} indirectly.<br>
  * The {@code CanvasPanel} has no direct knowledge of the {@code SimController},
  * {@code Board}, or any other view components.
  * 
- * @see BoardController
+ * @see CanvasController
  * @see Image
  * @see Graphics2D
  * 
@@ -33,22 +33,22 @@ import com.iridiumflair.sim.control.BoardController;
  */
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
-	private BoardController boardCtrl;
+	private CanvasController boardCtrl;
 	private Image canvas;
 	Graphics2D graphics;
 
 	/**
 	 * The Constructor for {@code CanvasPanel}:<br>
-	 * - takes {@code BoardController} as a parameter, and applies it to the
+	 * - takes {@code CanvasController} as a parameter, and applies it to the
 	 * {@code boardCtrl}.<br>
 	 * - sets the dimensions of the {@code CanvasPanel}, using the values returned
-	 * by {@code BoardController#getColumns()} and
-	 * {@code BoardController#getRows()}.<br>
+	 * by {@code CanvasController#getColumns()} and
+	 * {@code CanvasController#getRows()}.<br>
 	 * - calls {@code addActions()}.
 	 * 
 	 * @param boardCtrl
 	 */
-	public CanvasPanel(BoardController boardCtrl) {
+	public CanvasPanel(CanvasController boardCtrl) {
 		this.boardCtrl = boardCtrl;
 		setPreferredSize(new Dimension(boardCtrl.getColumns(), boardCtrl.getRows()));
 		// setDoubleBuffered(false);
@@ -119,12 +119,12 @@ public class CanvasPanel extends JPanel {
 	 * - checks if the parameters are valid x and y coordinates<br>
 	 * - then ensures {@code graphics} is not null before drawing the graphics.<br>
 	 * - and if both checks are true, a rectangle is drawn at the coordinates, the
-	 * {@code BoardController} is told to update the {@code Board} at the specified
+	 * {@code CanvasController} is told to update the {@code Board} at the specified
 	 * coordinates, and the panel repaints itself.
 	 * 
 	 * @see CanvasPanel#isValidPosition(int, int)
 	 * @see Graphics2D#drawRect(int, int, int, int)
-	 * @see BoardController#birthCell(int, int)
+	 * @see CanvasController#birthCell(int, int)
 	 * @see CanvasPanel#repaint()
 	 * 
 	 * @param x - the x coordinate to draw at

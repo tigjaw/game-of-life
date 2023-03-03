@@ -13,6 +13,7 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.iridiumflair.sim.control.CanvasController;
 import com.iridiumflair.sim.control.SimController;
 
 /**
@@ -119,7 +120,7 @@ public class MainView {
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
-		canvas = new CanvasPanel(simCtrl.getBoardCtrl());
+		canvas = new CanvasPanel(new CanvasController(simCtrl));
 		// setup buttons and labels
 		newBtn = new JButton("new");
 		newBtn.setToolTipText("new board");
@@ -222,7 +223,7 @@ public class MainView {
 			simCtrl.playPauseSimulation();
 			break;
 		case NEW:
-			new SettingsPanel(this, "new simulation options");
+			new ConfigDialog(this, "new simulation options");
 			break;
 		case SPEEDUP:
 			simCtrl.speedUpSimulation();

@@ -1,41 +1,77 @@
 package com.iridiumflair.sim.model;
 
+import java.util.ArrayList;
+
 /**
- * The {@code Board} class contains the board array and the logic behind the
- * game of life simulation.
+ * The {@code Board} class contains the board array, the {@code Rule}s, the
+ * neighbour range, and the logic behind the game of life simulation.
+ * 
+ * @see Rule
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class Board {
 	private int[][] board;
-	private int dieCondition1 = 2;
-	private int surviveCondition1 = 2;
-	private int surviveCondition2 = 3;
-	private int dieCondition2 = 3;
-	private int birthCondition = 3;
+	private ArrayList<Rule> rules;
 	private int neighbourRange = 1;
-	private int dead = 0;
-	private int live = 1;
 
 	/**
-	 * Constructor for the Board class An empty board initialised to 0
+	 * Constructor for the {@code Board} class.<br>
+	 * An empty board initialised to 0.<br>
+	 * Applies the default game of life rules.
 	 * 
 	 * @param rows    the number of rows in the 2d grid
 	 * @param columns the number of columns in the 2d grid
 	 */
 	public Board(int rows, int columns) {
-		board = new int[rows][columns];
+		this.board = new int[rows][columns];
+		this.rules = applyDefaultRules();
+	}
+
+	/**
+	 * Constructor for the Board class.<br>
+	 * Sets the Board rules and creates an empty board initialised to 0.<br>
+	 * Sets the board width, height, and the rules.
+	 * 
+	 * @param rows    the number of rows in the 2d grid
+	 * @param columns the number of columns in the 2d grid
+	 * @param rules   the rules to apply to the Board
+	 */
+	public Board(int rows, int columns, ArrayList<Rule> rules) {
+		this(rows, columns);
+		this.rules = rules;
+	}
+
+	public ArrayList<Rule> applyDefaultRules() {
+		ArrayList<Rule> dr = new ArrayList<>();
+		Rule rule1 = new Rule();
+		rule1.liveCell().dies().ifLiveNeighbours(Condition.LESSTHAN).thresholdOf(2);
+		Rule rule2a = new Rule();
+		rule2a.liveCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(2);
+		Rule rule2b = new Rule();
+		rule2b.liveCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(3);
+		Rule rule3 = new Rule();
+		rule3.liveCell().dies().ifLiveNeighbours(Condition.MORETHAN).thresholdOf(3);
+		Rule rule4 = new Rule();
+		rule4.deadCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(3);
+		dr.add(rule1);
+		dr.add(rule2a);
+		dr.add(rule2b);
+		dr.add(rule3);
+		dr.add(rule4);
+		return dr;
 	}
 
 	/**
 	 * The {@code advanceBoard()} method creates a new board, recalculates board
-	 * values by evaluating the current board, and finally overwrites the old board
-	 * with the new board.
+	 * values by evaluating the current board with the applied {@code Rule}s| and
+	 * finally overwrites the old board with the new board.
 	 * 
 	 * @see #getRows()
 	 * @see #getColumns()
 	 * @see #countAliveNeighbours(int, int)
 	 * @see #cellIsAlive(int, int)
+	 * @see Rule
 	 */
 	public void advanceBoard() {
 		int[][] newBoard = new int[getColumns()][getRows()];
@@ -45,17 +81,9 @@ public class Board {
 
 				int aliveNeighbours = countAliveNeighbours(x, y);
 
-				if (cellIsAlive(x, y)) {
-					if (aliveNeighbours < dieCondition1) {
-						newBoard[x][y] = dead;
-					} else if (aliveNeighbours == surviveCondition1 || aliveNeighbours == surviveCondition2) {
-						newBoard[x][y] = live;
-					} else if (aliveNeighbours > dieCondition2){
-						newBoard[x][y] = dead;
-					}
-				} else {
-					if (aliveNeighbours == birthCondition) {
-						newBoard[x][y] = live;
+				for (Rule rule : rules) {
+					if (rule.isApplicable(cellIsAlive(x, y), aliveNeighbours)) {
+						newBoard[x][y] = rule.applyResult();
 					}
 				}
 
@@ -104,7 +132,7 @@ public class Board {
 	 * @return the state of the cell (alive == true)
 	 */
 	public boolean cellIsAlive(int x, int y) {
-		if (cellState(x, y) == live) {
+		if (cellState(x, y) == 1) {
 			return true;
 		} else {
 			return false;
@@ -126,11 +154,11 @@ public class Board {
 	 */
 	public int cellState(int x, int y) {
 		if (x < 0 || x >= getColumns()) {
-			return dead;
+			return 0;
 		}
 
 		if (y < 0 || y >= getRows()) {
-			return dead;
+			return 0;
 		}
 
 		return board[x][y];
@@ -144,7 +172,7 @@ public class Board {
 	 * @param y - the y coordinate of the cell
 	 */
 	public void birthCell(int x, int y) {
-		this.board[x][y] = live;
+		this.board[x][y] = 1;
 	}
 
 	/**
@@ -155,31 +183,32 @@ public class Board {
 	 * @param y - the y coordinate of the cell
 	 */
 	public void killCell(int x, int y) {
-		this.board[x][y] = dead;
+		this.board[x][y] = 0;
 	}
 
 	/**
 	 * The {@code clear()} method clears the board by looping through it and setting
 	 * each cell to 0.<br>
-	 * Also resets the {@code generation} to 0.
 	 */
 	public void clear() {
 		for (int x = 0; x < getRows(); x++) {
 			for (int y = 0; y < getColumns(); y++) {
-				board[x][y] = dead;
+				board[x][y] = 0;
 			}
 		}
 	}
 
 	/**
-	 * {@code printBoard()} prints the board to the console.
+	 * {@code printBoard()} prints the board to the console.<br>
+	 * Dead cells are repsresented by a period, and live cells are represented by an
+	 * asterix.
 	 */
 	public void printBoard() {
 		System.out.println("----------");
 		for (int y = 0; y < getRows(); y++) {
 			String line = "|";
 			for (int x = 0; x < getColumns(); x++) {
-				if (this.board[x][y] == dead) {
+				if (this.board[x][y] == 0) {
 					line += ".";
 				} else {
 					line += "*";
@@ -190,7 +219,7 @@ public class Board {
 		}
 		System.out.println("----------\n");
 	}
-	
+
 	@Override
 	public String toString() {
 		String result = "";
@@ -224,6 +253,24 @@ public class Board {
 	}
 
 	/**
+	 * The {@code getRules()} method gets the rules of the game.
+	 * 
+	 * @return the {@code Rule}s to get
+	 */
+	public ArrayList<Rule> getRules() {
+		return rules;
+	}
+
+	/**
+	 * The {@code setRules(ArrayList)} method sets the rules of the game.
+	 * 
+	 * @param rules the {@code Rule}s to set
+	 */
+	public void setRules(ArrayList<Rule> rules) {
+		this.rules = rules;
+	}
+
+	/**
 	 * The {@code getRows()} method returns the number of rows in the array
 	 * 
 	 * @return the rows (height) of the array
@@ -239,70 +286,6 @@ public class Board {
 	 */
 	public int getColumns() {
 		return board[0].length;
-	}
-
-	public int getDieCondition1() {
-		return dieCondition1;
-	}
-
-	public void setDieCondition1(int dieCondition) {
-		this.dieCondition1 = dieCondition;
-	}
-
-	public int getSurviveCondition1() {
-		return surviveCondition1;
-	}
-
-	public void setSurviveCondition1(int surviveCondition1) {
-		this.surviveCondition1 = surviveCondition1;
-	}
-
-	public int getSurviveCondition2() {
-		return surviveCondition2;
-	}
-
-	public void setSurviveCondition2(int surviveCondition2) {
-		this.surviveCondition2 = surviveCondition2;
-	}
-
-	public int getDieCondition2() {
-		return dieCondition2;
-	}
-
-	public void setDieCondition2(int dieCondition2) {
-		this.dieCondition2 = dieCondition2;
-	}
-
-	public int getBirthCondition() {
-		return birthCondition;
-	}
-
-	public void setBirthCondition(int birthCondition) {
-		this.birthCondition = birthCondition;
-	}
-
-	public int getNeighbourRange() {
-		return neighbourRange;
-	}
-
-	public void setNeighbourRange(int neighbourRange) {
-		this.neighbourRange = neighbourRange;
-	}
-
-	public int getDead() {
-		return dead;
-	}
-
-	public void setDead(int dead) {
-		this.dead = dead;
-	}
-
-	public int getLive() {
-		return live;
-	}
-
-	public void setLive(int live) {
-		this.live = live;
 	}
 
 }
