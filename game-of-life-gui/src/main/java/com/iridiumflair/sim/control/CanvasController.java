@@ -43,17 +43,6 @@ public class CanvasController {
 	}
 
 	/**
-	 * The {@code advanceBoard()} method calls the {@code Board.advanceBoard()}
-	 * method, which instructs the board to reevaluate itself based on the game of
-	 * life rules.
-	 * 
-	 * @see Board#advanceBoard()
-	 */
-	public void advanceBoard() {
-		board.advanceBoard();
-	}
-
-	/**
 	 * The {@code cellIsAlive(int, int)} method checks if the cell at the specified
 	 * x and y coordinates is alive by calling the
 	 * {@code Board.cellIsAlive(int, int)} method using the x and y parameters.

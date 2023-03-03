@@ -33,24 +33,24 @@ import com.iridiumflair.sim.control.CanvasController;
  */
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
-	private CanvasController boardCtrl;
+	private CanvasController canvasCtrl;
 	private Image canvas;
 	Graphics2D graphics;
 
 	/**
 	 * The Constructor for {@code CanvasPanel}:<br>
 	 * - takes {@code CanvasController} as a parameter, and applies it to the
-	 * {@code boardCtrl}.<br>
+	 * {@code canvasCtrl}.<br>
 	 * - sets the dimensions of the {@code CanvasPanel}, using the values returned
 	 * by {@code CanvasController#getColumns()} and
 	 * {@code CanvasController#getRows()}.<br>
 	 * - calls {@code addActions()}.
 	 * 
-	 * @param boardCtrl
+	 * @param canvasCtrl
 	 */
-	public CanvasPanel(CanvasController boardCtrl) {
-		this.boardCtrl = boardCtrl;
-		setPreferredSize(new Dimension(boardCtrl.getColumns(), boardCtrl.getRows()));
+	public CanvasPanel(CanvasController canvasCtrl) {
+		this.canvasCtrl = canvasCtrl;
+		setPreferredSize(new Dimension(canvasCtrl.getColumns(), canvasCtrl.getRows()));
 		// setDoubleBuffered(false);
 		addActions();
 	}
@@ -105,7 +105,7 @@ public class CanvasPanel extends JPanel {
 	public void drawBoard() {
 		for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
-				if (boardCtrl.cellIsAlive(x, y)) {
+				if (canvasCtrl.cellIsAlive(x, y)) {
 					draw(x, y);
 				} else {
 				}
@@ -135,7 +135,7 @@ public class CanvasPanel extends JPanel {
 			if (graphics != null) {
 				// System.out.println("drawing at: " + x + ", " + y);
 				graphics.drawRect(x, y, 1, 1);
-				boardCtrl.birthCell(x, y);
+				canvasCtrl.birthCell(x, y);
 				repaint();
 			}
 		}

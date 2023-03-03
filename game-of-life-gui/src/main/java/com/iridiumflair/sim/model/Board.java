@@ -6,8 +6,6 @@ import java.util.ArrayList;
  * The {@code Board} class contains the board array, the {@code Rule}s, the
  * neighbour range, and the logic behind the game of life simulation.
  * 
- * @see Rule
- * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 public class Board {
@@ -18,62 +16,40 @@ public class Board {
 	/**
 	 * Constructor for the {@code Board} class.<br>
 	 * An empty board initialised to 0.<br>
-	 * Applies the default game of life rules.
+	 * Applies the default game of life {@code Rule}s
+	 * 
+	 * @param rows    the number of rows in the 2d grid
+	 * @param columns the number of columns in the 2d grid
+	 */
+	public Board(int[][] board) {
+		this.board = board;
+	}
+
+	/**
+	 * Constructor for the {@code Board} class.<br>
+	 * Creates an empty board initialised to 0.<br>
+	 * Sets the board width, height, and the rules.
 	 * 
 	 * @param rows    the number of rows in the 2d grid
 	 * @param columns the number of columns in the 2d grid
 	 */
 	public Board(int rows, int columns) {
-		this.board = new int[rows][columns];
-		this.rules = applyDefaultRules();
+		this(new int[rows][columns]);
 	}
 
 	/**
-	 * Constructor for the Board class.<br>
-	 * Sets the Board rules and creates an empty board initialised to 0.<br>
-	 * Sets the board width, height, and the rules.
-	 * 
-	 * @param rows    the number of rows in the 2d grid
-	 * @param columns the number of columns in the 2d grid
-	 * @param rules   the rules to apply to the Board
-	 */
-	public Board(int rows, int columns, ArrayList<Rule> rules) {
-		this(rows, columns);
-		this.rules = rules;
-	}
-
-	public ArrayList<Rule> applyDefaultRules() {
-		ArrayList<Rule> dr = new ArrayList<>();
-		Rule rule1 = new Rule();
-		rule1.liveCell().dies().ifLiveNeighbours(Condition.LESSTHAN).thresholdOf(2);
-		Rule rule2a = new Rule();
-		rule2a.liveCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(2);
-		Rule rule2b = new Rule();
-		rule2b.liveCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(3);
-		Rule rule3 = new Rule();
-		rule3.liveCell().dies().ifLiveNeighbours(Condition.MORETHAN).thresholdOf(3);
-		Rule rule4 = new Rule();
-		rule4.deadCell().lives().ifLiveNeighbours(Condition.EQUAL).thresholdOf(3);
-		dr.add(rule1);
-		dr.add(rule2a);
-		dr.add(rule2b);
-		dr.add(rule3);
-		dr.add(rule4);
-		return dr;
-	}
-
-	/**
-	 * The {@code advanceBoard()} method creates a new board, recalculates board
-	 * values by evaluating the current board with the applied {@code Rule}s| and
-	 * finally overwrites the old board with the new board.
+	 * The {@linkplain #advanceBoard(Rules))} method creates a new board, recalculates
+	 * board values by evaluating the current board with the provided {@code Rules}
+	 * and finally overwrites the old board with the new board.
 	 * 
 	 * @see #getRows()
 	 * @see #getColumns()
 	 * @see #countAliveNeighbours(int, int)
 	 * @see #cellIsAlive(int, int)
 	 * @see Rule
+	 * @param rules to apply to the game
 	 */
-	public void advanceBoard() {
+	public void advanceBoard(Rules rules) {
 		int[][] newBoard = new int[getColumns()][getRows()];
 
 		for (int y = 0; y < getRows(); y++) {
@@ -81,7 +57,7 @@ public class Board {
 
 				int aliveNeighbours = countAliveNeighbours(x, y);
 
-				for (Rule rule : rules) {
+				for (Rule rule : rules.getRules()) {
 					if (rule.isApplicable(cellIsAlive(x, y), aliveNeighbours)) {
 						newBoard[x][y] = rule.applyResult();
 					}
@@ -93,7 +69,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code countAliveNeighbours(int, int)} method takes the x and y
+	 * The {@linkplain #countAliveNeighbours(int, int)} method takes the x and y
 	 * coordinates of a cell and counts its living neighbours in all directions.<br>
 	 * Only cells within one cell distances are considered neighbours.<br>
 	 * The cell state at x,y is not evaluated as it is the cell being compared.
@@ -121,9 +97,9 @@ public class Board {
 	}
 
 	/**
-	 * The {@code cellIsAlive(int, int)} method checks if the cell at the specified
-	 * x and y coordinates is alive or dead. If the cell state at x and y is 1, then
-	 * it is alive, else it is dead.
+	 * The {@linkplain #cellIsAlive(int, int)} method checks if the cell at the
+	 * specified x and y coordinates is alive or dead. If the cell state at x and y
+	 * is 1, then it is alive, else it is dead.
 	 * 
 	 * @see #cellState(int, int)
 	 * 
@@ -140,8 +116,8 @@ public class Board {
 	}
 
 	/**
-	 * The {@code cellState(int, int)} method returns the value held in the cell at
-	 * the specified x and y coordinates.<br>
+	 * The {@linkplain #cellState(int, int)} method returns the value held in the
+	 * cell at the specified x and y coordinates.<br>
 	 * The method first checks if the coordinates are out of the array bounds, and
 	 * if so, returns a 0.
 	 * 
@@ -165,7 +141,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code birthCell(int, int)} method sets the cell at the specified
+	 * The {@linkplain #birthCell(int, int)} method sets the cell at the specified
 	 * coordinates to 1 (alive).
 	 * 
 	 * @param x - the x coordinate of the cell
@@ -176,7 +152,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code killCell(int, int)} method sets the cell at the specified
+	 * The {@linkplain #killCell(int, int)} method sets the cell at the specified
 	 * coordinates to 0 (dead).
 	 * 
 	 * @param x - the x coordinate of the cell
@@ -187,8 +163,8 @@ public class Board {
 	}
 
 	/**
-	 * The {@code clear()} method clears the board by looping through it and setting
-	 * each cell to 0.<br>
+	 * The {@linkplain #clear()} method clears the board by looping through it and
+	 * setting each cell to 0.<br>
 	 */
 	public void clear() {
 		for (int x = 0; x < getRows(); x++) {
@@ -199,7 +175,7 @@ public class Board {
 	}
 
 	/**
-	 * {@code printBoard()} prints the board to the console.<br>
+	 * {@linkplain #printBoard()} prints the board to the console.<br>
 	 * Dead cells are repsresented by a period, and live cells are represented by an
 	 * asterix.
 	 */
@@ -235,7 +211,7 @@ public class Board {
 	// GETTERS AND SETTERS
 
 	/**
-	 * The {@code getBoard()} method returns the board array
+	 * The {@linkplain #getBoard()} method returns the board array
 	 * 
 	 * @return the board array
 	 */
@@ -244,7 +220,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code setBoard(int[][])} method sets the board array
+	 * The {@linkplain #setBoard(int[][])} method sets the board array
 	 * 
 	 * @param board the board array to set
 	 */
@@ -253,7 +229,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code getRules()} method gets the rules of the game.
+	 * The {@linkplain #getRules()} method gets the rules of the game.
 	 * 
 	 * @return the {@code Rule}s to get
 	 */
@@ -262,7 +238,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code setRules(ArrayList)} method sets the rules of the game.
+	 * The {@linkplain #setRules(ArrayList)} method sets the rules of the game.
 	 * 
 	 * @param rules the {@code Rule}s to set
 	 */
@@ -271,7 +247,7 @@ public class Board {
 	}
 
 	/**
-	 * The {@code getRows()} method returns the number of rows in the array
+	 * The {@linkplain #getRows()} method returns the number of rows in the array
 	 * 
 	 * @return the rows (height) of the array
 	 */
@@ -280,7 +256,8 @@ public class Board {
 	}
 
 	/**
-	 * The {@code getColumns()} method returns the number of columns in the array
+	 * The {@linkplain #getColumns()} method returns the number of columns in the
+	 * array
 	 * 
 	 * @return the columns (width) of the array
 	 */

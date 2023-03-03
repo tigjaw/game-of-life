@@ -1,6 +1,7 @@
 package com.iridiumflair.sim.control;
 
 import com.iridiumflair.sim.model.Board;
+import com.iridiumflair.sim.model.Rules;
 
 /**
  * The {@code SimController} class contains the simulation logic and is utilised
@@ -14,6 +15,7 @@ import com.iridiumflair.sim.model.Board;
  */
 public class SimController {
 	private Board board;
+	private Rules rules;
 	private boolean running;
 	private int simInterval;
 	private int speedMultiplier;
@@ -22,8 +24,8 @@ public class SimController {
 	/**
 	 * Parameterised constructor for {@code SimController} with only one
 	 * parameter.<br>
-	 * Calls the {@code SimController#SimController(Board, int, int)}
-	 * constructor using default values for the sim interval and speed multiplier.
+	 * Calls the {@code SimController#SimController(Board, int, int)} constructor
+	 * using default values for the sim interval and speed multiplier.
 	 * 
 	 * @see Board
 	 * 
@@ -31,6 +33,7 @@ public class SimController {
 	 */
 	public SimController(Board board) {
 		this(board, 1000, 1);
+		this.rules = new Rules();
 	}
 
 	/**
@@ -61,13 +64,13 @@ public class SimController {
 	/**
 	 * The {@code advanceSimulation()} method advances the simulation:<br>
 	 * - advances the {@code Board} to the next generation, by calling
-	 * {@code Board.advanceBoard()}.<br>
+	 * {@code Board#advanceBoard(Rules)}.<br>
 	 * - increments the generation.
 	 * 
 	 * @see Board#advanceBoard()
 	 */
 	public void advanceSimulation() {
-		board.advanceBoard();
+		board.advanceBoard(rules);
 		generation++;
 		// System.out.println(generation);
 	}
@@ -108,6 +111,14 @@ public class SimController {
 
 	// GETTERS AND SETTERS
 
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+	
 	public int getRows() {
 		return board.getRows();
 	}
@@ -116,12 +127,12 @@ public class SimController {
 		return board.getColumns();
 	}
 
-	public Board getBoard() {
-		return board;
+	public Rules getRules() {
+		return rules;
 	}
 
-	public void setBoard(Board board) {
-		this.board = board;
+	public void setRules(Rules rules) {
+		this.rules = rules;
 	}
 
 	public boolean isRunning() {
