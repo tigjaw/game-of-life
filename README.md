@@ -41,7 +41,7 @@
     <h2>Planned Features</h2>
     <ul dir="rtl">
       <li>
-        [b] implement "info" panel to display current sim sim and rules
+        [b] implement "info" panel to display current sim configuration and rules
       </li>
        <li>
         [b] implement fully customisable rules
