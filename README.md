@@ -53,10 +53,10 @@
     <h2>Current Issues</h2>
     <ul dir="rtl">
       <li>
-        [a] none
+        [a] maximised play area lags
       </li>
       <li>
-        [b] none
+        [b] SettingsPanel broken
       </li>
     </ul>
   </div>
