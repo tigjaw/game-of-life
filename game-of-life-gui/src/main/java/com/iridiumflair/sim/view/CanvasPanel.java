@@ -34,8 +34,6 @@ import com.iridiumflair.sim.control.BoardController;
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
 	private BoardController boardCtrl;
-	private Image canvas;
-	Graphics2D graphics;
 
 	/**
 	 * The Constructor for {@code CanvasPanel}:<br>
@@ -51,6 +49,7 @@ public class CanvasPanel extends JPanel {
 	public CanvasPanel(BoardController boardCtrl) {
 		this.boardCtrl = boardCtrl;
 		setPreferredSize(new Dimension(boardCtrl.getColumns(), boardCtrl.getRows()));
+		setBackground(Color.GRAY);
 		// setDoubleBuffered(false);
 		addActions();
 	}
@@ -82,7 +81,8 @@ public class CanvasPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				draw(e.getX(), e.getY());
+				mouseAction(e);
+				// draw(e.getX(), e.getY());
 			}
 		});
 
@@ -90,9 +90,18 @@ public class CanvasPanel extends JPanel {
 
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				draw(e.getX(), e.getY());
+				mouseAction(e);
+				// draw(e.getX(), e.getY());
 			}
 		});
+	}
+	
+	private void mouseAction(MouseEvent e) {
+		// System.out.println("CanvasPanel.mouseAction");
+		if (isValidPosition(e.getX(), e.getY())) {
+			boardCtrl.birthCell(e.getX(), e.getY());
+			repaint();
+		}
 	}
 
 	/**
@@ -102,41 +111,18 @@ public class CanvasPanel extends JPanel {
 	 * 
 	 * @see CanvasPanel#draw(int, int)
 	 */
-	public void drawBoard() {
+	public void drawBoard(Graphics2D g) {
+		// System.out.println("CanvasPanel.drawBoard");
 		for (int y = 0; y < getHeight(); y++) {
 			for (int x = 0; x < getWidth(); x++) {
 				if (boardCtrl.cellIsAlive(x, y)) {
-					draw(x, y);
+					// System.out.println("CanvasPanel.drawBoard: " + x + ", " + y + " is alive");
+					g.setPaint(Color.BLACK);
+					g.drawRect(x, y, 1, 1);
 				} else {
+					g.setPaint(Color.WHITE);
+					g.drawRect(x, y, 1, 1);
 				}
-			}
-		}
-	}
-
-	/**
-	 * The {@code draw(int, int)} method draws to the panel at the specified x and y
-	 * coordinates:<br>
-	 * - checks if the parameters are valid x and y coordinates<br>
-	 * - then ensures {@code graphics} is not null before drawing the graphics.<br>
-	 * - and if both checks are true, a rectangle is drawn at the coordinates, the
-	 * {@code BoardController} is told to update the {@code Board} at the specified
-	 * coordinates, and the panel repaints itself.
-	 * 
-	 * @see CanvasPanel#isValidPosition(int, int)
-	 * @see Graphics2D#drawRect(int, int, int, int)
-	 * @see BoardController#birthCell(int, int)
-	 * @see CanvasPanel#repaint()
-	 * 
-	 * @param x - the x coordinate to draw at
-	 * @param y - the y coordinate to draw at
-	 */
-	protected void draw(int x, int y) {
-		if (isValidPosition(x, y)) {
-			if (graphics != null) {
-				// System.out.println("drawing at: " + x + ", " + y);
-				graphics.drawRect(x, y, 1, 1);
-				boardCtrl.birthCell(x, y);
-				repaint();
 			}
 		}
 	}
@@ -156,11 +142,13 @@ public class CanvasPanel extends JPanel {
 	 */
 	private boolean isValidPosition(int x, int y) {
 		boolean parses = true;
-		if (x < 0 || x >= getSize().width) {
+		if (x < 0 || x >= boardCtrl.getColumns()) {
 			parses = false;
+			// System.out.println("x out of bounds");
 		}
-		if (y < 0 || y >= getSize().height) {
+		if (y < 0 || y >= boardCtrl.getRows()) {
 			parses = false;
+			// System.out.println("y out of bounds");
 		}
 		return parses;
 	}
@@ -187,30 +175,29 @@ public class CanvasPanel extends JPanel {
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		if (canvas == null) {
-			canvas = createImage(getSize().width, getSize().height);
-			graphics = (Graphics2D) canvas.getGraphics();
-			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			clear();
-		}
-		g.drawImage(canvas, 0, 0, null);
+		// System.out.println("CanvasPanel.paintComponent");
+		super.paintComponent(g);
+	    Graphics2D g2 = (Graphics2D) g;
+	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    // Draw background for the whole panel
+	    g2.setColor(Color.WHITE);
+	    g2.fillRect(0, 0, boardCtrl.getColumns(), boardCtrl.getRows());
+	    
+		drawBoard((Graphics2D) g2);
 	}
 
 	/**
-	 * The {@code clear()} method resets (clears) the board by redrawing over it
-	 * with a white rectangle equal to the size of the canvas.<br>
-	 * The method then resets the paint colour to black, ready for drawing more live
-	 * cells in future generations/simulations.<br>
-	 * 
-	 * @see Graphics2D#setPaint(Paint)
-	 * @see Graphics2D#fillRect(int, int, int, int)
-	 * @see CanvasPanel#repaint()
+	 * @return the boardCtrl
 	 */
-	public void clear() {
-		graphics.setPaint(Color.white);
-		graphics.fillRect(0, 0, getSize().width, getSize().height);
-		graphics.setPaint(Color.black);
-		repaint();
+	public BoardController getBoardCtrl() {
+		return boardCtrl;
+	}
+
+	/**
+	 * @param boardCtrl the boardCtrl to set
+	 */
+	public void setBoardCtrl(BoardController boardCtrl) {
+		this.boardCtrl = boardCtrl;
 	}
 
 }

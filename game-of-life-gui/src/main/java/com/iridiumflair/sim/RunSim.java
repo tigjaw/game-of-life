@@ -23,7 +23,6 @@ public class RunSim implements Runnable {
 		SwingUtilities.invokeLater(new RunSim());
 	}
 
-	@Override
 	public void run() {
 		Board board = new Board(500, 500);
 		BoardController boardCtrl = new BoardController(board);

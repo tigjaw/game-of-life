@@ -145,6 +145,15 @@ public class Board {
 	 */
 	public void birthCell(int x, int y) {
 		this.board[x][y] = live;
+		int alive = 0;
+		for (int i = 0; i < getRows(); i++) {
+			for (int j = 0; j < getColumns(); j++) {
+				if (board[i][j] == 1) { 
+					alive++;
+				}
+			}
+		}
+		System.out.println("alive cells: " + alive);
 	}
 
 	/**

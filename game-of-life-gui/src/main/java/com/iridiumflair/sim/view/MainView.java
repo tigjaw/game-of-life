@@ -1,6 +1,7 @@
 package com.iridiumflair.sim.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -60,9 +61,7 @@ public class MainView {
 		this.frame = new JFrame("Conway's Game of Life");
 		this.simCtrl = simCtrl;
 		this.refreshTimer = new Timer(simCtrl.getFramerate(), new ActionListener() {
-			@Override
 			public void actionPerformed(ActionEvent e) {
-				// initiateBoard();
 				refresh();
 			}
 		});
@@ -81,6 +80,7 @@ public class MainView {
 	 * 
 	 */
 	private void createAndShowGUI() {
+		// System.out.println("MainView.createAndShowGUI");
 		manageUI();
 		createComponents();
 		addComponents();
@@ -95,6 +95,7 @@ public class MainView {
 	 * @see UIManager#setLookAndFeel(String)
 	 */
 	private void manageUI() {
+		// System.out.println("MainView.manageUI");
 		// set look and feel
 		try {
 			UIManager.setLookAndFeel(LFStrings.WINDOWS);
@@ -116,6 +117,7 @@ public class MainView {
 	 * {@code JComponent}s
 	 */
 	private void createComponents() {
+		// System.out.println("MainView.createComponents");
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
@@ -137,6 +139,7 @@ public class MainView {
 	 * {@code JPanel}.
 	 */
 	private void addComponents() {
+		// System.out.println("MainView.addComponents");
 		controlPanel.add(newBtn);
 		controlPanel.add(playBtn);
 		controlPanel.add(slowDownBtn);
@@ -161,7 +164,6 @@ public class MainView {
 
 		newBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				update(SimState.NEW);
 			}
@@ -169,7 +171,6 @@ public class MainView {
 
 		playBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				update(SimState.PLAYPAUSE);
 			}
@@ -177,7 +178,6 @@ public class MainView {
 
 		slowDownBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				update(SimState.SLOWDOWN);
 			}
@@ -185,7 +185,6 @@ public class MainView {
 
 		speedUpBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				update(SimState.SPEEDUP);
 			}
@@ -206,7 +205,6 @@ public class MainView {
 	 * @see SimState
 	 * @see SimController#playPauseSimulation()
 	 * @see SimController#restartSimulation()
-	 * @see CanvasPanel#clear()
 	 * @see SimController#speedUpSimulation()
 	 * @see SimController#slowDownSimulation()
 	 * @see JComponent#setText(String)
@@ -217,20 +215,22 @@ public class MainView {
 	 * @param state the {@code SimState} to compare
 	 */
 	private void update(SimState state) {
+		// System.out.println("MainView.update");
 		switch (state) {
 		case PLAYPAUSE:
-			simCtrl.playPauseSimulation();
+			playPause();
 			break;
 		case NEW:
 			new SettingsPanel(this, "new simulation options");
 			break;
-		case SPEEDUP:
-			simCtrl.speedUpSimulation();
-			break;
-		case SLOWDOWN:
-			simCtrl.slowDownSimulation();
-			break;
+		default:
+			changeSpeed(state);
 		}
+	}
+
+	private void playPause() {
+		// System.out.println("MainView.playPause");
+		simCtrl.playPauseSimulation();
 		if (simCtrl.isRunning()) {
 			playBtn.setText("pause");
 			refreshTimer.start();
@@ -238,6 +238,23 @@ public class MainView {
 			playBtn.setText("play");
 			refreshTimer.stop();
 		}
+	}
+
+	private void changeSpeed(SimState state) {
+		// System.out.println("MainView.changeSpeed");
+		
+		switch (state) {
+		case SPEEDUP:
+			simCtrl.speedUpSimulation();
+			break;
+		case SLOWDOWN:
+			simCtrl.slowDownSimulation();
+			break;
+		default:
+			// System.out.println("MainView.changeSpeed: state must be SPEEDUP or SLOWDOWN");
+			break;
+		}
+
 		refreshTimer.setDelay(simCtrl.getFramerate());
 		speedLabel.setText("speed: " + simCtrl.getSpeedMultiplier());
 	}
@@ -248,14 +265,13 @@ public class MainView {
 	 * the {@code CanvasPanel} to clear itself, calls the next simulation step, and
 	 * tells {@code CanvasPanel} to redraw the updated board.
 	 * 
-	 * @see CanvasPanel#clear()
 	 * @see SimController#advanceSimulation()
 	 * @see CanvasPanel#drawBoard()
 	 */
 	private void refresh() {
-		canvas.clear();
+		// System.out.println("MainView.refresh");
 		simCtrl.advanceSimulation();
-		canvas.drawBoard();
+		canvas.repaint();
 	}
 
 	/**
@@ -268,6 +284,7 @@ public class MainView {
 	 * @see JFrame#pack()
 	 */
 	private void showFrame() {
+		// System.out.println("MainView.showFrame");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(mainPanel);
 
@@ -294,6 +311,12 @@ public class MainView {
 
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
+	}
+	
+	public void setCanvasPanel(int width, int height) {
+		// System.out.println("MainView.setCanvasPanel: " + width + ", " + height);
+		// canvas.clear();
+		canvas.setSize(new Dimension(width, height));
 	}
 
 	public CanvasPanel getCanvas() {

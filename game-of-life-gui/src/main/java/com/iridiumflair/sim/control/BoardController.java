@@ -75,7 +75,8 @@ public class BoardController {
 	 * @param y - the y coordinate of the cell to birth
 	 */
 	public void birthCell(int x, int y) {
-		board.birthCell(x, y);
+		// System.out.println("BoardController.birthCell: " + x + ", " + y);
+		board.birthCell(x, y);		
 	}
 
 	/**

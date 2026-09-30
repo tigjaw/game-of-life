@@ -134,7 +134,6 @@ public class SettingsPanel extends JDialog {
 	private void addActions() {
 		acceptBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				acceptSettings(true);
 			}
@@ -142,7 +141,6 @@ public class SettingsPanel extends JDialog {
 
 		cancelBtn.addActionListener(new ActionListener() {
 
-			@Override
 			public void actionPerformed(ActionEvent e) {
 				acceptSettings(false);
 			}
@@ -163,13 +161,7 @@ public class SettingsPanel extends JDialog {
 			boardCtrl.setBoard(board);
 			simCtrl.setSimInterval(intervalField.getNumber());
 			simCtrl.restartSimulation();
-			CanvasPanel canvas = mainView.getCanvas();
-			canvas.clear();
-			canvas.setSize(new Dimension(width, height));
-			// update sim with:
-			// new board dimensions
-			// new canvas size
-			// new sim interval and rules
+			mainView.setCanvasPanel(width, height);
 		}
 		setVisible(false);
 	}
@@ -193,6 +185,8 @@ public class SettingsPanel extends JDialog {
 			dim.height = maxHeight;
 		return dim;
 	}
+	
+	// GETTERS AND SETTERS
 
 	public MainView getMainView() {
 		return mainView;
