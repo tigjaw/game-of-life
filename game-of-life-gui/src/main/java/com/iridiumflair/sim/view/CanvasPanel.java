@@ -48,8 +48,7 @@ public class CanvasPanel extends JPanel {
 	 */
 	public CanvasPanel(BoardController boardCtrl) {
 		this.boardCtrl = boardCtrl;
-		setPreferredSize(new Dimension(boardCtrl.getColumns(), boardCtrl.getRows()));
-		setBackground(Color.GRAY);
+		setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
 		// setDoubleBuffered(false);
 		addActions();
 	}
@@ -64,17 +63,15 @@ public class CanvasPanel extends JPanel {
 	 * by calling {@code addMouseMotionListener(MouseMotionAdapter)} and defining a
 	 * new {@code MouseMotionAdapter}, which itself overrides the
 	 * {@code MouseMotionAdapter.mouseDragged(MouseEvent)} method.<br>
-	 * - both listeners call {@code CanvasPanel.draw(int, int)}, using
-	 * {@code MouseEvent.getX()} and {@code MouseEvent.getX()} as parameters.
+	 * - both listeners call {@code CanvasPanel.mouseAction(MouseEvent e)}.
 	 * 
 	 * @see #addMouseListener(MouseListener)
 	 * @see MouseAdapter
 	 * @see MouseAdapter#mouseClicked(MouseEvent)
-	 * @see #addMouseMotionListener(MouseMotionListener)
+	 * @see #addMouseMotionListener(MouseMotionAdapter)
 	 * @see MouseMotionAdapter
 	 * @see MouseMotionAdapter#mouseDragged(MouseEvent)
 	 * @see MouseEvent
-	 * @see #draw(int, int)
 	 */
 	private void addActions() {
 		addMouseListener(new MouseAdapter() {
@@ -82,7 +79,6 @@ public class CanvasPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				mouseAction(e);
-				// draw(e.getX(), e.getY());
 			}
 		});
 
@@ -91,39 +87,15 @@ public class CanvasPanel extends JPanel {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				mouseAction(e);
-				// draw(e.getX(), e.getY());
 			}
 		});
 	}
-	
+
 	private void mouseAction(MouseEvent e) {
 		// System.out.println("CanvasPanel.mouseAction");
 		if (isValidPosition(e.getX(), e.getY())) {
 			boardCtrl.birthCell(e.getX(), e.getY());
 			repaint();
-		}
-	}
-
-	/**
-	 * The {@code drawBoard()} method iterates through each cell of the panel,
-	 * checks if the cell at the x and y coordinates is alive, and draws on the
-	 * panel accordingly.
-	 * 
-	 * @see CanvasPanel#draw(int, int)
-	 */
-	public void drawBoard(Graphics2D g) {
-		// System.out.println("CanvasPanel.drawBoard");
-		for (int y = 0; y < getHeight(); y++) {
-			for (int x = 0; x < getWidth(); x++) {
-				if (boardCtrl.cellIsAlive(x, y)) {
-					// System.out.println("CanvasPanel.drawBoard: " + x + ", " + y + " is alive");
-					g.setPaint(Color.BLACK);
-					g.drawRect(x, y, 1, 1);
-				} else {
-					g.setPaint(Color.WHITE);
-					g.drawRect(x, y, 1, 1);
-				}
-			}
 		}
 	}
 
@@ -136,17 +108,17 @@ public class CanvasPanel extends JPanel {
 	 * 
 	 * @see #getSize()
 	 * 
-	 * @param x - the x coordinate to evaluate
-	 * @param y - the y coordinate to evaluate
+	 * @param w - the x (width)		coordinate to evaluate
+	 * @param h - the y (height)	coordinate to evaluate
 	 * @return true if position is valid
 	 */
-	private boolean isValidPosition(int x, int y) {
+	private boolean isValidPosition(int w, int h) {
 		boolean parses = true;
-		if (x < 0 || x >= boardCtrl.getColumns()) {
+		if (w < 0 || w >= boardCtrl.getWidth()) {
 			parses = false;
 			// System.out.println("x out of bounds");
 		}
-		if (y < 0 || y >= boardCtrl.getRows()) {
+		if (h < 0 || h >= boardCtrl.getHeight()) {
 			parses = false;
 			// System.out.println("y out of bounds");
 		}
@@ -154,36 +126,57 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
+	 * The {@code drawBoard()} method iterates through each cell of the panel,
+	 * checks if the cell at the x and y coordinates is alive, and draws on the
+	 * panel accordingly.
+	 * 
+	 * @see CanvasPanel#draw(int, int)
+	 */
+	private void drawBoard(Graphics2D g) {
+		// System.out.println("CanvasPanel.drawBoard");
+		for (int w = 0; w < boardCtrl.getWidth(); w++) {
+			for (int h = 0; h < boardCtrl.getHeight(); h++) {
+				if (boardCtrl.cellIsAlive(w, h)) {
+					// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h + " is alive");
+					g.setPaint(Color.BLACK);
+					g.drawRect(w, h, 1, 1);
+				} else {
+					g.setPaint(Color.WHITE);
+					g.drawRect(w, h, 1, 1);
+				}
+
+			}
+		}
+	}
+
+	/**
 	 * The {@code paintComponent(Graphics)} method overrides the JPanel
 	 * {@code paintComponent(Graphics)}.<br>
-	 * This method draws the canvas {@code Image} to the {@code Graphics}. if the
-	 * canvas {@code Image} is null:<br>
-	 * - creates a new {@code Image} using the dimensions of the
-	 * {@code CanvasPanel}.<br>
-	 * - assigns this canvas {@code Image} to the graphics variable.<br>
-	 * - tells the renderer to apply anti-aliasing.<br>
-	 * if the canvas {@code Image} is not null:<br>
-	 * - draws the image to the {@code Graphics}.<br>
+	 * This method draws the {@code Board} to the {@code Graphics}. - tells the
+	 * renderer to apply anti-aliasing.<br>
 	 * 
-	 * @see Image
 	 * @see Graphics2D
-	 * @see #createImage(int, int)
-	 * @see Image#getGraphics()
 	 * @see Graphics2D#setRenderingHint(java.awt.RenderingHints.Key, Object)
-	 * @see #clear()
-	 * @see Graphics2D#drawImage(Image, int, int, java.awt.image.ImageObserver)
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		// System.out.println("CanvasPanel.paintComponent");
 		super.paintComponent(g);
-	    Graphics2D g2 = (Graphics2D) g;
-	    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    // Draw background for the whole panel
-	    g2.setColor(Color.WHITE);
-	    g2.fillRect(0, 0, boardCtrl.getColumns(), boardCtrl.getRows());
-	    
+		// set background colour
+		setBackground(Color.GRAY);
+		// draw new graphics
+		Graphics2D g2 = (Graphics2D) g;
+		// add anti-aliasing
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		// Draw background for the whole panel
+		g2.fillRect(0, 0, boardCtrl.getWidth(), boardCtrl.getHeight());
+		// draw board
 		drawBoard((Graphics2D) g2);
+	}
+
+	public void setPreferredSize(int width, int height) {
+		int buffer = 0;
+		this.setPreferredSize(new Dimension(width + buffer, height + buffer));
 	}
 
 	/**

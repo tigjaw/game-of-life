@@ -1,4 +1,4 @@
-package com.iridiumflair.sim.view;
+package com.iridiumflair.sim.model;
 
 /**
  * The {@code LFStrings} class provides easy access to Swing's various Look and

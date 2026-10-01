@@ -31,11 +31,11 @@ public class BoardController {
 	 * 
 	 * @see #BoardController(Board)
 	 * 
-	 * @param rows - the number of rows in the Board
-	 * @param columns - the number of columns in the Board
+	 * @param width		-	the number of columns in the Board
+	 * @param height	-	the number of rows in the Board
 	 */
-	public BoardController(int rows, int columns) {
-		this(new Board(rows, columns));
+	public BoardController(int width, int height) {
+		this(new Board(width, height));
 	}
 
 	/**
@@ -56,12 +56,13 @@ public class BoardController {
 	 * 
 	 * @see Board#cellIsAlive(int, int)
 	 * 
-	 * @param x - the x coordinate of the cell to evaluate
-	 * @param y - the y coordinate of the cell to evaluate
+	 * @param w - the x coordinate of the cell to evaluate
+	 * @param h - the y coordinate of the cell to evaluate
 	 * @return true if alive, false if dead
 	 */
-	public boolean cellIsAlive(int x, int y) {
-		return board.cellIsAlive(x, y);
+	public boolean cellIsAlive(int w, int h) {
+		// System.out.println("BoardController.cellIsAlive: " + w + ", " + h);
+		return board.cellIsAlive(w, h);
 	}
 
 	/**
@@ -71,12 +72,12 @@ public class BoardController {
 	 * 
 	 * @see Board#birthCell(int, int)
 	 * 
-	 * @param x - the x coordinate of the cell to birth
-	 * @param y - the y coordinate of the cell to birth
+	 * @param w - the x coordinate of the cell to birth
+	 * @param h - the y coordinate of the cell to birth
 	 */
-	public void birthCell(int x, int y) {
-		// System.out.println("BoardController.birthCell: " + x + ", " + y);
-		board.birthCell(x, y);		
+	public void birthCell(int w, int h) {
+		// System.out.println("BoardController.birthCell: " + w + ", " + h);
+		board.birthCell(w, h);		
 	}
 
 	/**
@@ -86,11 +87,12 @@ public class BoardController {
 	 * 
 	 * @see Board#killCell(int, int)
 	 * 
-	 * @param x - the x coordinate of the cell to kill
-	 * @param y - the y coordinate of the cell to kill
+	 * @param w - the x coordinate of the cell to kill
+	 * @param h - the y coordinate of the cell to kill
 	 */
-	public void killCell(int x, int y) {
-		board.killCell(x, y);
+	public void killCell(int w, int h) {
+		// System.out.println("BoardController.cellIsAlive: " + w + ", " + h);
+		board.killCell(w, h);
 	}
 
 	/**
@@ -105,12 +107,12 @@ public class BoardController {
 
 	// GETTERS AND SETTERS
 
-	public int getRows() {
-		return board.getRows();
+	public int getWidth() {
+		return board.getWidth();
 	}
 
-	public int getColumns() {
-		return board.getColumns();
+	public int getHeight() {
+		return board.getHeight();
 	}
 
 	public Board getBoard() {

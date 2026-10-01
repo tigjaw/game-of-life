@@ -20,11 +20,11 @@ public class Board {
 	/**
 	 * Constructor for the Board class An empty board initialised to 0
 	 * 
-	 * @param rows    the number of rows in the 2d grid
-	 * @param columns the number of columns in the 2d grid
+	 * @param width  the number of columns in the 2d grid
+	 * @param height the number of rows in the 2d grid
 	 */
-	public Board(int rows, int columns) {
-		board = new int[rows][columns];
+	public Board(int width, int height) {
+		board = new int[width][height];
 	}
 
 	/**
@@ -32,30 +32,30 @@ public class Board {
 	 * values by evaluating the current board, and finally overwrites the old board
 	 * with the new board.
 	 * 
-	 * @see #getRows()
-	 * @see #getColumns()
+	 * @see #getWidth()
+	 * @see #getHeight()
 	 * @see #countAliveNeighbours(int, int)
 	 * @see #cellIsAlive(int, int)
 	 */
 	public void advanceBoard() {
-		int[][] newBoard = new int[getColumns()][getRows()];
+		int[][] newBoard = new int[getWidth()][getHeight()];
 
-		for (int y = 0; y < getRows(); y++) {
-			for (int x = 0; x < getColumns(); x++) {
+		for (int w = 0; w < getWidth(); w++) {
+			for (int h = 0; h < getHeight(); h++) {
 
-				int aliveNeighbours = countAliveNeighbours(x, y);
+				int aliveNeighbours = countAliveNeighbours(w, h);
 
-				if (cellIsAlive(x, y)) {
+				if (cellIsAlive(w, h)) {
 					if (aliveNeighbours < dieCondition1) {
-						newBoard[x][y] = dead;
+						newBoard[w][h] = dead;
 					} else if (aliveNeighbours == surviveCondition1 || aliveNeighbours == surviveCondition2) {
-						newBoard[x][y] = live;
-					} else if (aliveNeighbours > dieCondition2){
-						newBoard[x][y] = dead;
+						newBoard[w][h] = live;
+					} else if (aliveNeighbours > dieCondition2) {
+						newBoard[w][h] = dead;
 					}
 				} else {
 					if (aliveNeighbours == birthCondition) {
-						newBoard[x][y] = live;
+						newBoard[w][h] = live;
 					}
 				}
 
@@ -72,23 +72,23 @@ public class Board {
 	 * 
 	 * @see #cellState(int, int)
 	 * 
-	 * @param x - the x coordinate of the cell to be evaluated
-	 * @param y - the y coordinate of the cell to be evaluated
+	 * @param width  - the y coordinate of the cell to be evaluated
+	 * @param height - the x coordinate of the cell to be evaluated
 	 * @return the number of live cells
 	 */
-	public int countAliveNeighbours(int x, int y) {
+	public int countAliveNeighbours(int width, int height) {
+		// cellState(x, y) is the current cell
 		int count = 0;
-		count += cellState(x - neighbourRange, y - neighbourRange);
-		count += cellState(x, y - neighbourRange);
-		count += cellState(x + neighbourRange, y - neighbourRange);
+		count += cellState(width - neighbourRange, height - neighbourRange);
+		count += cellState(width - neighbourRange, height + neighbourRange);
 
-		count += cellState(x - neighbourRange, y);
-		// count += cellState(x, y); this is the current cell
-		count += cellState(x + neighbourRange, y);
+		count += cellState(width + neighbourRange, height - neighbourRange);
+		count += cellState(width + neighbourRange, height + neighbourRange);
 
-		count += cellState(x - neighbourRange, y + neighbourRange);
-		count += cellState(x, y + neighbourRange);
-		count += cellState(x + neighbourRange, y + neighbourRange);
+		count += cellState(width - neighbourRange, height);
+		count += cellState(width + neighbourRange, height);
+		count += cellState(width, height - neighbourRange);
+		count += cellState(width, height + neighbourRange);
 		return count;
 	}
 
@@ -99,12 +99,12 @@ public class Board {
 	 * 
 	 * @see #cellState(int, int)
 	 * 
-	 * @param x - the x coordinate of the cell to be evaluated
-	 * @param y - the y coordinate of the cell to be evaluated
+	 * @param width  - the x coordinate of the cell to be evaluated
+	 * @param height - the y coordinate of the cell to be evaluated
 	 * @return the state of the cell (alive == true)
 	 */
-	public boolean cellIsAlive(int x, int y) {
-		if (cellState(x, y) == live) {
+	public boolean cellIsAlive(int width, int height) {
+		if (cellState(width, height) == live) {
 			return true;
 		} else {
 			return false;
@@ -117,38 +117,39 @@ public class Board {
 	 * The method first checks if the coordinates are out of the array bounds, and
 	 * if so, returns a 0.
 	 * 
-	 * @see #getColumns()
-	 * @see #getRows()
+	 * @see #getWidth()
+	 * @see #getHeight()
 	 * 
-	 * @param x - the x coordinate of the cell to be evaluated
-	 * @param y - the y coordinate of the cell to be evaluated
+	 * @param width  - the x coordinate of the cell to be evaluated
+	 * @param height - the y coordinate of the cell to be evaluated
 	 * @return the value held in the cell at x and y
 	 */
-	public int cellState(int x, int y) {
-		if (x < 0 || x >= getColumns()) {
+	public int cellState(int width, int height) {
+		if (width < 0 || width >= getWidth()) {
 			return dead;
 		}
 
-		if (y < 0 || y >= getRows()) {
+		if (height < 0 || height >= getHeight()) {
 			return dead;
 		}
 
-		return board[x][y];
+		return board[width][height];
 	}
 
 	/**
 	 * The {@code birthCell(int, int)} method sets the cell at the specified
 	 * coordinates to 1 (alive).
 	 * 
-	 * @param x - the x coordinate of the cell
-	 * @param y - the y coordinate of the cell
+	 * @param width  - the x coordinate of the cell
+	 * @param height - the y coordinate of the cell
 	 */
-	public void birthCell(int x, int y) {
-		this.board[x][y] = live;
-		int alive = 0;
-		for (int i = 0; i < getRows(); i++) {
-			for (int j = 0; j < getColumns(); j++) {
-				if (board[i][j] == 1) { 
+	public void birthCell(int width, int height) {
+		this.board[width][height] = live;
+
+		int alive = 0; // for debugging
+		for (int w = 0; w < getWidth(); w++) {
+			for (int h = 0; h < getHeight(); h++) {
+				if (board[w][h] == 1) {
 					alive++;
 				}
 			}
@@ -160,11 +161,11 @@ public class Board {
 	 * The {@code killCell(int, int)} method sets the cell at the specified
 	 * coordinates to 0 (dead).
 	 * 
-	 * @param x - the x coordinate of the cell
-	 * @param y - the y coordinate of the cell
+	 * @param width  - the y coordinate of the cell
+	 * @param height - the x coordinate of the cell
 	 */
-	public void killCell(int x, int y) {
-		this.board[x][y] = dead;
+	public void killCell(int width, int height) {
+		this.board[width][height] = dead;
 	}
 
 	/**
@@ -173,9 +174,9 @@ public class Board {
 	 * Also resets the {@code generation} to 0.
 	 */
 	public void clear() {
-		for (int x = 0; x < getRows(); x++) {
-			for (int y = 0; y < getColumns(); y++) {
-				board[x][y] = dead;
+		for (int w = 0; w < getWidth(); w++) {
+			for (int h = 0; h < getHeight(); h++) {
+				this.board[w][h] = dead;
 			}
 		}
 	}
@@ -185,10 +186,10 @@ public class Board {
 	 */
 	public void printBoard() {
 		System.out.println("----------");
-		for (int y = 0; y < getRows(); y++) {
+		for (int w = 0; w < getWidth(); w++) {
 			String line = "|";
-			for (int x = 0; x < getColumns(); x++) {
-				if (this.board[x][y] == dead) {
+			for (int h = 0; h < getHeight(); h++) {
+				if (this.board[w][h] == dead) {
 					line += ".";
 				} else {
 					line += "*";
@@ -199,13 +200,13 @@ public class Board {
 		}
 		System.out.println("----------\n");
 	}
-	
+
 	@Override
 	public String toString() {
 		String result = "";
-		for (int x = 0; x < getRows(); x++) {
-			for (int y = 0; y < getColumns(); y++) {
-				result += board[x][y];
+		for (int w = 0; w < getWidth(); w++) {
+			for (int h = 0; h < getHeight(); h++) {
+				result += board[w][h];
 			}
 			result += "\n";
 		}
@@ -233,20 +234,20 @@ public class Board {
 	}
 
 	/**
-	 * The {@code getRows()} method returns the number of rows in the array
+	 * The {@code getWidth()} method returns the number of columns in the array
 	 * 
-	 * @return the rows (height) of the array
+	 * @return the columns (width) of the array
 	 */
-	public int getRows() {
+	public int getWidth() {
 		return board.length;
 	}
 
 	/**
-	 * The {@code getColumns()} method returns the number of columns in the array
+	 * The {@code getHeight()} method returns the number of rows in the array
 	 * 
-	 * @return the columns (width) of the array
+	 * @return the columns (height) of the array
 	 */
-	public int getColumns() {
+	public int getHeight() {
 		return board[0].length;
 	}
 

@@ -14,7 +14,10 @@ import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.iridiumflair.sim.control.BoardController;
 import com.iridiumflair.sim.control.SimController;
+import com.iridiumflair.sim.model.LFStrings;
+import com.iridiumflair.sim.model.SimState;
 
 /**
  * {@code MainView} is the main GUI interface containing the basic controls and
@@ -40,6 +43,7 @@ public class MainView {
 	private JLabel speedLabel;
 	private CanvasPanel canvas;
 	private Timer refreshTimer;
+	private int margin = 100;
 
 	/**
 	 * The constructor for {@code MainView}<br>
@@ -287,6 +291,7 @@ public class MainView {
 		// System.out.println("MainView.showFrame");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(mainPanel);
+		frame.setPreferredSize(new Dimension(simCtrl.getWidth() + margin, simCtrl.getHeight() + margin));
 
 		frame.setLocationRelativeTo(null);
 		frame.revalidate();
@@ -313,10 +318,12 @@ public class MainView {
 		this.frame = frame;
 	}
 	
+	public void setCanvasPanel(BoardController boardCtrl) {
+		this.canvas = new CanvasPanel(boardCtrl);
+	}
+	
 	public void setCanvasPanel(int width, int height) {
-		// System.out.println("MainView.setCanvasPanel: " + width + ", " + height);
-		// canvas.clear();
-		canvas.setSize(new Dimension(width, height));
+		this.canvas.setPreferredSize(width, height);
 	}
 
 	public CanvasPanel getCanvas() {

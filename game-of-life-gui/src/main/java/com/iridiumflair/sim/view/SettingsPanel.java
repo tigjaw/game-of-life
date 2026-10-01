@@ -55,10 +55,10 @@ public class SettingsPanel extends JDialog {
 		rulesPanel = new JPanel(new GridBagLayout());
 		btnPanel = new JPanel(new BorderLayout());
 		// basic settings - width label and field
-		widthField = new NumberField(simCtrl.getColumns(), 4);
+		widthField = new NumberField(simCtrl.getWidth(), 4);
 		widthField.setToolTipText("width of board");
 		// basic settings - height label and field
-		heightField = new NumberField(simCtrl.getRows(), 4);
+		heightField = new NumberField(simCtrl.getHeight(), 4);
 		heightField.setToolTipText("height of board");
 		// basic settings - interval label and field
 		intervalField = new NumberField(simCtrl.getSimInterval(), 4);
@@ -149,19 +149,21 @@ public class SettingsPanel extends JDialog {
 
 	private void acceptSettings(boolean accept) {
 		if (accept) {
-			int height = heightField.getNumber();
 			int width = widthField.getNumber();
-			Board board = new Board(height, width);
+			int height = heightField.getNumber();
+			Board board = new Board(width, height);
 			board.setDieCondition1(dieRule1.getNumber());
 			board.setSurviveCondition1(surviveRule1.getNumber());
 			board.setSurviveCondition2(surviveRule2.getNumber());
 			board.setDieCondition2(dieRule2.getNumber());
 			board.setBirthCondition(birthRule.getNumber());
 			board.setDieCondition2(birthRule.getNumber());
+			
 			boardCtrl.setBoard(board);
 			simCtrl.setSimInterval(intervalField.getNumber());
 			simCtrl.restartSimulation();
 			mainView.setCanvasPanel(width, height);
+			mainView.getCanvas().repaint();
 		}
 		setVisible(false);
 	}

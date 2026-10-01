@@ -28,19 +28,37 @@ public class SimController {
 	 * 
 	 * @see BoardController
 	 * 
-	 * @param boardCtrl to set
+	 * @param boardCtrl		the {@code BoardController} to set
 	 */
 	public SimController(BoardController boardCtrl) {
 		this(boardCtrl, 1000, 1);
 	}
+	
+	/**
+	 * Parameterised constructor for {@code SimController} with two
+	 * parameters.<br>
+	 * Calls the {@code SimController#SimController(BoardController, int, int)}
+	 * constructor using default value for the speed multiplier.
+	 * 
+	 * @see BoardController
+	 * 
+	 * @param boardCtrl		the {@code BoardController} to set
+	 * @param simInterval	the {@code int} to set
+	 */
+	public SimController(BoardController boardCtrl, int simInterval) {
+		this(boardCtrl, simInterval, 1);
+	}
+
 
 	/**
 	 * Parameterised constructor for {@code SimController} with three parameters.
 	 * Sets {@code running} to false by default.
 	 * 
+	 * @see BoardController
+	 * 
 	 * @param boardCtrl       the {@code BoardController} to set
-	 * @param simInterval     the {@code simInterval} to set
-	 * @param speedMultiplier the {@code speedMultiplier} to set
+	 * @param simInterval     the {@code int} to set
+	 * @param speedMultiplier the {@code int} to set
 	 */
 	public SimController(BoardController boardCtrl, int simInterval, int speedMultiplier) {
 		this.boardCtrl = boardCtrl;
@@ -53,7 +71,7 @@ public class SimController {
 	 * The {@code playPauseSimulation()} reverses the value of {@code running},
 	 * which is used by the {@code MainView}
 	 * 
-	 * @return
+	 * @return running
 	 */
 	public boolean playPauseSimulation() {
 		return running = !running;
@@ -71,26 +89,26 @@ public class SimController {
 	public void advanceSimulation() {
 		boardCtrl.advanceBoard();
 		generation++;
-		//System.out.println(generation);
+		//System.out.println("SimController.advanceSimulation: generation = " + generation);
 	}
 
 	/**
 	 * The {@code restartSimulation()} method resets the simulation:<br>
-	 * - tells the {@code BoardController} to clear the board, by calling
-	 * {@code BoardController.clear()}.<br>
 	 * - sets the generation to 0.<br>
 	 * - sets running to false.<br>
 	 */
 	public void restartSimulation() {
-		boardCtrl.clear();
 		generation = 0;
 		running = false;
+		//System.out.println("SimController.restartSimulation:";
+		//System.out.println("\t generation = " + generation);
+		//System.out.println("\t running = " + running);
 	}
 
 	/**
 	 * The {@code speedUpSimulation} method speeds up the simulation by multiplying
 	 * the {@code speedMultiplier} by 2.<br>
-	 * During the simulation process, the speed (framerate) is derived by diving the
+	 * During the simulation process, the speed (frame-rate) is derived by diving the
 	 * timer delay by the speedMultiplier.
 	 */
 	public void speedUpSimulation() {
@@ -100,7 +118,7 @@ public class SimController {
 	/**
 	 * The {@code slowDownSimulation} method speeds up the simulation by dividing
 	 * the {@code speedMultiplier} by 2.<br>
-	 * During the simulation process, the speed (framerate) is derived by diving the
+	 * During the simulation process, the speed (frame-rate) is derived by diving the
 	 * timer delay by the speedMultiplier.
 	 */
 	public void slowDownSimulation() {
@@ -111,12 +129,12 @@ public class SimController {
 
 	// GETTERS AND SETTERS
 
-	public int getRows() {
-		return boardCtrl.getRows();
+	public int getWidth() {
+		return boardCtrl.getWidth();
 	}
 
-	public int getColumns() {
-		return boardCtrl.getColumns();
+	public int getHeight() {
+		return boardCtrl.getHeight();
 	}
 
 	public BoardController getBoardCtrl() {

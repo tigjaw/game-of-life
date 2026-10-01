@@ -24,7 +24,7 @@ public class RunSim implements Runnable {
 	}
 
 	public void run() {
-		Board board = new Board(500, 500);
+		Board board = new Board(250, 250);
 		BoardController boardCtrl = new BoardController(board);
 		SimController ctrl = new SimController(boardCtrl);
 		new MainView(new JFrame("Conway's Game of Life"), ctrl);
