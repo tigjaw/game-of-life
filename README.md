@@ -34,6 +34,9 @@
       <li>
         [d] change simulation speed
       </li>
+      <li>
+        [e] zoom in with ctrl + mouse wheel
+      </li>
     </ul>
   </div>
   
