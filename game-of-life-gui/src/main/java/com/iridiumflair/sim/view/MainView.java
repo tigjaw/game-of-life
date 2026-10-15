@@ -2,6 +2,8 @@ package com.iridiumflair.sim.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GraphicsEnvironment;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,11 +40,10 @@ public class MainView {
 	private SimController simCtrl;
 	private JFrame frame;
 	private JPanel mainPanel, controlPanel;
-	private JButton playBtn, slowDownBtn, speedUpBtn, newBtn;
-	private JLabel speedLabel;
+	private JButton playBtn, slowDownBtn, speedUpBtn, newBtn, zoomOutBtn, zoomInBtn;
+	private JLabel speedLabel, zoomLabel;
 	private CanvasPanel canvas;
 	private Timer refreshTimer;
-	private int margin = 100;
 
 	/**
 	 * The constructor for MainView<br>
@@ -125,7 +126,7 @@ public class MainView {
 		
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
-		controlPanel = new JPanel();
+		controlPanel = new JPanel(new BorderLayout());
 		canvas = new CanvasPanel(simCtrl.getBoardCtrl());
 		// setup buttons and labels
 		newBtn = new JButton("new");
@@ -137,6 +138,11 @@ public class MainView {
 		speedUpBtn = new JButton(">>");
 		speedUpBtn.setToolTipText("speed up simulation speed");
 		speedLabel = new JLabel("speed: " + simCtrl.getSpeedMultiplier());
+		zoomOutBtn = new JButton("-");
+		zoomOutBtn.setToolTipText("Zoom out");
+		zoomLabel = new JLabel(canvas.getZoomPercent() + "%");
+		zoomInBtn = new JButton("+");
+		zoomInBtn.setToolTipText("Zoom in");
 	}
 
 	/**
@@ -145,11 +151,20 @@ public class MainView {
 	private void addComponents() {
 		// System.out.println("MainView.addComponents()");
 		
-		controlPanel.add(newBtn);
-		controlPanel.add(playBtn);
-		controlPanel.add(slowDownBtn);
-		controlPanel.add(speedUpBtn);
-		controlPanel.add(speedLabel);
+		JPanel simulationControls = new JPanel();
+		simulationControls.add(newBtn);
+		simulationControls.add(playBtn);
+		simulationControls.add(slowDownBtn);
+		simulationControls.add(speedUpBtn);
+		simulationControls.add(speedLabel);
+
+		JPanel zoomControls = new JPanel();
+		zoomControls.add(zoomOutBtn);
+		zoomControls.add(zoomLabel);
+		zoomControls.add(zoomInBtn);
+
+		controlPanel.add(simulationControls, BorderLayout.NORTH);
+		controlPanel.add(zoomControls, BorderLayout.SOUTH);
 
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
 		mainPanel.add(new JScrollPane(canvas), BorderLayout.CENTER);
@@ -164,6 +179,10 @@ public class MainView {
 	 */
 	private void addActions() {
 		// System.out.println("MainView.addActions()");
+
+		canvas.addPropertyChangeListener("zoom", e -> zoomLabel.setText(canvas.getZoomPercent() + "%"));
+		zoomOutBtn.addActionListener(e -> canvas.zoomOut());
+		zoomInBtn.addActionListener(e -> canvas.zoomIn());
 
 		newBtn.addActionListener(new ActionListener() {
 
@@ -310,13 +329,20 @@ public class MainView {
 		// System.out.println("MainView.showFrame()");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(mainPanel);
-		frame.setPreferredSize(new Dimension(simCtrl.getWidth() + margin, simCtrl.getHeight() + margin));
-
-		frame.setLocationRelativeTo(null);
-		frame.revalidate();
-		frame.repaint();
-		frame.pack();
+		resizeFrameToFitContent();
 		frame.setVisible(true);
+	}
+
+	public void resizeFrameToFitContent() {
+		frame.pack();
+
+		Rectangle screenBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		Dimension packedSize = frame.getSize();
+		int width = Math.min(packedSize.width, screenBounds.width);
+		int height = Math.min(packedSize.height, screenBounds.height);
+		frame.setSize(width, height);
+		frame.setLocation(screenBounds.x + (screenBounds.width - width) / 2,
+				screenBounds.y + (screenBounds.height - height) / 2);
 	}
 
 	// GETTERS AND SETTERS
