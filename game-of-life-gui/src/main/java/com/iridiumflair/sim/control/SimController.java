@@ -1,13 +1,13 @@
 package com.iridiumflair.sim.control;
 
 /**
- * The {@code SimController} class contains the simulation logic and is utilised
- * by the view components to manipulate the simulation indirectly.<br>
- * To manipulate the {@code Board}, the {@code SimController} contains the
- * {@code BoardController} and does so via its public access methods. The
- * {@code SimController} does not access the {@code Board} directly. The
- * {@code SimController} has no knowledge of the {@code Board} or of any of the
- * view components. Its sole purpose is to control and advance the simulation.
+ * The SimController class contains the simulation logic and is utilised by the
+ * view components to manipulate the simulation indirectly.<br>
+ * To manipulate the Board, the SimController contains the BoardController and
+ * does so via its public access methods. The SimController does not access the
+ * Board directly. The SimController has no knowledge of the Board or of any of
+ * the view components. Its sole purpose is to control and advance the
+ * simulation.
  * 
  * @see BoardController
  * 
@@ -21,42 +21,41 @@ public class SimController {
 	private int generation;
 
 	/**
-	 * Parameterised constructor for {@code SimController} with only one
-	 * parameter.<br>
-	 * Calls the {@code SimController#SimController(BoardController, int, int)}
-	 * constructor using default values for the sim interval and speed multiplier.
+	 * Parameterised constructor for SimController with only one parameter.<br>
+	 * Calls the two-parameter constructor using default values for the sim interval
+	 * and speed multiplier.
 	 * 
 	 * @see BoardController
 	 * 
-	 * @param boardCtrl the {@code BoardController} to set
+	 * @param boardCtrl - the {@link BoardController} to set
 	 */
 	public SimController(BoardController boardCtrl) {
 		this(boardCtrl, 1000, 1);
 	}
 
 	/**
-	 * Parameterised constructor for {@code SimController} with two parameters.<br>
-	 * Calls the {@code SimController#SimController(BoardController, int, int)}
-	 * constructor using default value for the speed multiplier.
+	 * Parameterised constructor for SimController with two parameters.<br>
+	 * Calls the three-parameter constructor using default values for the speed
+	 * multiplier.
 	 * 
 	 * @see BoardController
 	 * 
-	 * @param boardCtrl   the {@code BoardController} to set
-	 * @param simInterval the {@code int} to set
+	 * @param boardCtrl   - the {@link BoardController} to set
+	 * @param simInterval - the int to set
 	 */
 	public SimController(BoardController boardCtrl, int simInterval) {
 		this(boardCtrl, simInterval, 1);
 	}
 
 	/**
-	 * Parameterised constructor for {@code SimController} with three parameters.
-	 * Sets {@code running} to false by default.
+	 * Parameterised constructor for SimController with three parameters. The
+	 * simulation is paused by default.
 	 * 
 	 * @see BoardController
 	 * 
-	 * @param boardCtrl       the {@code BoardController} to set
-	 * @param simInterval     the {@code int} to set
-	 * @param speedMultiplier the {@code int} to set
+	 * @param boardCtrl       - the {@link BoardController} to set
+	 * @param simInterval     - the int to set
+	 * @param speedMultiplier - the int to set
 	 */
 	public SimController(BoardController boardCtrl, int simInterval, int speedMultiplier) {
 		this.boardCtrl = boardCtrl;
@@ -66,26 +65,27 @@ public class SimController {
 	}
 
 	/**
-	 * The {@code playPauseSimulation()} reverses the value of {@code running},
-	 * which is used by the {@code MainView}
+	 * This method reverses the value of {@link #running} which decides whether the
+	 * simulation is running or paused, and returns that value.
 	 * 
-	 * @return running
+	 * @return running - the boolean to return
 	 */
 	public boolean playPauseSimulation() {
+		// System.out.println("SimController.playPauseSimulation()");
+
 		return running = !running;
 	}
 
 	/**
-	 * The {@code advanceSimulation()} method advances the simulation:<br>
-	 * - tells the {@code BoardController} to advance the {@code Board} to the next
-	 * generation, by calling {@code BoardController.advanceBoard()}.<br>
+	 * This method advances the simulation:<br>
+	 * - tells the BoardController to advance the Board to the next.<br>
 	 * - increments the generation.
 	 * 
 	 * @see BoardController#advanceBoard()
-	 * 
 	 */
 	public void advanceSimulation() {
 		// System.out.println("SimController.advanceSimulation:");
+
 		boardCtrl.advanceBoard();
 		generation++;
 		// System.out.println("generation = " + generation);
@@ -94,36 +94,44 @@ public class SimController {
 	/**
 	 * This method resets the simulation:<br>
 	 * - sets the generation to 0.<br>
-	 * - sets running to false.<br>
+	 * - pauses the simulation by setting the running value to false.<br>
 	 */
 	public void restartSimulation() {
-		// System.out.println("SimController.restartSimulation:";
+		// System.out.println("SimController.restartSimulation()";
+
 		generation = 0;
 		running = false;
-		// System.out.println("\t generation = " + generation);
-		// System.out.println("\t running = " + running);
+
+		// System.out.println("generation = " + generation);
+		// System.out.println("running = " + running);
 	}
 
 	/**
-	 * The {@code speedUpSimulation} method speeds up the simulation by multiplying
-	 * the {@code speedMultiplier} by 2.<br>
+	 * This method speeds up the simulation by multiplying the speedMultiplier by 2.
 	 * During the simulation process, the speed (frame-rate) is derived by diving
 	 * the timer delay by the speedMultiplier.
 	 */
 	public void speedUpSimulation() {
+		// System.out.println("SimController.speedUpSimulation()";
+
 		speedMultiplier = speedMultiplier * 2;
+
+		// System.out.println("new speedMultiplier = " + speedMultiplier);
 	}
 
 	/**
-	 * The {@code slowDownSimulation} method speeds up the simulation by dividing
-	 * the {@code speedMultiplier} by 2.<br>
+	 * This method slows down the simulation by dividing the speedMultiplier by 2.
 	 * During the simulation process, the speed (frame-rate) is derived by diving
 	 * the timer delay by the speedMultiplier.
 	 */
 	public void slowDownSimulation() {
+		// System.out.println("SimController.slowDownSimulation()";
+
 		if (speedMultiplier > 1) {
 			speedMultiplier = speedMultiplier / 2;
 		}
+		
+		// System.out.println("new speedMultiplier = " + speedMultiplier);
 	}
 
 	// GETTERS AND SETTERS

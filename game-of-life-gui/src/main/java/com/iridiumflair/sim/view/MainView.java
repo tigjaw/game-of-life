@@ -78,7 +78,7 @@ public class MainView {
 	 * 
 	 */
 	private void createAndShowGUI() {
-		// System.out.println("MainView.createAndShowGUI");
+		// System.out.println("MainView.createAndShowGUI()");
 		manageUI();
 		createComponents();
 		addComponents();
@@ -94,7 +94,8 @@ public class MainView {
 	 * @see UIManager#setLookAndFeel(String)
 	 */
 	private void manageUI() {
-		// System.out.println("MainView.manageUI");
+		// System.out.println("MainView.manageUI()");
+		
 		// set look and feel
 		try {
 			UIManager.setLookAndFeel(LFStrings.WINDOWS);
@@ -119,7 +120,8 @@ public class MainView {
 	 * @see SimController#getSpeedMultiplier()
 	 */
 	private void createComponents() {
-		// System.out.println("MainView.createComponents");
+		// System.out.println("MainView.createComponents()");
+		
 		// setup panels
 		mainPanel = new JPanel(new BorderLayout());
 		controlPanel = new JPanel();
@@ -140,7 +142,8 @@ public class MainView {
 	 * This method adds each JComponent to its parent JPanel.
 	 */
 	private void addComponents() {
-		// System.out.println("MainView.addComponents");
+		// System.out.println("MainView.addComponents()");
+		
 		controlPanel.add(newBtn);
 		controlPanel.add(playBtn);
 		controlPanel.add(slowDownBtn);
@@ -159,6 +162,7 @@ public class MainView {
 	 * @see SimState
 	 */
 	private void addActions() {
+		// System.out.println("MainView.addActions()");
 
 		newBtn.addActionListener(new ActionListener() {
 
@@ -206,7 +210,7 @@ public class MainView {
 	 * @param state the {@link SimState} to compare
 	 */
 	private void update(SimState state) {
-		// System.out.println("MainView.update");
+		// System.out.println("MainView.update(SimState state)");
 		// System.out.println("SimState = " + SimState);
 
 		switch (state) {
@@ -237,7 +241,7 @@ public class MainView {
 	 * @see MainView#playBtn
 	 */
 	private void playPause() {
-		// System.out.println("MainView.playPause");
+		// System.out.println("MainView.playPause()");
 		// System.out.println("Simulation is Running = " + simCtrl.isRunning());
 
 		if (simCtrl.isRunning()) {
@@ -266,7 +270,7 @@ public class MainView {
 	 * @see SimController#getSpeedMultiplier()
 	 */
 	private void changeSpeed(SimState state) {
-		// System.out.println("MainView.changeSpeed");
+		// System.out.println("MainView.changeSpeed(SimState state)");
 		// System.out.println("SimState = " + state);
 
 		switch (state) {
@@ -293,7 +297,7 @@ public class MainView {
 	 * @see CanvasPanel#drawBoard()
 	 */
 	private void refresh() {
-		// System.out.println("MainView.refresh");
+		// System.out.println("MainView.refresh()");
 		simCtrl.advanceSimulation();
 		canvas.repaint();
 	}
@@ -302,7 +306,7 @@ public class MainView {
 	 * This method adds the mainPanel to the frame and displays the GUI.
 	 */
 	private void showFrame() {
-		// System.out.println("MainView.showFrame");
+		// System.out.println("MainView.showFrame()");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(mainPanel);
 		frame.setPreferredSize(new Dimension(simCtrl.getWidth() + margin, simCtrl.getHeight() + margin));

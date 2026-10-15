@@ -1,8 +1,8 @@
 package com.iridiumflair.sim.model;
 
 /**
- * The {@code Board} class contains the board array and the logic behind the
- * game of life simulation.
+ * The Board class contains the board array and the logic behind the game of
+ * life simulation.
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
@@ -24,13 +24,12 @@ public class Board {
 	 * @param height the number of rows in the 2d grid
 	 */
 	public Board(int width, int height) {
-		board = new int[width][height];
+		this.board = new int[width][height];
 	}
 
 	/**
-	 * The {@code advanceBoard()} method creates a new board, recalculates board
-	 * values by evaluating the current board, and finally overwrites the old board
-	 * with the new board.
+	 * This method creates a new board, recalculates board values by evaluating the
+	 * current board, and finally overwrites the old board with the new board.
 	 * 
 	 * @see #getWidth()
 	 * @see #getHeight()
@@ -38,6 +37,8 @@ public class Board {
 	 * @see #cellIsAlive(int, int)
 	 */
 	public void advanceBoard() {
+		// System.out.println("board.advanceBoard()");
+
 		int[][] newBoard = new int[getWidth()][getHeight()];
 
 		for (int w = 0; w < getWidth(); w++) {
@@ -65,8 +66,8 @@ public class Board {
 	}
 
 	/**
-	 * The {@code countAliveNeighbours(int, int)} method takes the x and y
-	 * coordinates of a cell and counts its living neighbours in all directions.<br>
+	 * This method takes the x and y coordinates of a cell and counts its living
+	 * neighbours in all directions.<br>
 	 * Only cells within one cell distances are considered neighbours.<br>
 	 * The cell state at x,y is not evaluated as it is the cell being compared.
 	 * 
@@ -77,7 +78,9 @@ public class Board {
 	 * @return the number of live cells
 	 */
 	public int countAliveNeighbours(int width, int height) {
-		// cellState(x, y) is the current cell
+		// System.out.println("Board.countAliveNeighbours(int, int)");
+		// System.out.println("width = " + width + ", height = " + height);
+
 		int count = 0;
 		count += cellState(width - neighbourRange, height - neighbourRange);
 		count += cellState(width - neighbourRange, height + neighbourRange);
@@ -93,9 +96,9 @@ public class Board {
 	}
 
 	/**
-	 * The {@code cellIsAlive(int, int)} method checks if the cell at the specified
-	 * x and y coordinates is alive or dead. If the cell state at x and y is 1, then
-	 * it is alive, else it is dead.
+	 * This method checks if the cell at the specified x and y coordinates is alive
+	 * or dead. If the cell state at x and y is 1, then it is alive, else it is
+	 * dead.
 	 * 
 	 * @see #cellState(int, int)
 	 * 
@@ -104,6 +107,9 @@ public class Board {
 	 * @return the state of the cell (alive == true)
 	 */
 	public boolean cellIsAlive(int width, int height) {
+		// System.out.println("Board.cellIsAlive(int, int)");
+		// System.out.println("width = " + width + ", height = " + height);
+
 		if (cellState(width, height) == live) {
 			return true;
 		} else {
@@ -125,6 +131,9 @@ public class Board {
 	 * @return the value held in the cell at x and y
 	 */
 	public int cellState(int width, int height) {
+		// System.out.println("Board.cellState(int, int)");
+		// System.out.println("width = " + width + ", height = " + height);
+
 		if (width < 0 || width >= getWidth()) {
 			return dead;
 		}
@@ -144,8 +153,12 @@ public class Board {
 	 * @param height - the y coordinate of the cell
 	 */
 	public void birthCell(int width, int height) {
+		// System.out.println("Board.birthCell(int width, int height)");
+		// System.out.println("width = " + width + ", height = " + height);
+
 		this.board[width][height] = live;
 
+		@SuppressWarnings("unused")
 		int alive = 0; // for debugging
 		for (int w = 0; w < getWidth(); w++) {
 			for (int h = 0; h < getHeight(); h++) {
@@ -154,26 +167,29 @@ public class Board {
 				}
 			}
 		}
-		System.out.println("alive cells: " + alive);
+		// System.out.println("alive cells: " + alive);
 	}
 
 	/**
-	 * The {@code killCell(int, int)} method sets the cell at the specified
-	 * coordinates to 0 (dead).
+	 * This method sets the cell at the specified coordinates to 0 (dead).
 	 * 
 	 * @param width  - the y coordinate of the cell
 	 * @param height - the x coordinate of the cell
 	 */
 	public void killCell(int width, int height) {
+		// System.out.println("Board.killCell(int width, int height)");
+		// System.out.println("width = " + width + ", height = " + height);
+		
 		this.board[width][height] = dead;
 	}
 
 	/**
-	 * The {@code clear()} method clears the board by looping through it and setting
-	 * each cell to 0.<br>
-	 * Also resets the {@code generation} to 0.
+	 * This method clears the board by looping through it and setting each cell to
+	 * 0.
 	 */
 	public void clear() {
+		// System.out.println("Board.clear()");
+
 		for (int w = 0; w < getWidth(); w++) {
 			for (int h = 0; h < getHeight(); h++) {
 				this.board[w][h] = dead;
@@ -182,7 +198,7 @@ public class Board {
 	}
 
 	/**
-	 * {@code printBoard()} prints the board to the console.
+	 * This method prints the board to the console.
 	 */
 	public void printBoard() {
 		System.out.println("----------");
@@ -216,8 +232,6 @@ public class Board {
 	// GETTERS AND SETTERS
 
 	/**
-	 * The {@code getBoard()} method returns the board array
-	 * 
 	 * @return the board array
 	 */
 	public int[][] getBoard() {
@@ -225,8 +239,6 @@ public class Board {
 	}
 
 	/**
-	 * The {@code setBoard(int[][])} method sets the board array
-	 * 
 	 * @param board the board array to set
 	 */
 	public void setBoard(int[][] board) {
@@ -234,18 +246,14 @@ public class Board {
 	}
 
 	/**
-	 * The {@code getWidth()} method returns the number of columns in the array
-	 * 
-	 * @return the columns (width) of the array
+	 * @return the width of the array
 	 */
 	public int getWidth() {
 		return board.length;
 	}
 
 	/**
-	 * The {@code getHeight()} method returns the number of rows in the array
-	 * 
-	 * @return the columns (height) of the array
+	 * @return the height of the array
 	 */
 	public int getHeight() {
 		return board[0].length;

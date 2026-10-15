@@ -37,6 +37,10 @@ public class SettingsPanel extends JDialog {
 	// buttons
 	private JButton acceptBtn, cancelBtn;
 
+	/**
+	 * @param mainView - the {@link MainView} to set
+	 * @param title    - the String to set
+	 */
 	public SettingsPanel(MainView mainView, String title) {
 		super(mainView.getFrame(), title);
 		this.mainView = mainView;
@@ -48,7 +52,12 @@ public class SettingsPanel extends JDialog {
 		display();
 	}
 
+	/**
+	 * This method creates the JDialog's various components.
+	 */
 	private void createComponents() {
+		// System.out.println("SettingsPanel.createComponents()");
+		
 		// containers
 		mainPanel = new JPanel(new BorderLayout());
 		settingsPanel = new JPanel(new GridBagLayout());
@@ -77,7 +86,13 @@ public class SettingsPanel extends JDialog {
 		cancelBtn.setToolTipText("cancel simulation creation");
 	}
 
+	/**
+	 * This method adds the components to the Dialog, including components for each
+	 * game rule.
+	 */
 	private void addComponents() {
+		// System.out.println("SettingsPanel.addComponents()");
+
 		// add panels
 		mainPanel.add(settingsPanel, BorderLayout.NORTH);
 		mainPanel.add(rulesPanel, BorderLayout.CENTER);
@@ -97,7 +112,7 @@ public class SettingsPanel extends JDialog {
 		rule1.add(label("a live cell dies if its number of live neighbours is less than"));
 		rule1.add(dieRule1);
 		rulesPanel.add(rule1, createGBC(0, 1));
-		// surival rule 1 and 2
+		// survival rule 1 and 2
 		JPanel rule2 = new JPanel();
 		rule2.add(label("a live cell survives if its number of live neighbours equals"));
 		rule2.add(surviveRule1);
@@ -124,6 +139,9 @@ public class SettingsPanel extends JDialog {
 	}
 
 	private GridBagConstraints createGBC(int x, int y) {
+		// System.out.println("SettingsPanel.createGBC(int x, int y)");
+		// System.out.println("x = " + x + ", y = " + y);
+
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = x;
 		gbc.gridy = y;
@@ -131,7 +149,12 @@ public class SettingsPanel extends JDialog {
 		return gbc;
 	}
 
+	/**
+	 * Adds actions for the accept and cancel buttons.
+	 */
 	private void addActions() {
+		// System.out.println("SettingsPanel.addActions()");
+		
 		acceptBtn.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -147,7 +170,17 @@ public class SettingsPanel extends JDialog {
 		});
 	}
 
+	/**
+	 * if the accept button was pressed, this method creates a new simulation with
+	 * the settings applied. If the cancel button is pressed, nothing is done.
+	 * Finally, the Settings Panel is hidden.
+	 * 
+	 * @param accept - the boolean to evaluate
+	 */
 	private void acceptSettings(boolean accept) {
+		// System.out.println("SettingsPanel.acceptSettings(boolean accept)");
+		// System.out.println("accept = " + accept);
+
 		if (accept) {
 			int width = widthField.getNumber();
 			int height = heightField.getNumber();
@@ -168,7 +201,12 @@ public class SettingsPanel extends JDialog {
 		setVisible(false);
 	}
 
+	/**
+	 * This method displays the Settings Panel.
+	 */
 	private void display() {
+		//System.out.println("SettingsPanel.display()");
+		
 		add(mainPanel);
 		setLocationRelativeTo(null);
 		pack();
@@ -196,14 +234,6 @@ public class SettingsPanel extends JDialog {
 
 	public void setMainView(MainView mainView) {
 		this.mainView = mainView;
-	}
-
-	public SimController getController() {
-		return simCtrl;
-	}
-
-	public void setController(SimController controller) {
-		this.simCtrl = controller;
 	}
 
 	public JTextArea getWidthField() {

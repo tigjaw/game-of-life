@@ -58,6 +58,8 @@ public class CanvasPanel extends JPanel {
 	 * 
 	 */
 	private void addActions() {
+		// System.out.println("CanvasPanel.addActions()");
+		
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -86,7 +88,8 @@ public class CanvasPanel extends JPanel {
 	 * @param e - the {@link MouseEvent} to set
 	 */
 	private void mouseAction(MouseEvent e) {
-		// System.out.println("CanvasPanel.mouseAction");
+		// System.out.println("CanvasPanel.mouseAction(MouseEvent e)");
+		
 		if (isValidPosition(e.getX(), e.getY())) {
 			boardCtrl.birthCell(e.getX(), e.getY());
 			repaint();
@@ -101,13 +104,14 @@ public class CanvasPanel extends JPanel {
 	 * 
 	 * @see #getSize()
 	 * 
-	 * @param w - the w (x column) coordinate to evaluate
-	 * @param h - the h (y height) coordinate to evaluate
+	 * @param w - the x coordinate to evaluate
+	 * @param h - the y coordinate to evaluate
 	 * @return true if position is valid
 	 */
 	private boolean isValidPosition(int w, int h) {
-		// System.out.println("CanvasPanel.isValidPosition");
+		// System.out.println("CanvasPanel.isValidPosition(int w, int h)");
 		// System.out.println("w = " + w + ", h = " + h);
+		
 		boolean parses = true;
 		if (w < 0 || w >= boardCtrl.getWidth()) {
 			parses = false;
@@ -131,8 +135,10 @@ public class CanvasPanel extends JPanel {
 	 * @param g - the {@link Graphics2D} to draw on.
 	 */
 	private void drawBoard(Graphics2D g) {
-		// System.out.println("CanvasPanel.drawBoard");
+		// System.out.println("CanvasPanel.drawBoard(Graphics2D g)");
 		// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h);
+		
+		
 		for (int w = 0; w < boardCtrl.getWidth(); w++) {
 			for (int h = 0; h < boardCtrl.getHeight(); h++) {
 				if (boardCtrl.cellIsAlive(w, h)) {
@@ -160,7 +166,8 @@ public class CanvasPanel extends JPanel {
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
-		// System.out.println("CanvasPanel.paintComponent");
+		// System.out.println("CanvasPanel.paintComponent(Graphics g)");
+		
 		super.paintComponent(g);
 		// set background colour
 		setBackground(Color.GRAY);
@@ -175,6 +182,9 @@ public class CanvasPanel extends JPanel {
 	}
 
 	public void setPreferredSize(int width, int height) {
+		// System.out.println("CanvasPanel.setPreferredSize(int width, int height");
+		// System.out.println("width = " + width + ", height = " + height);
+		
 		int buffer = 0;
 		this.setPreferredSize(new Dimension(width + buffer, height + buffer));
 	}
