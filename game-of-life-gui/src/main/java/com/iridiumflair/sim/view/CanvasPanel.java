@@ -4,8 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -103,6 +103,7 @@ public class CanvasPanel extends JPanel {
 			double anchorX = viewPosition.x + mouse.x;
 			double anchorY = viewPosition.y + mouse.y;
 
+			double zoomFactor = newZoom / oldZoom;
 			zoom = newZoom;
 			setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
 			revalidate();
@@ -110,8 +111,8 @@ public class CanvasPanel extends JPanel {
 
 			if (viewport != null) {
 				SwingUtilities.invokeLater(() -> viewport.setViewPosition(new Point(
-						Math.max(0, (int) Math.round(anchorX * zoom / oldZoom - mouse.x)),
-						Math.max(0, (int) Math.round(anchorY * zoom / oldZoom - mouse.y)))));
+						Math.max(0, (int) Math.round(anchorX * zoomFactor - mouse.x)),
+						Math.max(0, (int) Math.round(anchorY * zoomFactor - mouse.y)))));
 			}
 		});
 	}
@@ -180,18 +181,12 @@ public class CanvasPanel extends JPanel {
 		// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h);
 		
 		
+		g.setColor(Color.BLACK);
 		for (int w = 0; w < boardCtrl.getWidth(); w++) {
 			for (int h = 0; h < boardCtrl.getHeight(); h++) {
 				if (boardCtrl.cellIsAlive(w, h)) {
-					// System.out.println("cell is alive");
-					g.setPaint(Color.BLACK);
-					g.drawRect(w, h, 1, 1);
-				} else {
-					// System.out.println("cell is dead");
-					g.setPaint(Color.WHITE);
-					g.drawRect(w, h, 1, 1);
+					g.fillRect(w, h, 1, 1);
 				}
-
 			}
 		}
 	}
@@ -213,14 +208,17 @@ public class CanvasPanel extends JPanel {
 		// set background colour
 		setBackground(Color.GRAY);
 		// draw new graphics
-		Graphics2D g2 = (Graphics2D) g;
-		// add anti-aliasing
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-		g2.setColor(Color.WHITE);
-		g2.fillRect(0, 0, getWidth(), getHeight());
-		g2.scale(zoom, zoom);
-		// draw board
-		drawBoard(g2);
+		Graphics2D g2 = (Graphics2D) g.create();
+		try {
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			g2.setColor(Color.WHITE);
+			g2.fillRect(0, 0, getWidth(), getHeight());
+			g2.scale(zoom, zoom);
+			// draw board
+			drawBoard(g2);
+		} finally {
+			g2.dispose();
+		}
 	}
 
 	public void setPreferredSize(int width, int height) {
