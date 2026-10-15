@@ -18,14 +18,14 @@ import com.iridiumflair.sim.control.SimController;
 import com.iridiumflair.sim.model.Board;
 
 /**
- * The {@code SettingsPanel} class is displayed when the user creates a new
- * simulation.
+ * This JDialog is displayed when the user wishes to start a new simulation.
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
 @SuppressWarnings("serial")
 public class SettingsPanel extends JDialog {
 	private MainView mainView;
+	// controllers
 	private SimController simCtrl;
 	private BoardController boardCtrl;
 	// options
@@ -158,7 +158,7 @@ public class SettingsPanel extends JDialog {
 			board.setDieCondition2(dieRule2.getNumber());
 			board.setBirthCondition(birthRule.getNumber());
 			board.setDieCondition2(birthRule.getNumber());
-			
+
 			boardCtrl.setBoard(board);
 			simCtrl.setSimInterval(intervalField.getNumber());
 			simCtrl.restartSimulation();
@@ -187,7 +187,7 @@ public class SettingsPanel extends JDialog {
 			dim.height = maxHeight;
 		return dim;
 	}
-	
+
 	// GETTERS AND SETTERS
 
 	public MainView getMainView() {

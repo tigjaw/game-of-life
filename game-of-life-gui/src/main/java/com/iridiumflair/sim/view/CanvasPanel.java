@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
@@ -16,18 +14,15 @@ import javax.swing.JPanel;
 import com.iridiumflair.sim.control.BoardController;
 
 /**
- * The {@code CanvasPanel} class extends {@code JPanel}, providing an area for
- * the user to draw on, and contains all of the functionality for doing so,
- * using {@code Image} and {@code Graphics2D}, and {@code MouseAdapter}s to
- * process mouse input.<br>
- * {@code CanvasPanel} contains the {@code BoardController} through which it
- * updates the {@code Board} indirectly.<br>
- * The {@code CanvasPanel} has no direct knowledge of the {@code SimController},
- * {@code Board}, or any other view components.
+ * CanvasPanel extends JPanel, providing an area for the user to draw on, and
+ * contains all of the functionality for doing so, using Graphics2D, and
+ * MouseAdapters to process mouse input.<br>
+ * CanvasPanel contains the BoardController through which it updates the Board
+ * indirectly.<br>
+ * The CanvasPanel has no direct knowledge of the SimController, Board, or any
+ * other view components.
  * 
  * @see BoardController
- * @see Image
- * @see Graphics2D
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
@@ -37,41 +32,30 @@ public class CanvasPanel extends JPanel {
 
 	/**
 	 * The Constructor for {@code CanvasPanel}:<br>
-	 * - takes {@code BoardController} as a parameter, and applies it to the
-	 * {@code boardCtrl}.<br>
-	 * - sets the dimensions of the {@code CanvasPanel}, using the values returned
-	 * by {@code BoardController#getColumns()} and
-	 * {@code BoardController#getRows()}.<br>
-	 * - calls {@code addActions()}.
+	 * - initialises the Board Controller.<br>
+	 * - sets the dimensions of the Panel, using the Board size.<br>
+	 * - adds mouse actions
 	 * 
-	 * @param boardCtrl
+	 * @see #setPreferredSize(int, int)
+	 * @see #addActions()
+	 * 
+	 * @param boardCtrl - the {@link BoardController} to set.
 	 */
 	public CanvasPanel(BoardController boardCtrl) {
 		this.boardCtrl = boardCtrl;
 		setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
-		// setDoubleBuffered(false);
 		addActions();
 	}
 
 	/**
-	 * The {@code addActions()} method adds {@code MouseListener}s to the panel:<br>
-	 * - adds a {@code MouseListener} to the panel to listen for mouse clicks by
-	 * calling {@code addMouseListener(MouseListener)} and defining a new
-	 * {@code MouseAdapter}, which itself overrides the
-	 * {@code MouseAdapter.mouseClicked(MouseEvent)} method.<br>
-	 * - adds a {@code MouseMotionListener} to the panel to listen for mouse clicks
-	 * by calling {@code addMouseMotionListener(MouseMotionAdapter)} and defining a
-	 * new {@code MouseMotionAdapter}, which itself overrides the
-	 * {@code MouseMotionAdapter.mouseDragged(MouseEvent)} method.<br>
-	 * - both listeners call {@code CanvasPanel.mouseAction(MouseEvent e)}.
+	 * This method adds MouseListeners to the panel:<br>
+	 * - adds a Mouse Listeners to the panel to listen for mouse clicks.<br>
+	 * - adds a Mouse Motion Listener to the panel to listen for mouse drags.<br>
+	 * - both events call the same action method, sending the Mouse Event as a
+	 * parameter.
 	 * 
-	 * @see #addMouseListener(MouseListener)
-	 * @see MouseAdapter
-	 * @see MouseAdapter#mouseClicked(MouseEvent)
-	 * @see #addMouseMotionListener(MouseMotionAdapter)
-	 * @see MouseMotionAdapter
-	 * @see MouseMotionAdapter#mouseDragged(MouseEvent)
-	 * @see MouseEvent
+	 * @see #mouseAction(MouseEvent)
+	 * 
 	 */
 	private void addActions() {
 		addMouseListener(new MouseAdapter() {
@@ -91,6 +75,16 @@ public class CanvasPanel extends JPanel {
 		});
 	}
 
+	/**
+	 * This method is called whenever a mouse event occurs.<br>
+	 * It checks if the cursor location is a valid location to draw, and if it is,
+	 * it births a cell at that location. Then it tells the Canvas Panel to repaint
+	 * itself.
+	 * 
+	 * @see #isValidPosition(int, int)
+	 * @see BoardController#birthCell(int, int)
+	 * @param e - the {@link MouseEvent} to set
+	 */
 	private void mouseAction(MouseEvent e) {
 		// System.out.println("CanvasPanel.mouseAction");
 		if (isValidPosition(e.getX(), e.getY())) {
@@ -100,47 +94,53 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code isValidPosition(int, int)} method checks if the parameters are
-	 * valid x and y coordinates.<br>
+	 * This method checks if the parameters are valid x and y coordinates.<br>
 	 * The coordinates are invalid if:<br>
-	 * - x is less than zero or greater than the width of the canvas/board.<br>
-	 * - y is less than zero or greater than the height of the canvas/board.<br>
+	 * - w is less than zero or greater than the width of the canvas/board.<br>
+	 * - h is less than zero or greater than the height of the canvas/board.<br>
 	 * 
 	 * @see #getSize()
 	 * 
-	 * @param w - the x (width)		coordinate to evaluate
-	 * @param h - the y (height)	coordinate to evaluate
+	 * @param w - the w (x column) coordinate to evaluate
+	 * @param h - the h (y height) coordinate to evaluate
 	 * @return true if position is valid
 	 */
 	private boolean isValidPosition(int w, int h) {
+		// System.out.println("CanvasPanel.isValidPosition");
+		// System.out.println("w = " + w + ", h = " + h);
 		boolean parses = true;
 		if (w < 0 || w >= boardCtrl.getWidth()) {
 			parses = false;
-			// System.out.println("x out of bounds");
+			// System.out.println("w out of bounds");
 		}
 		if (h < 0 || h >= boardCtrl.getHeight()) {
 			parses = false;
-			// System.out.println("y out of bounds");
+			// System.out.println("h out of bounds");
 		}
 		return parses;
 	}
 
 	/**
-	 * The {@code drawBoard()} method iterates through each cell of the panel,
-	 * checks if the cell at the x and y coordinates is alive, and draws on the
-	 * panel accordingly.
+	 * This method iterates through each cell of the panel, checks if the cell at
+	 * the w and h coordinates is alive, and draws on the panel accordingly.
 	 * 
-	 * @see CanvasPanel#draw(int, int)
+	 * @see BoardController#getWidth()
+	 * @see BoardController#getHeight()
+	 * @see BoardController#cellIsAlive(int, int)
+	 * 
+	 * @param g - the {@link Graphics2D} to draw on.
 	 */
 	private void drawBoard(Graphics2D g) {
 		// System.out.println("CanvasPanel.drawBoard");
+		// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h);
 		for (int w = 0; w < boardCtrl.getWidth(); w++) {
 			for (int h = 0; h < boardCtrl.getHeight(); h++) {
 				if (boardCtrl.cellIsAlive(w, h)) {
-					// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h + " is alive");
+					// System.out.println("cell is alive");
 					g.setPaint(Color.BLACK);
 					g.drawRect(w, h, 1, 1);
 				} else {
+					// System.out.println("cell is dead");
 					g.setPaint(Color.WHITE);
 					g.drawRect(w, h, 1, 1);
 				}
@@ -150,13 +150,13 @@ public class CanvasPanel extends JPanel {
 	}
 
 	/**
-	 * The {@code paintComponent(Graphics)} method overrides the JPanel
-	 * {@code paintComponent(Graphics)}.<br>
-	 * This method draws the {@code Board} to the {@code Graphics}. - tells the
-	 * renderer to apply anti-aliasing.<br>
+	 * This method overrides the JPanel method. This method draws the {@code Board}
+	 * to the {@code Graphics}. tells the renderer to apply anti-aliasing, and sets
+	 * the non-drawable background to gray.
 	 * 
-	 * @see Graphics2D
-	 * @see Graphics2D#setRenderingHint(java.awt.RenderingHints.Key, Object)
+	 * @see #drawBoard(Graphics2D)
+	 * 
+	 * @param g - the {@link Graphics2D} to draw on.
 	 */
 	@Override
 	protected void paintComponent(Graphics g) {
