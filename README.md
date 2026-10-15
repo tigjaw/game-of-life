@@ -29,10 +29,10 @@
         [b] draw live cells to the canvas directly using a mouse or stylus
       </li>
       <li>
-        [b] play/pause/reset simulation
+        [c] play/pause/reset simulation
       </li>
       <li>
-        [b] change simulation speed
+        [d] change simulation speed
       </li>
     </ul>
   </div>
@@ -41,7 +41,7 @@
     <h2>Planned Features</h2>
     <ul dir="rtl">
       <li>
-        [b] implement "info" panel to display current sim configuration and rules
+        [a] implement "info" panel to display current sim configuration and rules
       </li>
        <li>
         [b] implement fully customisable, dynamic rules
