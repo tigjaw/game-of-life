@@ -53,10 +53,10 @@
     <h2>Current Issues</h2>
     <ul dir="rtl">
       <li>
-        [a] 
+        [a] nothing to see here
       </li>
       <li>
-        [b] 
+        [b] or here
       </li>
     </ul>
   </div>
