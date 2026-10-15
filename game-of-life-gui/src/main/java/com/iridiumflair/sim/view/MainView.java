@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -20,14 +19,13 @@ import com.iridiumflair.sim.model.LFStrings;
 import com.iridiumflair.sim.model.SimState;
 
 /**
- * {@code MainView} is the main GUI interface containing the basic controls and
- * the canvas {@code CanvasPanel}. This class creates the main components and
- * their actions, sending inputs to the {@code CanvasPanal} and
- * {@code SimController}
+ * MainView is the main GUI interface containing the basic controls and the
+ * CanvasPanel. This class creates the main components and their actions,
+ * sending inputs to the CanvasPanal and SimController.
  * 
  * @see SimController
- * @see CanvasPanel
  * @see JFrame
+ * @see CanvasPanel
  * @see JPanel
  * @see JButton
  * @see JLabel
@@ -46,20 +44,17 @@ public class MainView {
 	private int margin = 100;
 
 	/**
-	 * The constructor for {@code MainView}<br>
-	 * Initialises the {@code frame}, {@code controller}, {@code canvasRows}, and
-	 * {@code canvasColumns}.<br>
-	 * Initialises the {@code refreshTimer} using the {@code
-	 * SimController.getFramerate()} method as the timer delay between each
-	 * {@code refresh()}.<br>
-	 * Finally, the constructor calls the {code createAndShowGUI()} method.
+	 * The constructor for MainView<br>
+	 * Initialises the frame and simulation controller, initialises the simulation's
+	 * timer which refreshes the simulation every refresh, and finally, calls a
+	 * method to create and show the interface.
 	 * 
 	 * @see SimController#getFramerate()
 	 * @see #refresh()
 	 * @see #createAndShowGUI()
 	 * 
-	 * @param frame      the {@link JFrame} to set
-	 * @param controller the {@link SimController} to set
+	 * @param frame      - the {@link JFrame} to set
+	 * @param controller - the {@link SimController} to set
 	 */
 	public MainView(JFrame frame, SimController simCtrl) {
 		this.frame = new JFrame("Conway's Game of Life");
@@ -73,8 +68,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code createAndShowGUI()} method simply contains method calls to
-	 * incrementally build the GUI.
+	 * This method simply contains method calls to incrementally build the GUI.
 	 * 
 	 * @see MainView#manageUI()
 	 * @see MainView#createComponents()
@@ -93,7 +87,8 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code manageUi()} method sets the look and feel for the GUI.
+	 * This method sets the look and feel for the GUI using the various style
+	 * strings set in LFStrings.
 	 * 
 	 * @see LFStrings
 	 * @see UIManager#setLookAndFeel(String)
@@ -117,8 +112,11 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code createComponents()} method initialises each of the
-	 * {@code JComponent}s
+	 * This method initialises each JComponent in the view.
+	 * 
+	 * @see CanvasPanel
+	 * @see SimController#getBoardCtrl()
+	 * @see SimController#getSpeedMultiplier()
 	 */
 	private void createComponents() {
 		// System.out.println("MainView.createComponents");
@@ -139,8 +137,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code addComponents()} method adds each JComponent to its parent
-	 * {@code JPanel}.
+	 * This method adds each JComponent to its parent JPanel.
 	 */
 	private void addComponents() {
 		// System.out.println("MainView.addComponents");
@@ -155,14 +152,11 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code addActions()} method adds an {@code ActionListener} to each of the
-	 * GUI buttons. Each button updates the {@code SimState} with an enum value
-	 * according to the respective action.
+	 * This method adds an ActionListener to each of the GUI buttons. Each button
+	 * updates the SimState with a value according to the respective action.
 	 * 
 	 * @see #update(SimState)
 	 * @see SimState
-	 * @see JButton#addActionListener(ActionListener)
-	 * @see ActionListener
 	 */
 	private void addActions() {
 
@@ -196,57 +190,85 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code update(SimState)} method is called by the {@code JButton}s in this
-	 * class and updates the view accordingly. {@code MainView} does not modify the
-	 * {@code Board} or {@code CanvasPanel} directly.<br>
+	 * This method is called by the JButtons in this class and updates the view
+	 * accordingly.<br>
+	 * MainView does not modify the Board or CanvasPanel directly.<br>
 	 * This method is responsible for:<br>
 	 * - pausing/playing the simulation<br>
-	 * - restarting the simulation.<br>
-	 * - speeding up or slowing down the simulation.<br>
-	 * - modifying the play/pause button and speedLabel text to account for the
-	 * above actions.<br>
+	 * - starting a new simulation.<br>
+	 * - changing the speed of the simulation.<br>
 	 * 
-	 * @see SimState
 	 * @see SimController#playPauseSimulation()
-	 * @see SimController#restartSimulation()
-	 * @see SimController#speedUpSimulation()
-	 * @see SimController#slowDownSimulation()
-	 * @see JComponent#setText(String)
-	 * @see Timer#start()
-	 * @see Timer#stop()
-	 * @see Timer#setDelay(int)
+	 * @see MainView#playPause()
+	 * @see SettingsPanel#SettingsPanel(MainView, String)
+	 * @see MainView#changeSpeed(SimState)
 	 * 
-	 * @param state the {@code SimState} to compare
+	 * @param state the {@link SimState} to compare
 	 */
 	private void update(SimState state) {
 		// System.out.println("MainView.update");
+		// System.out.println("SimState = " + SimState);
+
 		switch (state) {
 		case PLAYPAUSE:
+			simCtrl.playPauseSimulation();
 			playPause();
 			break;
 		case NEW:
 			new SettingsPanel(this, "new simulation options");
+			playPause();
 			break;
 		default:
 			changeSpeed(state);
 		}
 	}
 
+	/**
+	 * This method plays/pauses the simulation timer.<br>
+	 * If the Simulation is running:<br>
+	 * - sets play button text to "pause"<br>
+	 * - starts the refresh timer.<br>
+	 * If the Simulation is not running:<br>
+	 * - sets play button text to "play"<br>
+	 * - stops the refresh timer.<br>
+	 * 
+	 * @see SimController#isRunning()
+	 * @see MainView#refreshTimer
+	 * @see MainView#playBtn
+	 */
 	private void playPause() {
 		// System.out.println("MainView.playPause");
-		simCtrl.playPauseSimulation();
+		// System.out.println("Simulation is Running = " + simCtrl.isRunning());
+
 		if (simCtrl.isRunning()) {
+			// System.out.println("Playing Simulation");
 			playBtn.setText("pause");
 			refreshTimer.start();
 		} else {
+			// System.out.println("Pausing Simulation");
 			playBtn.setText("play");
 			refreshTimer.stop();
 		}
 	}
 
+	/**
+	 * This method changes the speed of the simulation depending on the SimSate
+	 * parameter.<br>
+	 * The refreshTimer delay is then set with the new frame-rate<br>
+	 * and the speedLabel text is updated to display the current speed.
+	 * 
+	 * @param state the {@link SimState} to compare
+	 * @see SimController#speedUpSimulation()
+	 * @see SimController#slowDownSimulation()
+	 * @see MainView#refreshTimer
+	 * @see SimController#getFramerate()
+	 * @see MainView#speedLabel
+	 * @see SimController#getSpeedMultiplier()
+	 */
 	private void changeSpeed(SimState state) {
 		// System.out.println("MainView.changeSpeed");
-		
+		// System.out.println("SimState = " + state);
+
 		switch (state) {
 		case SPEEDUP:
 			simCtrl.speedUpSimulation();
@@ -254,8 +276,7 @@ public class MainView {
 		case SLOWDOWN:
 			simCtrl.slowDownSimulation();
 			break;
-		default:
-			// System.out.println("MainView.changeSpeed: state must be SPEEDUP or SLOWDOWN");
+		default:// will never be called
 			break;
 		}
 
@@ -264,10 +285,9 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code refresh()} method is called by {@code refreshTimer}'s
-	 * {@code ActionListener} while the simulation is running. Each refresh tells
-	 * the {@code CanvasPanel} to clear itself, calls the next simulation step, and
-	 * tells {@code CanvasPanel} to redraw the updated board.
+	 * This method is called by refreshTimer's ActionListener while the simulation
+	 * is running. Each refresh tells the SimController to advance the simulation
+	 * and the CanvasPanel to repaint itself.
 	 * 
 	 * @see SimController#advanceSimulation()
 	 * @see CanvasPanel#drawBoard()
@@ -279,13 +299,7 @@ public class MainView {
 	}
 
 	/**
-	 * The {@code showFrame()} method adds the mainPanel to the frame and displays
-	 * the GUI
-	 * 
-	 * @see JFrame#setLocationRelativeTo(java.awt.Component)
-	 * @see JFrame#revalidate()
-	 * @see JFrame#repaint()
-	 * @see JFrame#pack()
+	 * This method adds the mainPanel to the frame and displays the GUI.
 	 */
 	private void showFrame() {
 		// System.out.println("MainView.showFrame");
@@ -317,11 +331,11 @@ public class MainView {
 	public void setFrame(JFrame frame) {
 		this.frame = frame;
 	}
-	
+
 	public void setCanvasPanel(BoardController boardCtrl) {
 		this.canvas = new CanvasPanel(boardCtrl);
 	}
-	
+
 	public void setCanvasPanel(int width, int height) {
 		this.canvas.setPreferredSize(width, height);
 	}

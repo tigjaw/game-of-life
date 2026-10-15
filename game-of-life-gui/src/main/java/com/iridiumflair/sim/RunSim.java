@@ -14,6 +14,7 @@ import com.iridiumflair.sim.view.MainView;
  * @see SimController
  * @see BoardController
  * @see Board
+ * @see MainView
  * 
  * @author Joshua Woodyatt - <a href="https://github.com/tigjaw">GitHub</a>
  */
