@@ -205,8 +205,6 @@ public class CanvasPanel extends JPanel {
 		// System.out.println("CanvasPanel.paintComponent(Graphics g)");
 		
 		super.paintComponent(g);
-		// set background colour
-		setBackground(Color.GRAY);
 		// draw new graphics
 		Graphics2D g2 = (Graphics2D) g.create();
 		try {
