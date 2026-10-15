@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.Timer;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -151,7 +152,7 @@ public class MainView {
 		controlPanel.add(speedLabel);
 
 		mainPanel.add(controlPanel, BorderLayout.PAGE_START);
-		mainPanel.add(canvas, BorderLayout.CENTER);
+		mainPanel.add(new JScrollPane(canvas), BorderLayout.CENTER);
 	}
 
 	/**
