@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPanel;
+import javax.swing.JViewport;
+import javax.swing.SwingUtilities;
 
 import com.iridiumflair.sim.control.BoardController;
 
@@ -28,7 +31,11 @@ import com.iridiumflair.sim.control.BoardController;
  */
 @SuppressWarnings("serial")
 public class CanvasPanel extends JPanel {
+	private static final double MIN_ZOOM = 0.25;
+	private static final double MAX_ZOOM = 16.0;
+
 	private BoardController boardCtrl;
+	private double zoom = 1.0;
 
 	/**
 	 * The Constructor for {@code CanvasPanel}:<br>
@@ -44,6 +51,7 @@ public class CanvasPanel extends JPanel {
 	public CanvasPanel(BoardController boardCtrl) {
 		this.boardCtrl = boardCtrl;
 		setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
+		setToolTipText("Hold Ctrl and use the mouse wheel to zoom");
 		addActions();
 	}
 
@@ -75,6 +83,38 @@ public class CanvasPanel extends JPanel {
 				mouseAction(e);
 			}
 		});
+
+		addMouseWheelListener(e -> {
+			if (!e.isControlDown()) {
+				return;
+			}
+
+			e.consume();
+			double oldZoom = zoom;
+			double newZoom = Math.max(MIN_ZOOM,
+					Math.min(MAX_ZOOM, oldZoom * Math.pow(1.2, -e.getWheelRotation())));
+			if (newZoom == oldZoom) {
+				return;
+			}
+
+			JViewport viewport = getParent() instanceof JViewport ? (JViewport) getParent() : null;
+			Point mouse = e.getPoint();
+			Point viewPosition = viewport == null ? new Point() : viewport.getViewPosition();
+			double anchorX = viewPosition.x + mouse.x;
+			double anchorY = viewPosition.y + mouse.y;
+
+			double zoomFactor = newZoom / oldZoom;
+			zoom = newZoom;
+			setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
+			revalidate();
+			repaint();
+
+			if (viewport != null) {
+				SwingUtilities.invokeLater(() -> viewport.setViewPosition(new Point(
+						Math.max(0, (int) Math.round(anchorX * zoomFactor - mouse.x)),
+						Math.max(0, (int) Math.round(anchorY * zoomFactor - mouse.y)))));
+			}
+		});
 	}
 
 	/**
@@ -90,8 +130,10 @@ public class CanvasPanel extends JPanel {
 	private void mouseAction(MouseEvent e) {
 		// System.out.println("CanvasPanel.mouseAction(MouseEvent e)");
 		
-		if (isValidPosition(e.getX(), e.getY())) {
-			boardCtrl.birthCell(e.getX(), e.getY());
+		int cellX = (int) (e.getX() / zoom);
+		int cellY = (int) (e.getY() / zoom);
+		if (isValidPosition(cellX, cellY)) {
+			boardCtrl.birthCell(cellX, cellY);
 			repaint();
 		}
 	}
@@ -139,18 +181,12 @@ public class CanvasPanel extends JPanel {
 		// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h);
 		
 		
+		g.setColor(Color.BLACK);
 		for (int w = 0; w < boardCtrl.getWidth(); w++) {
 			for (int h = 0; h < boardCtrl.getHeight(); h++) {
 				if (boardCtrl.cellIsAlive(w, h)) {
-					// System.out.println("cell is alive");
-					g.setPaint(Color.BLACK);
-					g.drawRect(w, h, 1, 1);
-				} else {
-					// System.out.println("cell is dead");
-					g.setPaint(Color.WHITE);
-					g.drawRect(w, h, 1, 1);
+					g.fillRect(w, h, 1, 1);
 				}
-
 			}
 		}
 	}
@@ -169,24 +205,27 @@ public class CanvasPanel extends JPanel {
 		// System.out.println("CanvasPanel.paintComponent(Graphics g)");
 		
 		super.paintComponent(g);
-		// set background colour
-		setBackground(Color.GRAY);
 		// draw new graphics
-		Graphics2D g2 = (Graphics2D) g;
-		// add anti-aliasing
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		// Draw background for the whole panel
-		g2.fillRect(0, 0, boardCtrl.getWidth(), boardCtrl.getHeight());
-		// draw board
-		drawBoard((Graphics2D) g2);
+		Graphics2D g2 = (Graphics2D) g.create();
+		try {
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+			g2.setColor(Color.GRAY);
+			g2.fillRect(0, 0, getWidth(), getHeight());
+			g2.scale(zoom, zoom);
+			g2.setColor(Color.WHITE);
+			g2.fillRect(0, 0, boardCtrl.getWidth(), boardCtrl.getHeight());
+			// draw board
+			drawBoard(g2);
+		} finally {
+			g2.dispose();
+		}
 	}
 
 	public void setPreferredSize(int width, int height) {
 		// System.out.println("CanvasPanel.setPreferredSize(int width, int height");
 		// System.out.println("width = " + width + ", height = " + height);
 		
-		int buffer = 0;
-		this.setPreferredSize(new Dimension(width + buffer, height + buffer));
+		this.setPreferredSize(new Dimension((int) Math.ceil(width * zoom), (int) Math.ceil(height * zoom)));
 	}
 
 	/**
