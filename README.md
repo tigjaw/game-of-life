@@ -26,7 +26,7 @@
         [b] start new simulation with custom sim size and rules
       </li>
       <li>
-        [b] draw live cells to the canvas directly using the mouse
+        [b] draw live cells to the canvas directly using a mouse or stylus
       </li>
       <li>
         [b] play/pause/reset simulation
@@ -44,7 +44,7 @@
         [b] implement "info" panel to display current sim configuration and rules
       </li>
        <li>
-        [b] implement fully customisable rules
+        [b] implement fully customisable, dynamic rules
       </li>
     </ul>
   </div>
@@ -53,10 +53,10 @@
     <h2>Current Issues</h2>
     <ul dir="rtl">
       <li>
-        [a] maximised play area lags
+        [a] 
       </li>
       <li>
-        [b] SettingsPanel broken
+        [b] 
       </li>
     </ul>
   </div>
