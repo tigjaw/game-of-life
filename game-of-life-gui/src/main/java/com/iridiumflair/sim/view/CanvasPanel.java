@@ -211,9 +211,11 @@ public class CanvasPanel extends JPanel {
 		Graphics2D g2 = (Graphics2D) g.create();
 		try {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-			g2.setColor(Color.WHITE);
+			g2.setColor(Color.GRAY);
 			g2.fillRect(0, 0, getWidth(), getHeight());
 			g2.scale(zoom, zoom);
+			g2.setColor(Color.WHITE);
+			g2.fillRect(0, 0, boardCtrl.getWidth(), boardCtrl.getHeight());
 			// draw board
 			drawBoard(g2);
 		} finally {
