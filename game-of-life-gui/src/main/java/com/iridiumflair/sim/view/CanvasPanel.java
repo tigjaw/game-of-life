@@ -68,7 +68,7 @@ public class CanvasPanel extends JPanel {
 	 */
 	private void addActions() {
 		// System.out.println("CanvasPanel.addActions()");
-
+		
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -86,35 +86,55 @@ public class CanvasPanel extends JPanel {
 		});
 
 		addMouseWheelListener(e -> {
-			if (!e.isControlDown()) {
-				return;
-			}
-
-			e.consume();
-			double oldZoom = zoom;
-			double newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, oldZoom * Math.pow(1.2, -e.getWheelRotation())));
-			if (newZoom == oldZoom) {
-				return;
-			}
-
-			JViewport viewport = getParent() instanceof JViewport ? (JViewport) getParent() : null;
-			Point mouse = e.getPoint();
-			Point viewPosition = viewport == null ? new Point() : viewport.getViewPosition();
-			double anchorX = viewPosition.x + mouse.x;
-			double anchorY = viewPosition.y + mouse.y;
-
-			double zoomFactor = newZoom / oldZoom;
-			zoom = newZoom;
-			setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
-			revalidate();
-			repaint();
-
-			if (viewport != null) {
-				SwingUtilities.invokeLater(() -> viewport
-						.setViewPosition(new Point(Math.max(0, (int) Math.round(anchorX * zoomFactor - mouse.x)),
-								Math.max(0, (int) Math.round(anchorY * zoomFactor - mouse.y)))));
+			if (e.isControlDown()) {
+				e.consume();
+				changeZoom(zoom * Math.pow(1.2, -e.getWheelRotation()), e.getPoint());
 			}
 		});
+	}
+
+	private void changeZoom(double requestedZoom, Point anchorInPanel) {
+		double oldZoom = zoom;
+		double newZoom = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, requestedZoom));
+		if (newZoom == oldZoom) {
+			return;
+		}
+
+		JViewport viewport = getParent() instanceof JViewport ? (JViewport) getParent() : null;
+		if (anchorInPanel == null) {
+			anchorInPanel = viewport == null
+					? new Point(getWidth() / 2, getHeight() / 2)
+					: new Point(viewport.getExtentSize().width / 2, viewport.getExtentSize().height / 2);
+		}
+		Point viewPosition = viewport == null ? new Point() : viewport.getViewPosition();
+		double anchorX = viewPosition.x + anchorInPanel.x;
+		double anchorY = viewPosition.y + anchorInPanel.y;
+		double zoomFactor = newZoom / oldZoom;
+
+		zoom = newZoom;
+		setPreferredSize(boardCtrl.getWidth(), boardCtrl.getHeight());
+		revalidate();
+		repaint();
+		firePropertyChange("zoom", oldZoom, newZoom);
+
+		if (viewport != null) {
+			Point anchor = anchorInPanel;
+			SwingUtilities.invokeLater(() -> viewport.setViewPosition(new Point(
+					Math.max(0, (int) Math.round(anchorX * zoomFactor - anchor.x)),
+					Math.max(0, (int) Math.round(anchorY * zoomFactor - anchor.y)))));
+		}
+	}
+
+	public void zoomIn() {
+		changeZoom(zoom * 1.2, null);
+	}
+
+	public void zoomOut() {
+		changeZoom(zoom / 1.2, null);
+	}
+
+	public int getZoomPercent() {
+		return (int) Math.round(zoom * 100);
 	}
 
 	/**
@@ -127,11 +147,19 @@ public class CanvasPanel extends JPanel {
 	 * @see BoardController#birthCell(int, int)
 	 * @param e - the {@link MouseEvent} to set
 	 */
+	private int getBoardOffsetX() {
+		return Math.max(0, (getWidth() - (int) Math.ceil(boardCtrl.getWidth() * zoom)) / 2);
+	}
+
+	private int getBoardOffsetY() {
+		return Math.max(0, (getHeight() - (int) Math.ceil(boardCtrl.getHeight() * zoom)) / 2);
+	}
+
 	private void mouseAction(MouseEvent e) {
 		// System.out.println("CanvasPanel.mouseAction(MouseEvent e)");
-
-		int cellX = (int) (e.getX() / zoom);
-		int cellY = (int) (e.getY() / zoom);
+		
+		int cellX = (int) Math.floor((e.getX() - getBoardOffsetX()) / zoom);
+		int cellY = (int) Math.floor((e.getY() - getBoardOffsetY()) / zoom);
 		if (isValidPosition(cellX, cellY)) {
 			boardCtrl.birthCell(cellX, cellY);
 			repaint();
@@ -153,7 +181,7 @@ public class CanvasPanel extends JPanel {
 	private boolean isValidPosition(int w, int h) {
 		// System.out.println("CanvasPanel.isValidPosition(int w, int h)");
 		// System.out.println("w = " + w + ", h = " + h);
-
+		
 		boolean parses = true;
 		if (w < 0 || w >= boardCtrl.getWidth()) {
 			parses = false;
@@ -179,7 +207,8 @@ public class CanvasPanel extends JPanel {
 	private void drawBoard(Graphics2D g) {
 		// System.out.println("CanvasPanel.drawBoard(Graphics2D g)");
 		// System.out.println("CanvasPanel.drawBoard: " + w + ", " + h);
-
+		
+		
 		g.setColor(Color.BLACK);
 		for (int w = 0; w < boardCtrl.getWidth(); w++) {
 			for (int h = 0; h < boardCtrl.getHeight(); h++) {
@@ -202,7 +231,7 @@ public class CanvasPanel extends JPanel {
 	@Override
 	protected void paintComponent(Graphics g) {
 		// System.out.println("CanvasPanel.paintComponent(Graphics g)");
-
+		
 		super.paintComponent(g);
 		// draw new graphics
 		Graphics2D g2 = (Graphics2D) g.create();
@@ -210,6 +239,7 @@ public class CanvasPanel extends JPanel {
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
 			g2.setColor(Color.GRAY);
 			g2.fillRect(0, 0, getWidth(), getHeight());
+			g2.translate(getBoardOffsetX(), getBoardOffsetY());
 			g2.scale(zoom, zoom);
 			g2.setColor(Color.WHITE);
 			g2.fillRect(0, 0, boardCtrl.getWidth(), boardCtrl.getHeight());
@@ -223,7 +253,7 @@ public class CanvasPanel extends JPanel {
 	public void setPreferredSize(int width, int height) {
 		// System.out.println("CanvasPanel.setPreferredSize(int width, int height");
 		// System.out.println("width = " + width + ", height = " + height);
-
+		
 		this.setPreferredSize(new Dimension((int) Math.ceil(width * zoom), (int) Math.ceil(height * zoom)));
 	}
 

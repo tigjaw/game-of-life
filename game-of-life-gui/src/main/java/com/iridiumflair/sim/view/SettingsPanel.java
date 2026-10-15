@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 import com.iridiumflair.sim.control.BoardController;
@@ -24,6 +25,8 @@ import com.iridiumflair.sim.model.Board;
  */
 @SuppressWarnings("serial")
 public class SettingsPanel extends JDialog {
+	private static final int MAX_BOARD_DIMENSION = 1000;
+
 	private MainView mainView;
 	// controllers
 	private SimController simCtrl;
@@ -65,10 +68,10 @@ public class SettingsPanel extends JDialog {
 		btnPanel = new JPanel(new BorderLayout());
 		// basic settings - width label and field
 		widthField = new NumberField(simCtrl.getWidth(), 4);
-		widthField.setToolTipText("width of board");
+		widthField.setToolTipText("width of board (1 to 1000)");
 		// basic settings - height label and field
 		heightField = new NumberField(simCtrl.getHeight(), 4);
-		heightField.setToolTipText("height of board");
+		heightField.setToolTipText("height of board (1 to 1000)");
 		// basic settings - interval label and field
 		intervalField = new NumberField(simCtrl.getSimInterval(), 4);
 		intervalField.setToolTipText("lower is faster");
@@ -184,6 +187,13 @@ public class SettingsPanel extends JDialog {
 		if (accept) {
 			int width = widthField.getNumber();
 			int height = heightField.getNumber();
+			if (width < 1 || width > MAX_BOARD_DIMENSION
+					|| height < 1 || height > MAX_BOARD_DIMENSION) {
+				JOptionPane.showMessageDialog(this,
+						"Board width and height must each be between 1 and " + MAX_BOARD_DIMENSION + ".",
+						"Invalid board size", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			Board board = new Board(width, height);
 			board.setDieCondition1(dieRule1.getNumber());
 			board.setSurviveCondition1(surviveRule1.getNumber());
@@ -197,6 +207,7 @@ public class SettingsPanel extends JDialog {
 			simCtrl.restartSimulation();
 			mainView.setCanvasPanel(width, height);
 			mainView.getCanvas().repaint();
+			mainView.resizeFrameToFitContent();
 		}
 		setVisible(false);
 	}
