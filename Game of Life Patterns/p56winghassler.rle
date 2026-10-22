@@ -1,0 +1,18 @@
+#N p56winghassler.rle
+#C https://conwaylife.com/wiki/Wing_hasslers
+#C https://www.conwaylife.com/patterns/p56winghassler.rle
+x = 53, y = 53, rule = B3/S23
+14bobo19bobo$11bo2b2obo17bob2o2bo$11b3o3bo17bo3b3o$15b2ob2obo9bob2ob2o
+$13b2obobob2o9b2obobob2o$13bo25bo$14b4o17b4o$11b3o4bo15bo4b3o$11bo2b5o
+15b5o2bo$12bobob4o13b4obobo$11b2obo5bob2o5b2obo5bob2o$11bo2bo2bo2bob2o
+5b2obo2bo2bo2bo$12b2o2bobobo11bobobo2b2o$14b5ob4o5b4ob5o$14bo4bo4bo3b
+o4bo4bo$15b3obob3o5b3obob3o$17bobobo9bobobo2$bo6bobo7b3o11b3o7bobo6bo
+$obobob3ob3o27b3ob3obobobo$b2ob2o7bo25bo7b2ob2o$7b6o27b6o$4b3o4bo29bo
+4b3o$b2ob2o3b3o29b3o3b2ob2o$2bo3b2obobo7b3o9b3o7bobob2o3bo$2bo3b2obob
+o7bobo9bobo7bobob2o3bo$b2ob2o3b3o6bo2bo9bo2bo6b3o3b2ob2o$4b3o4bo6bobo
+11bobo6bo4b3o$7b6o6bo13bo6b6o$b2ob2o7bo25bo7b2ob2o$obobob3ob3o27b3ob3o
+bobobo$bo6bobo31bobo6bo5$10b3o4bobo13bobo4b3o$9bobobo6bo11bo6bobobo$9b
+o4bobo3bo11bo3bobo4bo$10b2o4b2obo13bob2o4b2o$14bo23bo$12bo2bo21bo2bo$
+14b3o19b3o$15bo21bo$15b3o17b3o$10b2obo2bob2o13b2obo2bob2o$11bob2obobo
+15bobob2obo$9bobobo2bobobo11bobobo2bobobo$9b2o2bo2bo2b2o11b2o2bo2bo2b
+2o$13b4o19b4o2$15b2o19b2o$15b2o19b2o!

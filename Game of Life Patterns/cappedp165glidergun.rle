@@ -1,0 +1,15 @@
+#N cappedp165glidergun.rle
+#C https://conwaylife.com/wiki/Pi-heptomino_hasslers
+#C https://www.conwaylife.com/patterns/cappedp165glidergun.rle
+x = 83, y = 57, rule = B3/S23
+30bo$30b3o$33bo$32b2o10bo4bo$42b2ob4ob2o$44bo4bo3$69bo$67b3o$66bo$66b
+2o7bo$74bobo$44bo19bo9bob3o$43b2o17b2ob2o6b2o4bo$43bobo16b2ob2o9b3o$
+64bo2bo5b2obo$58b3o4b2o$61bo11bo$58bo3bo9b2obobo2bo$57b2o3bo9b2obob4o$
+56bo5bo2b3o7bo$15bo45bo3b3o7b4o$14bobo39bo3bo5b2obobo3bo2bo$12b3obo41b
+o9bo6b3o3b2o$11bo4bob2o48bo3bo4bobo2bo$11bobobobobo54b2obob2o$6bo5b2ob
+obo17b2ob2o4b3o18bo9bobo$5bobo8bobo16bo3bo3bo3bo16bobo8bobo$5bobo9bo
+18b3o4b2ob2o17bobob2o5bo$2b2obob2o54bobobobobo$o2bobo4bo3bo48b2obo4bo$
+2o3b3o6bo9bo41bob3o$4bo2bo3bobob2o5bo3bo39bobo$4b4o7b3o3bo45bo$7bo7b3o
+2bo5bo$2b4obob2o9bo3b2o$2bo2bobob2o9bo3bo$9bo11bo$16b2o4b3o$6bob2o5bo
+2bo$4b3o9b2ob2o16bobo$3bo4b2o6b2ob2o17b2o$4b3obo9bo19bo$6bobo$7bo7b2o$
+16bo$13b3o$13bo3$33bo4bo$31b2ob4ob2o$33bo4bo10b2o$49bo$50b3o$52bo!

@@ -1,0 +1,23 @@
+#N infinitegliderhotel6.rle
+#C https://conwaylife.com/wiki/Infinite_glider_hotel
+#C https://www.conwaylife.com/patterns/infinitegliderhotel6.rle
+x = 128, y = 86, rule = B3/S23
+12b2o2bo$15bobo$14bo16bo$31bo$16b2o13bo2$17b2o12b2o$16bo13bo2bo$b3o10b
+2ob2o11bobo6b2o$b3o13b2o10b2o8b2o$2bo12bo13bo$3b2o27b2o$4bo27b2o$3bo14b
+2o12b2o$18b2o9b2obo$30b3o$31bo$b2o$b2o$2bo$2bo15bo$bobo15b2o$o16bobo$
+bo2b2o11bo$2bo3bo11b2o$4b2o14bo$4bo13b3o$17bob2o13bo$19b2o13b3o75b2o$
+16bo20bo5b2o67b2o$16bo19b2o5bobob2o$14b2o21b3o5bobo$14bobo21b2o4bo2bo
+$6b2o5b3o21bo8bo$6b2o5bo23b2o2b5o66b2o$14b2o25b3o68b2o$14b2o98bo5b2o$
+35b2o75b3o5b2o$36bo74bobo$36bobo14b2o57b2o$37b2o13bo2bo55bo$14b2o37b2o
+56bo$14b2o24b2o65b2o$40b2o65b2obo$56b2o49b3o13bo$56bo50bo14b2o$57b3o48b
+2o11bo3bo$59bo50bo11b2o2bo$108bobo16bo$107b2o15bobo$65b2o42bo15bo$65b
+o59bo$46b2o19bo57b2o$47bo18b2o57b2o$47bobo14bo3b2o26bo$48b2o14b4o2bo24b
+3o$59b2o6bob2o24bob2o9b2o$59b2o3b2obobo24b2o12b2o14bo$64b2obobo24b2o27b
+o$67bob2o23b2o27b2o$33b2o32bo30bo13bo12bo$65bobo19b2o8b2o10b2o13b3o$31b
+o3bo29b2o20b2o6bobo11b2ob2o10b3o$31bo4bo22b2o33bo2bo13bo$33bobobo20bo
+2bo33b2o12b2o$34bobobo5b2o11bobobo$35bo4bo2bobo10b3obo35bo13b2o$36bo3b
+o4bo10b3o37bo$96bo16bo$37b2o71bobo$111bo2b2o2$43bo14b2o$32b2o8b3o11b2o
+bo$32bob2o5b2ob2o9bo2bo$33bo2bo5b3o3b2o5bo2bo4bo$28bo4bo2bo6bo4b2o5bo
+2bo3bobo$27bobo3bo2bo19b3o3b2o$28b2o3b3o$56b3o3b2o$28b2o3b3o19bo2bo3b
+obo$27bobo3bo2bo18bo2bo4bo$28bo4bo2bo18bo2bo$33bo2bo11b2o6b2obo$32bob
+2o12b2o8b2o$32b2o!

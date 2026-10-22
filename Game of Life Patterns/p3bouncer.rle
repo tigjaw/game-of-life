@@ -1,0 +1,10 @@
+#N p3bouncer.rle
+#O Matthias Merzenich, 2025
+#C https://conwaylife.com/wiki/P3_bouncer
+#C https://www.conwaylife.com/patterns/p3bouncer.rle
+x = 30, y = 35, rule = B3/S23
+4bo$2bobo$3b2o5$9bobo$10b2o$10bo$23b2o$22bobo$24bo$17bo$18bo$16b3o3$14b
+2o$14b2o2b2o7bo$18bobob4o3bo$3bo3b2o10bo5bo3bo$3bo2bo5b2o15bo$3b2o4bo
+2b2o2b2o8bo$7bobo3bo2b3o8b2o$bo2bo2bo3b3o2b2o$obobo2bo5bo2b5o$obobo5b
+2obo3bobobo$bo2bobobo3b3o4bobo$4bobo4bo2bobobobo$3b2o2bobobo4bobo$5bo
+bob2o4b2ob2o$5bo2bo$6bobo$7bo!

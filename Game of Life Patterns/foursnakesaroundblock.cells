@@ -1,0 +1,11 @@
+! foursnakesaroundblock.cells
+! https://conwaylife.com/wiki/Four_snakes_around_block
+! https://www.conwaylife.com/patterns/foursnakesaroundblock.cells
+..OO.O..
+..O.OO..
+OO....OO
+.O.OO..O
+O..OO.O.
+OO....OO
+..OO.O..
+..O.OO..

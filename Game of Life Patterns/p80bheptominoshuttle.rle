@@ -1,0 +1,14 @@
+#N p80bheptominoshuttle.rle
+#C https://conwaylife.com/wiki/B-heptomino_hasslers
+#C https://www.conwaylife.com/patterns/p80bheptominoshuttle.rle
+x = 83, y = 43, rule = B3/S23
+27bo$27b3o$7bo22bo$7b3o19b2o$10bo$9b2o14b2o5b2o$25b2o4bobo$31b2o$37bo
+$37b3o$13b2o25bo$12b3o24b2o$3bo8bo2bo39b2o$2b2o9b2o35b2o3bobob2o$bob2o
+45bo6bobo2bo$3o2bo25bo19b3o3b2o2b2o$2bobobo23b3o20bo11b2o4b2o$3bobobo
+21b2ob2o7b3o21bobo2bobo$4bo2b3o11b2o6b3ob2o5bo2bo23b4o$5b2obo12b2o6b2o
+b2o6b2obo21bo2b2o2bo$6b2o22b3o32bo2b2o2bo$6bo5bo2bo15bo35bo2bo5bo$10b
+o2b2o2bo57b2o$10bo2b2o2bo42b2o12bob2o$12b4o22b2o20b2o11b3o2bo$10bobo2b
+obo57bobobo$10b2o4b2o11bo46bobobo$20b2o2b2o3b3o45bo2b3o$20bo2bobo6bo20b
+o12bobo9b2obo$22b2obobo3b2o18b4o11bo2bo9b2o$26b2o22b3obo11bobo10bo$42b
+2o6b2o$42bo$43b3o24b2o$45bo24b2o$50b2o$49bobo4b2o$49b3o4b2o14b2o$72bo
+$52b2o19b3o$52bo22bo$53b3o$55bo!

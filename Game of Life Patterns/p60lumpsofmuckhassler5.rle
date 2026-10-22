@@ -1,0 +1,10 @@
+#N p60lumpsofmuckhassler5.rle
+#C https://conwaylife.com/wiki/Period-60_lumps_of_muck_hasslers
+#C https://www.conwaylife.com/patterns/p60lumpsofmuckhassler5.rle
+x = 51, y = 28, rule = B3/S23
+27b6o12b2o$26bo6bo11b2o$25bo8bo$26bo6bo9b4o$27b6o9bo4bo$41bob5o$18b2o
+21bo2bo3b2o$12bo5b2o20b2obob3o2bo$12b3o28bobobob2o$15bo21b2o2b2obo2bo
+$14b2o26bobob2o$40b2obobo$23b3o15bobobo$7b2o14bo2b2o13bo2bo$6bo2bo13b
+2o2bo14b2o$5bobobo15b3o$5bobob2o$3b2obobo26b2o$3bo2bob2o2b2o21bo$2obo
+bobo28b3o$o2b3obob2o20b2o5bo$b2o3bo2bo21b2o$3b5obo$3bo4bo9b6o$4b4o9bo
+6bo$16bo8bo$4b2o11bo6bo$4b2o12b6o!

@@ -1,0 +1,15 @@
+#N p160pentadecathlonrephaser.rle
+#C https://conwaylife.com/wiki/Pentadecathlon_rephasing
+#C https://www.conwaylife.com/patterns/p160pentadecathlonrephaser.rle
+x = 94, y = 37, rule = B3/S23
+27bo$27b3o$7bo22bo$7b3o19b2o$10bo$9b2o14b2o5b2o$25b2o4bobo32b2o$31b2o
+3bo11bo12b2o3bobob2o$11bobo22b3o7b3o6bo5bo6bobo2bo$11bob2o24bo5bo7b3o
+6b3o3b2o2b2o$12bo2b2o21b2o5b2o5bo11bo11b2o4b2o$52b2o22bobo2bobo$2b2o8b
+o5bo8bo50bo2bo$12bo5bo8b2o48b2o2b2o$o3bo7bo5bo7bo2bo46b3o2b3o$o4bo21bo
+bo48bo2bo4b2o$2bobobo7b3o10b2o$3bobobo36bo4bo21b2o11bo3bo$4bo4bo11b2o
+19b2ob4ob2o19b2o11bo4bo$5bo3bo11b2o21bo4bo36bobobo$65b2o10b3o7bobobo$
+6b2o4bo2bo48bobo21bo4bo$10b3o2b3o46bo2bo7bo5bo7bo3bo$11b2o2b2o48b2o8bo
+5bo$12bo2bo50bo8bo5bo8b2o$10bobo2bobo22b2o$10b2o4b2o11bo11bo5b2o5b2o
+21b2o2bo$20b2o2b2o3b3o6b3o7bo5bo24b2obo$20bo2bobo6bo5bo6b3o7b3o22bobo$
+22b2obobo3b2o12bo11bo3b2o$26b2o32bobo4b2o$60b2o5b2o14b2o$83bo$63b2o19b
+3o$63bo22bo$64b3o$66bo!

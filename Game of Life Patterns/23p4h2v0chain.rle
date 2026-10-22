@@ -1,0 +1,8 @@
+#N 23p4h2v0chain.rle
+#C https://conwaylife.com/wiki/Unnamed_tagalong_23P4H2V0
+#C https://www.conwaylife.com/patterns/23p4h2v0chain.rle
+x = 24, y = 37, rule = B3/S23
+o$4o$3b2o$2o2b2o$obobo$2b2o$bo2bo$o2b2o$bo3bo$b4o$3b2o$7bo$7b3o$10b2o
+$7b2o2bo$7bo3bo$9b2o$8b2o$10b2o$7b2o2bo$9b3o2$12bobo$12bob3o$17bo$12b
+ob2ob2o$12bobob2o$14bobo$12bo$15bobo$15bob2o$12b2o2b2o2$20b2o$19b4o$19b
+2ob2o$21b2o!

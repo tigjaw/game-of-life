@@ -1,0 +1,6 @@
+#N siffrinsp103.rle
+#O siffrin normal, 2026
+#C https://conwaylife.com/wiki/Siffrin%27s_p103
+#C https://www.conwaylife.com/patterns/siffrinsp103.rle
+x = 42, y = 42, rule = B3/S23
+15bo$14bobo$15bo6$15b3o$15b2obo$15b2o2bo$16bob2o$15b3o2$bo$obo5b3obo$bo6b5o$8bo3bo$9bobo$10b2o3$30b2o$30bobo$29bo3bo$29b5o6bo$29bob3o5bobo$40bo2$24b3o$22b2obo$22bo2b2o$23bob2o$24b3o6$26bo$25bobo$26bo!

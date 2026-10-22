@@ -1,0 +1,6 @@
+#N 43p4h2v0.rle
+#C https://conwaylife.com/wiki/43P4H2V0
+#C https://www.conwaylife.com/patterns/43p4h2v0.rle
+x = 10, y = 25, rule = B3/S23
+6bo$4bo3bo$9bo$4bo4bo$5b5o2$3b2o$3b3o$4bo2$obo$b2o$3bo$b2o$obo2$4bo$3b
+3o$3b2o2$5b5o$4bo4bo$9bo$4bo3bo$6bo!

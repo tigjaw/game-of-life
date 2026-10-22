@@ -1,0 +1,5 @@
+#N lidka29126.rle
+#C https://conwaylife.com/wiki/Lidka
+#C https://www.conwaylife.com/patterns/lidka29126.rle
+x = 9, y = 6, rule = B3/S23
+6bo$6b3o2$3b2o3bo$3bo4bo$3o5bo!

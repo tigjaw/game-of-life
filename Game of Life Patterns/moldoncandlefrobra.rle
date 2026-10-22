@@ -1,0 +1,5 @@
+#N moldoncandlefrobra.rle
+#C https://conwaylife.com/wiki/Mold_on_candlefrobra
+#C https://www.conwaylife.com/patterns/moldoncandlefrobra.rle
+x = 6, y = 14, rule = B3/S23
+bobo$o$bo2bo$bobobo$2bo2bo$3b2o2$b4o$o3bo$bo$bo$2bo$bobo$2bo!

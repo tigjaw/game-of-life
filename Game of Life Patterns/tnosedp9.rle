@@ -1,0 +1,7 @@
+#N tnosedp9.rle
+#O siffrin normal, 2026
+#C https://conwaylife.com/wiki/T-nosed_p9
+#C https://www.conwaylife.com/patterns/tnosedp9.rle
+x = 21, y = 11, rule = B3/S23
+10bo$10bo$6bob5obo$5bob2o3b2obo$6bo2bobo2bo$2b2o3bobobobo3b2o$bobo5bo
+bo5bobo$bo6b2ob2o6bo$2o7bobo7b2o$7bobobobo$7b2o3b2o!

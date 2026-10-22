@@ -1,0 +1,7 @@
+#N 51p5h2v0.1eater.rle
+#C https://conwaylife.com/wiki/51P5H2V0.1
+#C https://www.conwaylife.com/patterns/51p5h2v0.1eater.rle
+x = 26, y = 26, rule = B3/S23
+13b2o$13b2o2$25bo$23b3o$22bo$o21b2o$3o$3bo$2b2o6$13b3o4bo$12bo2bo3b3o
+$7bo11bo2bo$6b2o5b2o6b3o$4b2obo3bob2o5bobo$6bo2b2o2b2o4b2o$9b2o2b2o4b
+o4bo$7bo11bo$4b2obo11bo3b2o$19bo2bo$20bo!

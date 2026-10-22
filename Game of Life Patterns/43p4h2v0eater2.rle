@@ -1,0 +1,7 @@
+#N 43p4h2v0eater2.rle
+#C https://conwaylife.com/wiki/43P4H2V0
+#C https://www.conwaylife.com/patterns/43p4h2v0eater2.rle
+x = 26, y = 25, rule = B3/S23
+6bo$4bo3bo$9bo$4bo4bo$5b5o$22b2o$3b2o17bobo$3b3o18bo$4bo19b2o2$obo$b2o
+18bo$3bo16bobo$b2o18bo$obo2$4bo19b2o$3b3o18bo$3b2o17bobo$22b2o$5b5o$4b
+o4bo$9bo$4bo3bo$6bo!
